@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module external.linked.project.id=":app" external.linked.project.path="$MODULE_DIR$" external.root.project.path="$MODULE_DIR$/.." external.system.id="GRADLE" external.system.module.group="EasyBudget" external.system.module.version="unspecified" type="JAVA_MODULE" version="4">
+<module external.linked.project.id=":app" external.linked.project.path="$MODULE_DIR$" external.root.project.path="$MODULE_DIR$/.." external.system.id="GRADLE" type="JAVA_MODULE" version="4">
   <component name="FacetManager">
     <facet type="android-gradle" name="Android-Gradle">
       <configuration>
@@ -85,7 +85,6 @@
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/manifests" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/pre-dexed" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/res" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/rs" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/shaders" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/symbols" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/transforms" />
@@ -94,32 +93,32 @@
     </content>
     <orderEntry type="jdk" jdkName="Android API 25 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="com.google.android.gms:play-services-tagmanager-v4-impl-10.2.4" level="project" />
-    <orderEntry type="library" exported="" name="com.google.android.gms:play-services-analytics-10.2.4" level="project" />
-    <orderEntry type="library" exported="" name="com.google.android.gms:play-services-base-10.2.4" level="project" />
-    <orderEntry type="library" exported="" name="com.android.support:percent-25.3.1" level="project" />
-    <orderEntry type="library" exported="" name="com.android.support:support-core-ui-25.3.1" level="project" />
-    <orderEntry type="library" exported="" name="com.android.support:support-compat-25.3.1" level="project" />
-    <orderEntry type="library" exported="" name="com.google.android.gms:play-services-gcm-10.2.4" level="project" />
-    <orderEntry type="library" exported="" name="com.google.android.gms:play-services-appinvite-10.2.4" level="project" />
-    <orderEntry type="library" exported="" name="com.android.support:support-core-utils-25.3.1" level="project" />
-    <orderEntry type="library" exported="" name="com.getbase:floatingactionbutton-1.10.1" level="project" />
-    <orderEntry type="library" exported="" name="com.android.support:support-v4-25.3.1" level="project" />
-    <orderEntry type="library" exported="" name="com.android.support:support-fragment-25.3.1" level="project" />
-    <orderEntry type="library" exported="" name="com.android.support:support-media-compat-25.3.1" level="project" />
-    <orderEntry type="library" exported="" name="com.google.android.gms:play-services-analytics-impl-10.2.4" level="project" />
-    <orderEntry type="library" exported="" name="com.google.android.gms:play-services-iid-10.2.4" level="project" />
-    <orderEntry type="library" exported="" name="com.darwinsys:hirondelle-date4j:1.5.1@jar" level="project" />
-    <orderEntry type="library" exported="" name="com.android.support:animated-vector-drawable-25.3.1" level="project" />
-    <orderEntry type="library" exported="" name="com.roomorama:caldroid-3.0.1" level="project" />
-    <orderEntry type="library" exported="" name="com.google.android.gms:play-services-basement-10.2.4" level="project" />
-    <orderEntry type="library" exported="" name="com.android.support:transition-25.3.1" level="project" />
-    <orderEntry type="library" exported="" name="com.android.support:design-25.3.1" level="project" />
-    <orderEntry type="library" exported="" name="com.android.support:appcompat-v7-25.3.1" level="project" />
-    <orderEntry type="library" exported="" name="com.google.android.gms:play-services-tasks-10.2.4" level="project" />
-    <orderEntry type="library" exported="" name="com.android.support:support-vector-drawable-25.3.1" level="project" />
-    <orderEntry type="library" exported="" name="me.relex:circleindicator-1.2.2" level="project" />
-    <orderEntry type="library" exported="" name="com.android.support:recyclerview-v7-25.3.1" level="project" />
-    <orderEntry type="library" exported="" name="com.android.support:support-annotations:25.3.1@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.android.support:appcompat-v7-25.3.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.android.support:support-fragment-25.3.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.android.support:support-annotations:25.3.1@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.darwinsys:hirondelle-date4j:1.5.1@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.google.android.gms:play-services-tagmanager-v4-impl-10.2.4" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.android.support:support-media-compat-25.3.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.getbase:floatingactionbutton-1.10.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.google.android.gms:play-services-basement-10.2.4" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.roomorama:caldroid-3.0.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.google.android.gms:play-services-appinvite-10.2.4" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.android.support:animated-vector-drawable-25.3.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.google.android.gms:play-services-gcm-10.2.4" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.android.support:support-compat-25.3.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: me.relex:circleindicator-1.2.2" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.android.support:transition-25.3.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.google.android.gms:play-services-base-10.2.4" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.google.android.gms:play-services-analytics-10.2.4" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.android.support:support-v4-25.3.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.google.android.gms:play-services-tasks-10.2.4" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.android.support:support-core-ui-25.3.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.google.android.gms:play-services-analytics-impl-10.2.4" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.android.support:recyclerview-v7-25.3.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.android.support:percent-25.3.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.google.android.gms:play-services-iid-10.2.4" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.android.support:design-25.3.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.android.support:support-vector-drawable-25.3.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.android.support:support-core-utils-25.3.1" level="project" />
   </component>
 </module>

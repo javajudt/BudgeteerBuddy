@@ -112,41 +112,41 @@ public class PremiumActivity extends AppCompatActivity
                         getResources().getString(R.string.iab_purchase_wait_message),
                         true, false);
 
-                ((EasyBudget) getApplication()).launchPremiumPurchaseFlow(PremiumActivity.this, new PremiumPurchaseListener()
-                {
-                    @Override
-                    public void onUserCancelled()
-                    {
-                        loading.dismiss();
-                    }
-
-                    @Override
-                    public void onPurchaseError(String error)
-                    {
-                        loading.dismiss();
-
-                        new AlertDialog.Builder(PremiumActivity.this)
-                            .setTitle(R.string.iab_purchase_error_title)
-                            .setMessage(getResources().getString(R.string.iab_purchase_error_message, error))
-                            .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener()
-                            {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which)
-                                {
-                                    dialog.dismiss();
-                                }
-                            })
-                            .show();
-                    }
-
-                    @Override
-                    public void onPurchaseSuccess()
-                    {
-                        loading.dismiss();
-                        setResult(Activity.RESULT_OK); // Important to update the UI
-                        finish();
-                    }
-                });
+//                ((EasyBudget) getApplication()).launchPremiumPurchaseFlow(PremiumActivity.this, new PremiumPurchaseListener()
+//                {
+//                    @Override
+//                    public void onUserCancelled()
+//                    {
+//                        loading.dismiss();
+//                    }
+//
+//                    @Override
+//                    public void onPurchaseError(String error)
+//                    {
+//                        loading.dismiss();
+//
+//                        new AlertDialog.Builder(PremiumActivity.this)
+//                            .setTitle(R.string.iab_purchase_error_title)
+//                            .setMessage(getResources().getString(R.string.iab_purchase_error_message, error))
+//                            .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener()
+//                            {
+//                                @Override
+//                                public void onClick(DialogInterface dialog, int which)
+//                                {
+//                                    dialog.dismiss();
+//                                }
+//                            })
+//                            .show();
+//                    }
+//
+//                    @Override
+//                    public void onPurchaseSuccess()
+//                    {
+//                        loading.dismiss();
+//                        setResult(Activity.RESULT_OK); // Important to update the UI
+//                        finish();
+//                    }
+//                });
             }
         });
     }

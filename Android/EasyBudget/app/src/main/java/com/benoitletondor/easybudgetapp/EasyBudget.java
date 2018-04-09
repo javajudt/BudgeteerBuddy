@@ -18,52 +18,32 @@ package com.benoitletondor.easybudgetapp;
 
 import android.app.Activity;
 import android.app.Application;
-import android.app.PendingIntent;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.AlertDialog;
 
-//import com.batch.android.Batch;
-//import com.batch.android.Config;
-//import com.batch.android.PushNotificationType;
 import com.benoitletondor.easybudgetapp.helper.CurrencyHelper;
 import com.benoitletondor.easybudgetapp.helper.Logger;
 import com.benoitletondor.easybudgetapp.helper.ParameterKeys;
 import com.benoitletondor.easybudgetapp.helper.Parameters;
-import com.benoitletondor.easybudgetapp.helper.UIHelper;
 import com.benoitletondor.easybudgetapp.helper.UserHelper;
-import com.benoitletondor.easybudgetapp.iab.IabBroadcastReceiver;
 import com.benoitletondor.easybudgetapp.iab.IabHelper;
-import com.benoitletondor.easybudgetapp.iab.IabResult;
-import com.benoitletondor.easybudgetapp.iab.Inventory;
-import com.benoitletondor.easybudgetapp.iab.Purchase;
 import com.benoitletondor.easybudgetapp.notif.DailyNotifOptinService;
 import com.benoitletondor.easybudgetapp.notif.MonthlyReportNotifService;
-import com.benoitletondor.easybudgetapp.view.MainActivity;
-import com.benoitletondor.easybudgetapp.view.RatingPopup;
-import com.benoitletondor.easybudgetapp.view.SettingsActivity;
-//import com.crashlytics.android.Crashlytics;
-import com.google.android.gms.analytics.GoogleAnalytics;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Logger.LogLevel;
-import com.google.android.gms.analytics.Tracker;
 
-import java.net.URLEncoder;
 import java.util.Calendar;
 import java.util.Currency;
 import java.util.Date;
-import java.util.EnumSet;
 import java.util.Locale;
 import java.util.UUID;
+
+//import com.batch.android.Batch;
+//import com.batch.android.Config;
+//import com.batch.android.PushNotificationType;
+//import com.benoitletondor.easybudgetapp.iab.IabBroadcastReceiver;
+//import com.benoitletondor.easybudgetapp.iab.IabHelper;
+//import com.benoitletondor.easybudgetapp.iab.IabResult;
+//import com.crashlytics.android.Crashlytics;
 
 //import io.fabric.sdk.android.Fabric;
 
@@ -72,7 +52,7 @@ import java.util.UUID;
  *
  * @author Benoit LETONDOR
  */
-public class EasyBudget extends Application implements IabBroadcastReceiver.IabBroadcastListener
+public class EasyBudget extends Application
 {
     /**
      * Default amount use for low money warning (can be changed in settings)
@@ -80,22 +60,22 @@ public class EasyBudget extends Application implements IabBroadcastReceiver.IabB
     public static final int DEFAULT_LOW_MONEY_WARNING_AMOUNT = 100;
     /**
      * iab SDK used for premium
-     */
+     *//*
     public static final String SKU_PREMIUM = "premium";
     /**
      * Intent action broadcast when the status of iab changed
-     */
+     *//*
     public static final String INTENT_IAB_STATUS_CHANGED = "iabStatusChanged";
     /**
      * Key to retrieve the iab status on an {@link #INTENT_IAB_STATUS_CHANGED} intent
-     */
+     *//*
     public static final String INTENT_IAB_STATUS_KEY = "iabKey";
 
 // ------------------------------------------>
 
     /**
      * GA tracker
-     */
+     *//*
     private Tracker analyticsTracker;
 
     /**
@@ -104,21 +84,21 @@ public class EasyBudget extends Application implements IabBroadcastReceiver.IabB
     private IabHelper iabHelper;
     /**
      * iab Broadcast Receiver
-     */
+     *//*
     private IabBroadcastReceiver iabBroadcastReceiver;
     /**
      * iab check status
-     */
+     *//*
     private volatile PremiumCheckStatus iabStatus;
     /**
      * iab inventory listener
-     */
+     *//*
     private IabHelper.QueryInventoryFinishedListener inventoryListener;
     /**
      * Last error received by iab
-     */
+     *//*
     private String iabError;
-
+*/
 // ------------------------------------------>
 
     @Override
@@ -130,43 +110,43 @@ public class EasyBudget extends Application implements IabBroadcastReceiver.IabB
         init();
 
         // Check if an update occurred and perform action if needed
-        checkUpdateAction();
+//        checkUpdateAction();
 
         // Crashlytics
-        if( BuildConfig.CRASHLYTICS_ACTIVATED )
-        {
+//        if( BuildConfig.CRASHLYTICS_ACTIVATED )
+//        {
 //            Fabric.with(this, new Crashlytics());
 //
 //            Crashlytics.setUserIdentifier(Parameters.getInstance(getApplicationContext()).getString(ParameterKeys.LOCAL_ID));
-        }
+//        }
 
         // Batch
         setUpBatchSDK();
 
         // Analytics
-        GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
-        analytics.setDryRun(!BuildConfig.ANALYTICS_ACTIVATED);
-        if( BuildConfig.DEBUG_LOG )
-        {
-            analytics.getLogger().setLogLevel(LogLevel.VERBOSE);
-        }
+//        GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
+//        analytics.setDryRun(!BuildConfig.ANALYTICS_ACTIVATED);
+//        if( BuildConfig.DEBUG_LOG )
+//        {
+//            analytics.getLogger().setLogLevel(LogLevel.VERBOSE);
+//        }
 
-        analyticsTracker = analytics.newTracker(R.xml.analytics);
+//        analyticsTracker = analytics.newTracker(R.xml.analytics);
 
         // In-app billing
 //        setupIab();
     }
-
-    @Override
-    public void onTerminate()
-    {
-        if (iabBroadcastReceiver != null)
-        {
-            unregisterReceiver(iabBroadcastReceiver);
-        }
-
-        super.onTerminate();
-    }
+//
+//    @Override
+//    public void onTerminate()
+//    {
+//        if (iabBroadcastReceiver != null)
+//        {
+//            unregisterReceiver(iabBroadcastReceiver);
+//        }
+//
+//        super.onTerminate();
+//    }
 
     /**
      * Track that user comes from the given invitation id
@@ -175,9 +155,9 @@ public class EasyBudget extends Application implements IabBroadcastReceiver.IabB
      */
     public void trackInvitationId(String invitationId)
     {
-        analyticsTracker.send(new HitBuilders.ScreenViewBuilder()
-                .setCustomDimension(1, "referral-appinvites")
-                .build());
+//        analyticsTracker.send(new HitBuilders.ScreenViewBuilder()
+//                .setCustomDimension(1, "referral-appinvites")
+//                .build());
     }
 
     /**
@@ -191,9 +171,9 @@ public class EasyBudget extends Application implements IabBroadcastReceiver.IabB
         invitSent += invitationsSent;
         Parameters.getInstance(getApplicationContext()).putInt(ParameterKeys.NUMBER_OF_INVITATIONS, invitSent);
 
-        analyticsTracker.send(new HitBuilders.ScreenViewBuilder()
-                .setCustomMetric(1, (float) invitSent)
-                .build());
+//        analyticsTracker.send(new HitBuilders.ScreenViewBuilder()
+//                .setCustomMetric(1, (float) invitSent)
+//                .build());
     }
 
     /**
@@ -294,111 +274,111 @@ public class EasyBudget extends Application implements IabBroadcastReceiver.IabB
      *
      * @param activity
      */
-    private void showRatingPopupIfNeeded(@NonNull Activity activity)
-    {
-        try
-        {
-            if( !(activity instanceof MainActivity) )
-            {
-                Logger.debug("Not showing rating popup cause app is not opened by the MainActivity");
-                return;
-            }
-
-            int dailyOpens = Parameters.getInstance(getApplicationContext()).getInt(ParameterKeys.NUMBER_OF_DAILY_OPEN, 0);
-            if( dailyOpens > 2 )
-            {
-                if( !hasRatingPopupBeenShownToday() )
-                {
-                    boolean shown = new RatingPopup(activity).show(false);
-                    if( shown )
-                    {
-                        Parameters.getInstance(getApplicationContext()).putLong(ParameterKeys.RATING_POPUP_LAST_AUTO_SHOW, new Date().getTime());
-                    }
-                }
-            }
-        }
-        catch (Exception e)
-        {
-            Logger.error("Error while showing rating popup", e);
-        }
-    }
-
-    private void showPremiumPopupIfNeeded(@NonNull final Activity activity)
-    {
-        try
-        {
-            if( !(activity instanceof MainActivity) )
-            {
-                return;
-            }
-
-            if( Parameters.getInstance(getApplicationContext()).getBoolean(ParameterKeys.PREMIUM_POPUP_COMPLETE, false) )
-            {
-                return;
-            }
-
-            if( UserHelper.isUserPremium(this) )
-            {
-                return;
-            }
-
-            if( !UserHelper.hasUserCompleteRating(activity) )
-            {
-                return;
-            }
-
-            RatingPopup.RatingPopupStep currentStep = RatingPopup.getUserStep(activity);
-            if( currentStep == RatingPopup.RatingPopupStep.STEP_LIKE ||
-                    currentStep == RatingPopup.RatingPopupStep.STEP_LIKE_NOT_RATED ||
-                    currentStep == RatingPopup.RatingPopupStep.STEP_LIKE_RATED )
-            {
-                if( !hasRatingPopupBeenShownToday() && shouldShowPremiumPopup() )
-                {
-                    Parameters.getInstance(getApplicationContext()).putLong(ParameterKeys.PREMIUM_POPUP_LAST_AUTO_SHOW, new Date().getTime());
-
-                    AlertDialog dialog = new AlertDialog.Builder(activity)
-                        .setTitle(R.string.premium_popup_become_title)
-                        .setMessage(R.string.premium_popup_become_message)
-                        .setPositiveButton(R.string.premium_popup_become_cta, new DialogInterface.OnClickListener()
-                        {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which)
-                            {
-                                Intent startIntent = new Intent(activity, SettingsActivity.class);
-                                startIntent.putExtra(SettingsActivity.SHOW_PREMIUM_INTENT_KEY, true);
-                                ActivityCompat.startActivity(activity, startIntent, null);
-
-                                dialog.dismiss();
-                            }
-                        })
-                        .setNegativeButton(R.string.premium_popup_become_not_now, new DialogInterface.OnClickListener()
-                        {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which)
-                            {
-                                dialog.dismiss();
-                            }
-                        })
-                        .setNeutralButton(R.string.premium_popup_become_not_ask_again, new DialogInterface.OnClickListener()
-                        {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which)
-                            {
-                                Parameters.getInstance(getApplicationContext()).putBoolean(ParameterKeys.PREMIUM_POPUP_COMPLETE, true);
-                                dialog.dismiss();
-                            }
-                        })
-                        .show();
-
-                    UIHelper.centerDialogButtons(dialog);
-                }
-            }
-        }
-        catch (Exception e)
-        {
-            Logger.error("Error while showing become premium popup", e);
-        }
-    }
+//    private void showRatingPopupIfNeeded(@NonNull Activity activity)
+//    {
+//        try
+//        {
+//            if( !(activity instanceof MainActivity) )
+//            {
+//                Logger.debug("Not showing rating popup cause app is not opened by the MainActivity");
+//                return;
+//            }
+//
+//            int dailyOpens = Parameters.getInstance(getApplicationContext()).getInt(ParameterKeys.NUMBER_OF_DAILY_OPEN, 0);
+//            if( dailyOpens > 2 )
+//            {
+//                if( !hasRatingPopupBeenShownToday() )
+//                {
+//                    boolean shown = new RatingPopup(activity).show(false);
+//                    if( shown )
+//                    {
+//                        Parameters.getInstance(getApplicationContext()).putLong(ParameterKeys.RATING_POPUP_LAST_AUTO_SHOW, new Date().getTime());
+//                    }
+//                }
+//            }
+//        }
+//        catch (Exception e)
+//        {
+//            Logger.error("Error while showing rating popup", e);
+//        }
+//    }
+//
+//    private void showPremiumPopupIfNeeded(@NonNull final Activity activity)
+//    {
+//        try
+//        {
+//            if( !(activity instanceof MainActivity) )
+//            {
+//                return;
+//            }
+//
+//            if( Parameters.getInstance(getApplicationContext()).getBoolean(ParameterKeys.PREMIUM_POPUP_COMPLETE, false) )
+//            {
+//                return;
+//            }
+//
+//            if( UserHelper.isUserPremium(this) )
+//            {
+//                return;
+//            }
+//
+//            if( !UserHelper.hasUserCompleteRating(activity) )
+//            {
+//                return;
+//            }
+//
+//            RatingPopup.RatingPopupStep currentStep = RatingPopup.getUserStep(activity);
+//            if( currentStep == RatingPopup.RatingPopupStep.STEP_LIKE ||
+//                    currentStep == RatingPopup.RatingPopupStep.STEP_LIKE_NOT_RATED ||
+//                    currentStep == RatingPopup.RatingPopupStep.STEP_LIKE_RATED )
+//            {
+//                if( !hasRatingPopupBeenShownToday() && shouldShowPremiumPopup() )
+//                {
+//                    Parameters.getInstance(getApplicationContext()).putLong(ParameterKeys.PREMIUM_POPUP_LAST_AUTO_SHOW, new Date().getTime());
+//
+//                    AlertDialog dialog = new AlertDialog.Builder(activity)
+//                        .setTitle(R.string.premium_popup_become_title)
+//                        .setMessage(R.string.premium_popup_become_message)
+//                        .setPositiveButton(R.string.premium_popup_become_cta, new DialogInterface.OnClickListener()
+//                        {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which)
+//                            {
+//                                Intent startIntent = new Intent(activity, SettingsActivity.class);
+//                                startIntent.putExtra(SettingsActivity.SHOW_PREMIUM_INTENT_KEY, true);
+//                                ActivityCompat.startActivity(activity, startIntent, null);
+//
+//                                dialog.dismiss();
+//                            }
+//                        })
+//                        .setNegativeButton(R.string.premium_popup_become_not_now, new DialogInterface.OnClickListener()
+//                        {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which)
+//                            {
+//                                dialog.dismiss();
+//                            }
+//                        })
+//                        .setNeutralButton(R.string.premium_popup_become_not_ask_again, new DialogInterface.OnClickListener()
+//                        {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which)
+//                            {
+//                                Parameters.getInstance(getApplicationContext()).putBoolean(ParameterKeys.PREMIUM_POPUP_COMPLETE, true);
+//                                dialog.dismiss();
+//                            }
+//                        })
+//                        .show();
+//
+//                    UIHelper.centerDialogButtons(dialog);
+//                }
+//            }
+//        }
+//        catch (Exception e)
+//        {
+//            Logger.error("Error while showing become premium popup", e);
+//        }
+//    }
 
     /**
      * Has the rating popup been shown automatically today
@@ -427,46 +407,46 @@ public class EasyBudget extends Application implements IabBroadcastReceiver.IabB
      *
      * @return true if we can show premium popup, false otherwise
      */
-    private boolean shouldShowPremiumPopup()
-    {
-        long lastPremiumTS = Parameters.getInstance(getApplicationContext()).getLong(ParameterKeys.PREMIUM_POPUP_LAST_AUTO_SHOW, 0);
-        if( lastPremiumTS == 0 )
-        {
-            return true;
-        }
-
-        // Set calendar to last time 00:00 + 2 days
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(new Date(lastPremiumTS));
-        cal.set(Calendar.HOUR, 0);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MILLISECOND, 0);
-        cal.add(Calendar.DAY_OF_YEAR, 2);
-
-        return new Date().after(cal.getTime());
-    }
+//    private boolean shouldShowPremiumPopup()
+//    {
+//        long lastPremiumTS = Parameters.getInstance(getApplicationContext()).getLong(ParameterKeys.PREMIUM_POPUP_LAST_AUTO_SHOW, 0);
+//        if( lastPremiumTS == 0 )
+//        {
+//            return true;
+//        }
+//
+//        // Set calendar to last time 00:00 + 2 days
+//        Calendar cal = Calendar.getInstance();
+//        cal.setTime(new Date(lastPremiumTS));
+//        cal.set(Calendar.HOUR, 0);
+//        cal.set(Calendar.MINUTE, 0);
+//        cal.set(Calendar.SECOND, 0);
+//        cal.set(Calendar.MILLISECOND, 0);
+//        cal.add(Calendar.DAY_OF_YEAR, 2);
+//
+//        return new Date().after(cal.getTime());
+//    }
 
     /**
      * Show the 1.5 app update notification
      */
-    private void show1_5UpdateNotif()
-    {
-        NotificationCompat.Builder notifBuilder = new NotificationCompat.Builder(getApplicationContext())
-            .setSmallIcon(R.drawable.ic_push)
-            .setContentTitle(getResources().getString(R.string.app_name))
-            .setContentText(getResources().getString(R.string.recurring_update_notification))
-            .setStyle(new NotificationCompat.BigTextStyle().bigText(getResources().getString(R.string.recurring_update_notification)))
-            .setColor(ContextCompat.getColor(getApplicationContext(), R.color.accent))
-            .setAutoCancel(true)
-            .setContentIntent(PendingIntent.getActivity(
-                this,
-                0,
-                new Intent(this, MainActivity.class),
-                PendingIntent.FLAG_CANCEL_CURRENT));
-
-        NotificationManagerCompat.from(getApplicationContext()).notify(4014, notifBuilder.build());
-    }
+//    private void show1_5UpdateNotif()
+//    {
+//        NotificationCompat.Builder notifBuilder = new NotificationCompat.Builder(getApplicationContext())
+//            .setSmallIcon(R.drawable.ic_push)
+//            .setContentTitle(getResources().getString(R.string.app_name))
+//            .setContentText(getResources().getString(R.string.recurring_update_notification))
+//            .setStyle(new NotificationCompat.BigTextStyle().bigText(getResources().getString(R.string.recurring_update_notification)))
+//            .setColor(ContextCompat.getColor(getApplicationContext(), R.color.accent))
+//            .setAutoCancel(true)
+//            .setContentIntent(PendingIntent.getActivity(
+//                this,
+//                0,
+//                new Intent(this, MainActivity.class),
+//                PendingIntent.FLAG_CANCEL_CURRENT));
+//
+//        NotificationManagerCompat.from(getApplicationContext()).notify(4014, notifBuilder.build());
+//    }
 
     /**
      * Set-up Batch SDK config + lifecycle
@@ -534,16 +514,16 @@ public class EasyBudget extends Application implements IabBroadcastReceiver.IabB
     /**
      * Check if a an update occured and call {@link #onUpdate(int, int)} if so
      */
-    private void checkUpdateAction()
-    {
-        int savedVersion = Parameters.getInstance(getApplicationContext()).getInt(ParameterKeys.APP_VERSION, 0);
-        if( savedVersion > 0 && savedVersion != BuildConfig.VERSION_CODE )
-        {
-            onUpdate(savedVersion, BuildConfig.VERSION_CODE);
-        }
-
-        Parameters.getInstance(getApplicationContext()).putInt(ParameterKeys.APP_VERSION, BuildConfig.VERSION_CODE);
-    }
+//    private void checkUpdateAction()
+//    {
+//        int savedVersion = Parameters.getInstance(getApplicationContext()).getInt(ParameterKeys.APP_VERSION, 0);
+//        if( savedVersion > 0 && savedVersion != BuildConfig.VERSION_CODE )
+//        {
+//            onUpdate(savedVersion, BuildConfig.VERSION_CODE);
+//        }
+//
+//        Parameters.getInstance(getApplicationContext()).putInt(ParameterKeys.APP_VERSION, BuildConfig.VERSION_CODE);
+//    }
 
     /**
      * Called when an update occurred
@@ -581,10 +561,10 @@ public class EasyBudget extends Application implements IabBroadcastReceiver.IabB
             }
         }
 
-        if( newVersion == BuildVersion.VERSION_1_5_2 )
-        {
-            show1_5UpdateNotif();
-        }
+//        if( newVersion == BuildVersion.VERSION_1_5_2 )
+//        {
+//            show1_5UpdateNotif();
+//        }
     }
 
 // -------------------------------------->
@@ -643,17 +623,17 @@ public class EasyBudget extends Application implements IabBroadcastReceiver.IabB
         /*
          * Rating popup every day after 3 opens
          */
-        showRatingPopupIfNeeded(activity);
+//        showRatingPopupIfNeeded(activity); ///////this one should be included/////////
 
         /*
          * Premium popup after rating complete
          */
-        showPremiumPopupIfNeeded(activity);
+//        showPremiumPopupIfNeeded(activity);
 
         /*
          * Update iap status if needed
          */
-        updateIAPStatusIfNeeded();
+//        updateIAPStatusIfNeeded();
     }
 
     /**
@@ -741,48 +721,48 @@ public class EasyBudget extends Application implements IabBroadcastReceiver.IabB
 //        }
 //    }
 
-    @Override
-    public void receivedBroadcast()
-    {
-        // Received a broadcast notification that the inventory of items has changed
-        Logger.debug("iab: Received broadcast notification. Querying inventory.");
-        iabHelper.queryInventoryAsync(inventoryListener);
-    }
+//    @Override
+//    public void receivedBroadcast()
+//    {
+//        // Received a broadcast notification that the inventory of items has changed
+//        Logger.debug("iab: Received broadcast notification. Querying inventory.");
+//        iabHelper.queryInventoryAsync(inventoryListener);
+//    }
 
     /**
      * Set the new iab status and notify the app by sending an {@link #INTENT_IAB_STATUS_CHANGED} intent
      *
      * @param status the new status
      */
-    private void setIabStatusAndNotify(@NonNull PremiumCheckStatus status)
-    {
-        iabStatus = status;
-
-        // Save status only on success
-        if( status == PremiumCheckStatus.PREMIUM || status == PremiumCheckStatus.NOT_PREMIUM )
-        {
-            Parameters.getInstance(this).putBoolean(ParameterKeys.PREMIUM, iabStatus == PremiumCheckStatus.PREMIUM);
-        }
-
-        Intent intent = new Intent(INTENT_IAB_STATUS_CHANGED);
-        intent.putExtra(INTENT_IAB_STATUS_KEY, status);
-
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
-    }
+//    private void setIabStatusAndNotify(@NonNull PremiumCheckStatus status)
+//    {
+//        iabStatus = status;
+//
+//        // Save status only on success
+//        if( status == PremiumCheckStatus.PREMIUM || status == PremiumCheckStatus.NOT_PREMIUM )
+//        {
+//            Parameters.getInstance(this).putBoolean(ParameterKeys.PREMIUM, iabStatus == PremiumCheckStatus.PREMIUM);
+//        }
+//
+//        Intent intent = new Intent(INTENT_IAB_STATUS_CHANGED);
+//        intent.putExtra(INTENT_IAB_STATUS_KEY, status);
+//
+//        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+//    }
 
     /**
      * Update the current IAP status if already checked
      */
-    private void updateIAPStatusIfNeeded()
-    {
-        Logger.debug("updateIAPStatusIfNeeded: "+iabStatus);
-
-        if( iabStatus == PremiumCheckStatus.NOT_PREMIUM )
-        {
-            setIabStatusAndNotify(PremiumCheckStatus.CHECKING);
-            iabHelper.queryInventoryAsync(inventoryListener);
-        }
-    }
+//    private void updateIAPStatusIfNeeded()
+//    {
+//        Logger.debug("updateIAPStatusIfNeeded: "+iabStatus);
+//
+//        if( iabStatus == PremiumCheckStatus.NOT_PREMIUM )
+//        {
+//            setIabStatusAndNotify(PremiumCheckStatus.CHECKING);
+//            iabHelper.queryInventoryAsync(inventoryListener);
+//        }
+//    }
 
     /**
      * Launch the redeem promocode flow
@@ -790,20 +770,20 @@ public class EasyBudget extends Application implements IabBroadcastReceiver.IabB
      * @param promocode the promocode to redeem
      * @param activity the current activity
      */
-    public boolean launchRedeemPromocodeFlow(@NonNull String promocode, @NonNull Activity activity)
-    {
-        try
-        {
-            String url = "https://play.google.com/redeem?code=" + URLEncoder.encode(promocode, "UTF-8");
-            activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
-            return true;
-        }
-        catch (Exception e)
-        {
-            Logger.error(false, "Error while redeeming promocode", e);
-            return false;
-        }
-    }
+//    public boolean launchRedeemPromocodeFlow(@NonNull String promocode, @NonNull Activity activity)
+//    {
+//        try
+//        {
+//            String url = "https://play.google.com/redeem?code=" + URLEncoder.encode(promocode, "UTF-8");
+//            activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+//            return true;
+//        }
+//        catch (Exception e)
+//        {
+//            Logger.error(false, "Error while redeeming promocode", e);
+//            return false;
+//        }
+//    }
 
     /**
      * Launch the premium purchase flow
@@ -811,63 +791,63 @@ public class EasyBudget extends Application implements IabBroadcastReceiver.IabB
      * @param activity activity that started this purchase
      * @param listener listener for purchase events
      */
-    public void launchPremiumPurchaseFlow(final @NonNull Activity activity, final  @NonNull PremiumPurchaseListener listener)
-    {
-        if( iabStatus != PremiumCheckStatus.NOT_PREMIUM )
-        {
-            if( iabStatus == PremiumCheckStatus.ERROR )
-            {
-                listener.onPurchaseError(iabError);
-            }
-            else
-            {
-                listener.onPurchaseError("Runtime error: "+iabStatus);
-            }
-
-            return;
-        }
-
-        iabHelper.launchPurchaseFlow(activity, SKU_PREMIUM, 10001, new IabHelper.OnIabPurchaseFinishedListener()
-        {
-            @Override
-            public void onIabPurchaseFinished(IabResult result, Purchase purchase)
-            {
-                Logger.debug("Purchase finished: " + result + ", purchase: " + purchase);
-
-                // if we were disposed of in the meantime, quit.
-                if (iabHelper == null) return;
-
-                if (result.isFailure())
-                {
-                    Logger.error("Error while purchasing premium: " + result);
-                    if( result.getResponse() == IabHelper.IABHELPER_USER_CANCELLED )
-                    {
-                        listener.onUserCancelled();
-                    }
-                    else
-                    {
-                        listener.onPurchaseError(result.getMessage());
-                    }
-
-                    return;
-                }
-
-                // TODO verify purchase using verifyDeveloperPayload(purchase)
-
-                Logger.debug("Purchase successful.");
-
-                if (purchase.getSku().equals(SKU_PREMIUM))
-                {
-                    iabStatus = PremiumCheckStatus.PREMIUM;
-                    listener.onPurchaseSuccess();
-                }
-                else // Should not happen but just in case
-                {
-                    listener.onPurchaseError("Unknown SKU");
-                }
-            }
-        }, null);
-    }
+//    public void launchPremiumPurchaseFlow(final @NonNull Activity activity, final  @NonNull PremiumPurchaseListener listener)
+//    {
+//        if( iabStatus != PremiumCheckStatus.NOT_PREMIUM )
+//        {
+//            if( iabStatus == PremiumCheckStatus.ERROR )
+//            {
+//                listener.onPurchaseError(iabError);
+//            }
+//            else
+//            {
+//                listener.onPurchaseError("Runtime error: "+iabStatus);
+//            }
+//
+//            return;
+//        }
+//
+//        iabHelper.launchPurchaseFlow(activity, SKU_PREMIUM, 10001, new IabHelper.OnIabPurchaseFinishedListener()
+//        {
+//            @Override
+//            public void onIabPurchaseFinished(IabResult result, Purchase purchase)
+//            {
+//                Logger.debug("Purchase finished: " + result + ", purchase: " + purchase);
+//
+//                // if we were disposed of in the meantime, quit.
+//                if (iabHelper == null) return;
+//
+//                if (result.isFailure())
+//                {
+//                    Logger.error("Error while purchasing premium: " + result);
+//                    if( result.getResponse() == IabHelper.IABHELPER_USER_CANCELLED )
+//                    {
+//                        listener.onUserCancelled();
+//                    }
+//                    else
+//                    {
+//                        listener.onPurchaseError(result.getMessage());
+//                    }
+//
+//                    return;
+//                }
+//
+//                // TODO verify purchase using verifyDeveloperPayload(purchase)
+//
+//                Logger.debug("Purchase successful.");
+//
+//                if (purchase.getSku().equals(SKU_PREMIUM))
+//                {
+//                    iabStatus = PremiumCheckStatus.PREMIUM;
+//                    listener.onPurchaseSuccess();
+//                }
+//                else // Should not happen but just in case
+//                {
+//                    listener.onPurchaseError("Unknown SKU");
+//                }
+//            }
+//        }, null);
+//    }
 
     /**
      * Should be called by the activity calling {@link #launchPremiumPurchaseFlow(Activity, PremiumPurchaseListener)}
