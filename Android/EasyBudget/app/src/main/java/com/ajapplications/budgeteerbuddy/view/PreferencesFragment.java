@@ -404,7 +404,7 @@ public class PreferencesFragment extends PreferenceFragment
          */
         IntentFilter filter = new IntentFilter(SelectCurrencyFragment.CURRENCY_SELECTED_INTENT);
 //        filter.addAction(EasyBudget.INTENT_IAB_STATUS_CHANGED);
-        filter.addAction(USER_GONE_PREMIUM_INTENT);
+//        filter.addAction(USER_GONE_PREMIUM_INTENT);
         receiver = new BroadcastReceiver()
         {
             @Override
@@ -432,23 +432,23 @@ public class PreferencesFragment extends PreferenceFragment
 //                        Logger.error("Error while receiving INTENT_IAB_STATUS_CHANGED intent", e);
 //                    }
 //                }
-                else if( USER_GONE_PREMIUM_INTENT.equals(intent.getAction()) )
-                {
-                    new AlertDialog.Builder(getActivity())
-                        .setTitle(R.string.iab_purchase_success_title)
-                        .setMessage(R.string.iab_purchase_success_message)
-                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener()
-                        {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which)
-                            {
-                                dialog.dismiss();
-                            }
-                        })
-                        .show();
-
-                    refreshPremiumPreference();
-                }
+//                else if( USER_GONE_PREMIUM_INTENT.equals(intent.getAction()) )
+//                {
+//                    new AlertDialog.Builder(getActivity())
+//                        .setTitle(R.string.iab_purchase_success_title)
+//                        .setMessage(R.string.iab_purchase_success_message)
+//                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener()
+//                        {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which)
+//                            {
+//                                dialog.dismiss();
+//                            }
+//                        })
+//                        .show();
+//
+//                    refreshPremiumPreference();
+//                }
             }
         };
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(receiver, filter);

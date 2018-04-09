@@ -22,14 +22,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
-import com.benoitletondor.easybudgetapp.helper.CurrencyHelper;
-import com.benoitletondor.easybudgetapp.helper.Logger;
-import com.benoitletondor.easybudgetapp.helper.ParameterKeys;
-import com.benoitletondor.easybudgetapp.helper.Parameters;
-import com.benoitletondor.easybudgetapp.helper.UserHelper;
-import com.benoitletondor.easybudgetapp.iab.IabHelper;
-import com.benoitletondor.easybudgetapp.notif.DailyNotifOptinService;
-import com.benoitletondor.easybudgetapp.notif.MonthlyReportNotifService;
+import com.ajapplications.budgeteerbuddy.helper.CurrencyHelper;
+import com.ajapplications.budgeteerbuddy.helper.Logger;
+import com.ajapplications.budgeteerbuddy.helper.ParameterKeys;
+import com.ajapplications.budgeteerbuddy.helper.Parameters;
+import com.ajapplications.budgeteerbuddy.helper.UserHelper;
+import com.ajapplications.budgeteerbuddy.iab.IabHelper;
+import com.ajapplications.budgeteerbuddy.notif.DailyNotifOptinService;
+import com.ajapplications.budgeteerbuddy.notif.MonthlyReportNotifService;
 
 import java.util.Calendar;
 import java.util.Currency;
