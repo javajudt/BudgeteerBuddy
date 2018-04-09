@@ -18,9 +18,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.ajapplications.budgeteerbuddy.view.SettingsActivity">
+    tools:context=".view.SettingsActivity">
 
-    <fragment android:name="com.ajapplications.budgeteerbuddy.view.PreferencesFragment"
+    <fragment android:name="com.benoitletondor.easybudgetapp.view.PreferencesFragment"
         android:id="@+id/preferencesFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
