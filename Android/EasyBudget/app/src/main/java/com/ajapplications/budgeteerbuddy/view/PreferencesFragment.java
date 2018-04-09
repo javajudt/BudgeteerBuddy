@@ -403,8 +403,8 @@ public class PreferencesFragment extends PreferenceFragment
          * Broadcast receiver
          */
         IntentFilter filter = new IntentFilter(SelectCurrencyFragment.CURRENCY_SELECTED_INTENT);
-        filter.addAction(EasyBudget.INTENT_IAB_STATUS_CHANGED);
-        filter.addAction(SettingsActivity.USER_GONE_PREMIUM_INTENT);
+//        filter.addAction(EasyBudget.INTENT_IAB_STATUS_CHANGED);
+        filter.addAction(USER_GONE_PREMIUM_INTENT);
         receiver = new BroadcastReceiver()
         {
             @Override
@@ -417,22 +417,22 @@ public class PreferencesFragment extends PreferenceFragment
                     selectCurrencyDialog.dismiss();
                     selectCurrencyDialog = null;
                 }
-                else if( EasyBudget.INTENT_IAB_STATUS_CHANGED.equals(intent.getAction()) )
-                {
-                    try
-                    {
-                        PremiumCheckStatus status = (PremiumCheckStatus) intent.getSerializableExtra(EasyBudget.INTENT_IAB_STATUS_KEY);
-                        if( status == PremiumCheckStatus.PREMIUM )
-                        {
-                            refreshPremiumPreference();
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        Logger.error("Error while receiving INTENT_IAB_STATUS_CHANGED intent", e);
-                    }
-                }
-                else if( SettingsActivity.USER_GONE_PREMIUM_INTENT.equals(intent.getAction()) )
+//                else if( EasyBudget.INTENT_IAB_STATUS_CHANGED.equals(intent.getAction()) )
+//                {
+//                    try
+//                    {
+//                        PremiumCheckStatus status = (PremiumCheckStatus) intent.getSerializableExtra(EasyBudget.INTENT_IAB_STATUS_KEY);
+//                        if( status == PremiumCheckStatus.PREMIUM )
+//                        {
+//                            refreshPremiumPreference();
+//                        }
+//                    }
+//                    catch (Exception e)
+//                    {
+//                        Logger.error("Error while receiving INTENT_IAB_STATUS_CHANGED intent", e);
+//                    }
+//                }
+                else if( USER_GONE_PREMIUM_INTENT.equals(intent.getAction()) )
                 {
                     new AlertDialog.Builder(getActivity())
                         .setTitle(R.string.iab_purchase_success_title)
@@ -616,21 +616,21 @@ public class PreferencesFragment extends PreferenceFragment
                                     return;
                                 }
 
-                                if( !((EasyBudget) getActivity().getApplication()).launchRedeemPromocodeFlow(promocode, getActivity()) )
-                                {
-                                    new AlertDialog.Builder(getActivity())
-                                        .setTitle(R.string.iab_purchase_error_title)
-                                        .setMessage(getResources().getString(R.string.iab_purchase_error_message, "Error redeeming promo code"))
-                                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener()
-                                        {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which)
-                                            {
-                                                dialog.dismiss();
-                                            }
-                                        })
-                                        .show();
-                                }
+//                                if( !((EasyBudget) getActivity().getApplication()).launchRedeemPromocodeFlow(promocode, getActivity()) )
+//                                {
+//                                    new AlertDialog.Builder(getActivity())
+//                                        .setTitle(R.string.iab_purchase_error_title)
+//                                        .setMessage(getResources().getString(R.string.iab_purchase_error_message, "Error redeeming promo code"))
+//                                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener()
+//                                        {
+//                                            @Override
+//                                            public void onClick(DialogInterface dialog, int which)
+//                                            {
+//                                                dialog.dismiss();
+//                                            }
+//                                        })
+//                                        .show();
+//                                }
                             }
                         })
                         .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener()
