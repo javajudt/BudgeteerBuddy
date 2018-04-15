@@ -113,10 +113,10 @@ public class PushService extends IntentService
             // Check if it's a daily reminder
             if( intent.hasExtra(DAILY_REMINDER_KEY) && "true".equals(intent.getStringExtra(DAILY_REMINDER_KEY)) )
             {
-                if( !UserHelper.isUserPremium(getApplication()) ) // Only for premium users
-                {
-                    return false;
-                }
+//                if( !UserHelper.isUserPremium(getApplication()) ) // Only for premium users
+//                {
+//                    return false;
+//                }
 
                 if( !UserHelper.isUserAllowingDailyReminderPushes(this) ) // Check user choice
                 {
@@ -139,13 +139,15 @@ public class PushService extends IntentService
 
                 return currentDay != lastOpenDay;
             }
-            else if( intent.hasExtra(MONTHLY_REMINDER_KEY) && "true".equals(intent.getStringExtra(MONTHLY_REMINDER_KEY)) )
-            {
-                return UserHelper.isUserPremium(getApplication()) && UserHelper.isUserAllowingMonthlyReminderPushes(this);
-            }
+//            else if( intent.hasExtra(MONTHLY_REMINDER_KEY) && "true".equals(intent.getStringExtra(MONTHLY_REMINDER_KEY)) )
+//            {
+//                return UserHelper.isUserPremium(getApplication()) && UserHelper.isUserAllowingMonthlyReminderPushes(this);
+//            }
 
             // Else it must be an update push
-            return UserHelper.isUserAllowingUpdatePushes(this);
+//            return UserHelper.isUserAllowingUpdatePushes(this);
+
+            return true; // just return true to suppress the error
         }
         catch (Exception e)
         {
@@ -196,12 +198,12 @@ public class PushService extends IntentService
     {
         try
         {
-            if( intent.hasExtra(INTENT_PREMIUM_KEY) )
-            {
-                boolean isForPremium = "true".equals(intent.getStringExtra(INTENT_PREMIUM_KEY));
-
-                return isForPremium == UserHelper.isUserPremium(getApplication());
-            }
+//            if( intent.hasExtra(INTENT_PREMIUM_KEY) )
+//            {
+//                boolean isForPremium = "true".equals(intent.getStringExtra(INTENT_PREMIUM_KEY));
+//
+//                return isForPremium == UserHelper.isUserPremium(getApplication());
+//            }
 
             return true;
         }

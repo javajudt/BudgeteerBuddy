@@ -40,22 +40,22 @@ public class UserHelper
      * @param application non null application
      * @return true if the user if premium, false otherwise
      */
-    public static boolean isUserPremium(@NonNull Application application)
-    {
-        return Parameters.getInstance(application).getBoolean(ParameterKeys.PREMIUM, false) ||
-                Parameters.getInstance(application).getBoolean(ParameterKeys.BATCH_OFFER_REDEEMED, false) ||
-                Parameters.getInstance(application).getBoolean(ParameterKeys.APP_TURBO_PREMIUM, false);
-    }
+//    public static boolean isUserPremium(@NonNull Application application)
+//    {
+//        return Parameters.getInstance(application).getBoolean(ParameterKeys.PREMIUM, false) ||
+//                Parameters.getInstance(application).getBoolean(ParameterKeys.BATCH_OFFER_REDEEMED, false) ||
+//                Parameters.getInstance(application).getBoolean(ParameterKeys.APP_TURBO_PREMIUM, false);
+//    }
 
     /**
      * Set this user as premium from Batch
      *
      * @param context non null context
      */
-    public static void setBatchUserPremium(@NonNull Context context)
-    {
-        Parameters.getInstance(context).putBoolean(ParameterKeys.BATCH_OFFER_REDEEMED, true);
-    }
+//    public static void setBatchUserPremium(@NonNull Context context)
+//    {
+//        Parameters.getInstance(context).putBoolean(ParameterKeys.BATCH_OFFER_REDEEMED, true);
+//    }
 
     /**
      * The user wants or not to receive notification about updates
@@ -63,10 +63,10 @@ public class UserHelper
      * @param context non null context
      * @return true if we can display update notifications, false otherwise
      */
-    public static boolean isUserAllowingUpdatePushes(@NonNull Context context)
-    {
-        return Parameters.getInstance(context).getBoolean(ParameterKeys.USER_ALLOW_UPDATE_PUSH, true);
-    }
+//    public static boolean isUserAllowingUpdatePushes(@NonNull Context context)
+//    {
+//        return Parameters.getInstance(context).getBoolean(ParameterKeys.USER_ALLOW_UPDATE_PUSH, true);
+//    }
 
     /**
      * Set the user choice about update notifications
@@ -74,10 +74,10 @@ public class UserHelper
      * @param context non null context
      * @param value if the user wants or not to receive notifications about updates
      */
-    public static void setUserAllowUpdatePushes(@NonNull Context context, boolean value)
-    {
-        Parameters.getInstance(context).putBoolean(ParameterKeys.USER_ALLOW_UPDATE_PUSH, value);
-    }
+//    public static void setUserAllowUpdatePushes(@NonNull Context context, boolean value)
+//    {
+//        Parameters.getInstance(context).putBoolean(ParameterKeys.USER_ALLOW_UPDATE_PUSH, value);
+//    }
 
     /**
      * The user wants or not to receive a daily reminder notification

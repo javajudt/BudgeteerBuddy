@@ -74,7 +74,7 @@ public class ParameterKeys
     /**
      * Has the user redeemed a Batch offer (bool)
      */
-    public static final String BATCH_OFFER_REDEEMED = "batch_offer_redeemed";
+    //public static final String BATCH_OFFER_REDEEMED = "batch_offer_redeemed";
     /**
      * Number of time the app has been opened (int)
      */
@@ -118,11 +118,11 @@ public class ParameterKeys
     /**
      * Timestamp that indicates the last time user was presented the become premium popup (long)
      */
-    public static final String PREMIUM_POPUP_LAST_AUTO_SHOW = "premium_popup_last_auto_show";
+    //public static final String PREMIUM_POPUP_LAST_AUTO_SHOW = "premium_popup_last_auto_show";
     /**
      * Has the user complete the premium popup = should we show it again or not (bool)
      */
-    public static final String PREMIUM_POPUP_COMPLETE = "premium_popup_complete";
+    //public static final String PREMIUM_POPUP_COMPLETE = "premium_popup_complete";
     /**
      * Has the user saw the monthly report hint (bool)
      */
@@ -130,9 +130,9 @@ public class ParameterKeys
     /**
      * Is the user premium from AppTurbo (bool)
      */
-    public static final String APP_TURBO_PREMIUM = "appturbo_offer";
+    //public static final String APP_TURBO_PREMIUM = "appturbo_offer";
     /**
      * Cache storage of the IAB status
      */
-    public static final String PREMIUM = "premium";
+    //public static final String PREMIUM = "premium";
 }
