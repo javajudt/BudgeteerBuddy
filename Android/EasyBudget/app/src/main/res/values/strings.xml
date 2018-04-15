@@ -16,6 +16,17 @@
 
 <resources>
 
+    <string name="select_category">Select a Category</string>
+    <string-array name="category_list">
+        <item>Savings</item>
+        <item>Rent/Mortgage</item>
+        <item>Transportation</item>
+        <item>Food/Household Needs</item>
+        <item>Medical</item>
+        <item>Entertainment</item>
+        <item>Other</item>
+    </string-array>
+
     <string name="app_name" translatable="false">EasyBudget</string>
 
     <string name="action_settings">Settings</string>
