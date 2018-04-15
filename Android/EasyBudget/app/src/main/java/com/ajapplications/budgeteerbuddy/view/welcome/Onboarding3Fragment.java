@@ -34,6 +34,7 @@ import android.widget.TextView;
 import com.ajapplications.budgeteerbuddy.helper.CurrencyHelper;
 import com.ajapplications.budgeteerbuddy.helper.Logger;
 import com.ajapplications.budgeteerbuddy.helper.UIHelper;
+import com.ajapplications.budgeteerbuddy.model.Category;
 import com.ajapplications.budgeteerbuddy.model.Expense;
 import com.ajapplications.budgeteerbuddy.model.db.DB;
 import com.ajapplications.budgeteerbuddy.R;
@@ -119,7 +120,7 @@ public class Onboarding3Fragment extends OnboardingFragment
                     {
                         double diff = newBalance - currentBalance;
 
-                        final Expense expense = new Expense(getResources().getString(R.string.adjust_balance_expense_title), -diff, new Date());
+                        final Expense expense = new Expense(new Category("Income"), getResources().getString(R.string.adjust_balance_expense_title), -diff, new Date());
                         db.persistExpense(expense);
                     }
                 }

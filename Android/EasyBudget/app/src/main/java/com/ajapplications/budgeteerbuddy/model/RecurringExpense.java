@@ -36,6 +36,10 @@ public class RecurringExpense implements Parcelable
      */
     private Long id;
     /**
+     * Category of the expense
+     */
+    private Category category;
+    /**
      * Title of this expense when created
      */
     private String  title;
@@ -61,20 +65,20 @@ public class RecurringExpense implements Parcelable
 
     /**
      *
+     * @param category
      * @param title
      * @param startAmount
      * @param recurringDate
      * @param type
      */
-    public RecurringExpense(@NonNull String title, double startAmount, @NonNull Date recurringDate, @NonNull RecurringExpenseType type)
+    public RecurringExpense(@NonNull Category category, String title, double startAmount, @NonNull Date recurringDate, @NonNull RecurringExpenseType type)
     {
         if (startAmount == 0)
-        {
             throw new IllegalArgumentException("startAmount should be != 0");
-        }
 
-        this.amount = startAmount;
+        this.category = category;
         this.title = title;
+        this.amount = startAmount;
         this.recurringDate = DateHelper.cleanDate(recurringDate);
         this.type = type;
     }
@@ -82,15 +86,16 @@ public class RecurringExpense implements Parcelable
     /**
      *
      * @param id
+     * @param category
      * @param title
      * @param startAmount
      * @param recurringDate
      * @param type
      * @param modified
      */
-    public RecurringExpense(Long id, @NonNull String title, double startAmount, @NonNull Date recurringDate, @NonNull RecurringExpenseType type, boolean modified)
+    public RecurringExpense(Long id, @NonNull Category category, String title, double startAmount, @NonNull Date recurringDate, @NonNull RecurringExpenseType type, boolean modified)
     {
-        this(title, startAmount, recurringDate, type);
+        this(category, title, startAmount, recurringDate, type);
 
         this.id = id;
         this.modified = modified;
@@ -117,66 +122,52 @@ public class RecurringExpense implements Parcelable
      * @return
      */
     @NonNull
-    public String getTitle()
-    {
-        return title;
-    }
+    public Category getCategory(){ return category; }
 
     /**
      *
      * @return
      */
     @NonNull
-    public Date getRecurringDate()
-    {
-        return recurringDate;
-    }
+    public String getTitle(){ return title; }
 
     /**
      *
      * @return
      */
-    public double getAmount()
-    {
-        return amount;
-    }
+    @NonNull
+    public Date getRecurringDate(){ return recurringDate; }
 
     /**
      *
      * @return
      */
-    public boolean isModified()
-    {
-        return modified;
-    }
+    public double getAmount(){ return amount; }
+
+    /**
+     *
+     * @return
+     */
+    public boolean isModified(){ return modified; }
 
     /**
      *
      * @param id
      */
-    public void setId(Long id)
-    {
-        this.id = id;
-    }
+    public void setId(Long id){ this.id = id; }
 
     /**
      *
      * @return
      */
-    public Long getId()
-    {
-        return id;
-    }
+    public Long getId(){ return id; }
 
     /**
      *
      * @return
      */
     @NonNull
-    public RecurringExpenseType getType()
-    {
-        return type;
-    }
+    public RecurringExpenseType getType(){ return type; }
 
 // -------------------------------->
 

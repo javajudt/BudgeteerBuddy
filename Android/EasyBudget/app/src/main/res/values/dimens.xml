@@ -23,6 +23,7 @@
     <dimen name="select_currency_dialog_padding_top">20dp</dimen>
 
     <dimen name="fab_margin_top">-48dp</dimen>
+    <dimen name="edit_expense_height">225dp</dimen>
 
     <dimen name="calendar_month_buttons_margin">10dp</dimen>
     <dimen name="calendar_month_padding_top">0dp</dimen>

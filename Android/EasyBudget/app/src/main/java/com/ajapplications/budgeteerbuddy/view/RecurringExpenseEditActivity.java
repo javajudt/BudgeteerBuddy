@@ -43,6 +43,7 @@ import android.widget.TextView;
 import com.ajapplications.budgeteerbuddy.helper.CurrencyHelper;
 import com.ajapplications.budgeteerbuddy.helper.Logger;
 import com.ajapplications.budgeteerbuddy.helper.UIHelper;
+import com.ajapplications.budgeteerbuddy.model.Category;
 import com.ajapplications.budgeteerbuddy.model.Expense;
 import com.ajapplications.budgeteerbuddy.model.RecurringExpense;
 import com.ajapplications.budgeteerbuddy.model.RecurringExpenseType;
@@ -96,7 +97,10 @@ public class RecurringExpenseEditActivity extends DBActivity
      * Is the new expense a revenue
      */
     private boolean isRevenue = false;
-
+    /**
+     * Selected category for the expense
+     */
+    private Category category;
 
 // ------------------------------------------->
 
@@ -243,7 +247,7 @@ public class RecurringExpenseEditActivity extends DBActivity
                 {
                     double value = Double.parseDouble(amountEditText.getText().toString());
 
-                    RecurringExpense expense = new RecurringExpense(descriptionEditText.getText().toString(), isRevenue? -value : value, dateStart, getRecurringTypeFromSpinnerSelection(recurringTypeSpinner.getSelectedItemPosition()));
+                    RecurringExpense expense = new RecurringExpense(category, descriptionEditText.getText().toString(), isRevenue? -value : value, dateStart, getRecurringTypeFromSpinnerSelection(recurringTypeSpinner.getSelectedItemPosition()));
 
                     new SaveRecurringExpenseTask().execute(expense);
                 }
@@ -427,7 +431,7 @@ public class RecurringExpenseEditActivity extends DBActivity
                     // Add up to 5 years of expenses
                     for (int i = 0; i < 12*4*5; i++)
                     {
-                        boolean expenseInserted = db.persistExpense(new Expense(expense.getTitle(), expense.getAmount(), cal.getTime(), expense));
+                        boolean expenseInserted = db.persistExpense(new Expense(category, expense.getTitle(), expense.getAmount(), cal.getTime(), expense));
                         if (!expenseInserted)
                         {
                             Logger.error(false, "Error while inserting expense for recurring expense into DB: persistExpense returned false");
@@ -446,7 +450,7 @@ public class RecurringExpenseEditActivity extends DBActivity
                     // Add up to 5 years of expenses
                     for (int i = 0; i < 12*4*5; i++)
                     {
-                        boolean expenseInserted = db.persistExpense(new Expense(expense.getTitle(), expense.getAmount(), cal.getTime(), expense));
+                        boolean expenseInserted = db.persistExpense(new Expense(category, expense.getTitle(), expense.getAmount(), cal.getTime(), expense));
                         if (!expenseInserted)
                         {
                             Logger.error(false, "Error while inserting expense for recurring expense into DB: persistExpense returned false");
@@ -465,7 +469,7 @@ public class RecurringExpenseEditActivity extends DBActivity
                     // Add up to 10 years of expenses
                     for (int i = 0; i < 12 * 10; i++)
                     {
-                        boolean expenseInserted = db.persistExpense(new Expense(expense.getTitle(), expense.getAmount(), cal.getTime(), expense));
+                        boolean expenseInserted = db.persistExpense(new Expense(category, expense.getTitle(), expense.getAmount(), cal.getTime(), expense));
                         if (!expenseInserted)
                         {
                             Logger.error(false, "Error while inserting expense for recurring expense into DB: persistExpense returned false");
@@ -484,7 +488,7 @@ public class RecurringExpenseEditActivity extends DBActivity
                     // Add up to 100 years of expenses
                     for (int i = 0; i < 100; i++)
                     {
-                        boolean expenseInserted = db.persistExpense(new Expense(expense.getTitle(), expense.getAmount(), cal.getTime(), expense));
+                        boolean expenseInserted = db.persistExpense(new Expense(category, expense.getTitle(), expense.getAmount(), cal.getTime(), expense));
                         if (!expenseInserted)
                         {
                             Logger.error(false, "Error while inserting expense for recurring expense into DB: persistExpense returned false");

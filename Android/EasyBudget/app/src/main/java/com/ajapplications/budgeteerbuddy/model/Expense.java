@@ -37,6 +37,10 @@ public class Expense implements Parcelable
      */
     private Long id;
     /**
+     * Category of the expense
+     */
+    private Category category;
+    /**
      * Title of the expense
      */
     private String  title;
@@ -58,53 +62,52 @@ public class Expense implements Parcelable
 
     /**
      *
+     * @param category
      * @param title
      * @param amount
      * @param date
      */
-    public Expense(@NonNull String title, double amount, @NonNull Date date)
+    public Expense(@NonNull Category category, String title, double amount, @NonNull Date date)
     {
-        this(null, title, amount, date, null);
+        this(null, category, title, amount, date, null);
     }
 
     /**
      *
+     * @param category
      * @param title
      * @param amount
      * @param date
      * @param recurringExpense
      */
-    public Expense(@NonNull String title, double amount, @NonNull Date date, @Nullable RecurringExpense recurringExpense)
+    public Expense(@NonNull Category category, String title, double amount, @NonNull Date date, @Nullable RecurringExpense recurringExpense)
     {
-        this(null, title, amount, date, recurringExpense);
+        this(null, category, title, amount, date, recurringExpense);
     }
 
     /**
      *
      * @param id
+     * @param category
      * @param title
      * @param amount
      * @param date
      * @param recurringExpense
      */
-    public Expense(Long id, @NonNull String title, double amount, @NonNull Date date, @Nullable RecurringExpense recurringExpense)
+    public Expense(Long id, @NonNull Category category, String title, double amount, @NonNull Date date, @Nullable RecurringExpense recurringExpense)
     {
         this.id = id;
 
-        if ( title.isEmpty() )
-        {
-            throw new IllegalArgumentException("title is empty or null");
-        }
-
-        this.title = title;
+        if (category == null)
+            throw new IllegalArgumentException("Category is null");
 
         if( amount == 0 )
-        {
             throw new IllegalArgumentException("amount should be != 0");
-        }
 
+        this.category = category;
+        this.title = title;
         this.amount = amount;
-        this.date = DateHelper.cleanDate(date);
+        setDate(date);
         this.recurringExpense = recurringExpense;
     }
 
@@ -150,41 +153,25 @@ public class Expense implements Parcelable
     }
 
     @NonNull
-    public String getTitle()
-    {
-        return title;
-    }
+    public Category getCategory(){ return category; }
 
-    public void setTitle(@NonNull String title)
-    {
-        this.title = title;
-    }
+    public void setCategory(@NonNull Category category){ this.category = category; }
 
     @NonNull
-    public Date getDate()
-    {
-        return date;
-    }
+    public String getTitle() { return title; }
 
-    public void setDate(@NonNull Date date)
-    {
-        this.date = DateHelper.cleanDate(date);
-    }
+    public void setTitle(@NonNull String title) { this.title = title; }
 
-    public double getAmount()
-    {
-        return amount;
-    }
+    @NonNull
+    public Date getDate() { return date; }
 
-    public void setAmount(double amount)
-    {
-        this.amount = amount;
-    }
+    public void setDate(@NonNull Date date) { this.date = DateHelper.cleanDate(date); }
 
-    public boolean isRevenue()
-    {
-        return amount < 0;
-    }
+    public double getAmount() { return amount; }
+
+    public void setAmount(double amount) { this.amount = amount; }
+
+    public boolean isRevenue() { return amount < 0; }
 
 // --------------------------------->
 
