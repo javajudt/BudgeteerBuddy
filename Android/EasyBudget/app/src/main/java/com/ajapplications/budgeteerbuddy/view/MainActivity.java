@@ -528,7 +528,7 @@ public class MainActivity extends DBActivity
             ActivityCompat.startActivity(MainActivity.this, startIntent, null);
 
             return true;
-        }
+        }/*
         else if( id == R.id.action_balance )
         {
             final double currentBalance = -db.getBalanceForDay(new Date());
@@ -672,7 +672,7 @@ public class MainActivity extends DBActivity
             });
 
             return true;
-        }
+        }*/
         else if( id == R.id.action_monthly_report )
         {
             Intent startIntent = new Intent(this, MonthlyReportActivity.class);
