@@ -489,11 +489,12 @@ public class MainActivity extends DBActivity
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
         // Remove monthly report for non premium users
-        if( !UserHelper.isUserPremium(getApplication()) )
-        {
-            menu.removeItem(R.id.action_monthly_report);
-        }
-        else if( !UserHelper.hasUserSawMonthlyReportHint(this) )
+//        if( !UserHelper.isUserPremium(getApplication()) )
+//        {
+//            menu.removeItem(R.id.action_monthly_report);
+//        }
+//        else if( !UserHelper.hasUserSawMonthlyReportHint(this) )
+        if( !UserHelper.hasUserSawMonthlyReportHint(this) )
         {
             final View monthlyReportHint = findViewById(R.id.monthly_report_hint);
             monthlyReportHint.setVisibility(View.VISIBLE);

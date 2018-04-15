@@ -536,29 +536,29 @@ public class EasyBudget extends Application
         Logger.debug("Update detected, from " + previousVersion + " to " + newVersion);
 
         // Fix bad save of Batch premium before 1.1
-        if( previousVersion <= BuildVersion.VERSION_1_1_3)
-        {
-            UserHelper.setBatchUserPremium(this);
-        }
+//        if( previousVersion <= BuildVersion.VERSION_1_1_3)
+//        {
+//            UserHelper.setBatchUserPremium(this);
+//        }
 
-        if( newVersion == BuildVersion.VERSION_1_2 )
-        {
-            if( UserHelper.isUserPremium(this) && !DailyNotifOptinService.hasDailyReminderOptinNotifBeenShown(this) )
-            {
-                DailyNotifOptinService.showDailyReminderOptinNotif(getApplicationContext());
-            }
-        }
+//        if( newVersion == BuildVersion.VERSION_1_2 )
+//        {
+//            if( UserHelper.isUserPremium(this) && !DailyNotifOptinService.hasDailyReminderOptinNotifBeenShown(this) )
+//            {
+//                DailyNotifOptinService.showDailyReminderOptinNotif(getApplicationContext());
+//            }
+//        }
 
         if( newVersion == BuildVersion.VERSION_1_3 && !MonthlyReportNotifService.hasUserSeenMonthlyReportNotif(this) )
         {
-            if( UserHelper.isUserPremium(this) )
-            {
-                MonthlyReportNotifService.showPremiumNotif(getApplicationContext());
-            }
-            else
-            {
+//            if( UserHelper.isUserPremium(this) )
+//            {
+//                MonthlyReportNotifService.showPremiumNotif(getApplicationContext());
+//            }
+//            else
+//            {
                 MonthlyReportNotifService.showNotPremiumNotif(getApplicationContext());
-            }
+//            }
         }
 
 //        if( newVersion == BuildVersion.VERSION_1_5_2 )

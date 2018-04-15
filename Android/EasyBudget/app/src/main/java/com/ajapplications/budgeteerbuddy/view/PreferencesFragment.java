@@ -300,11 +300,11 @@ public class PreferencesFragment extends PreferenceFragment
             @Override
             public boolean onPreferenceClick(Preference preference)
             {
-                UserHelper.setUserAllowUpdatePushes(getActivity(), updateNotifPref.isChecked());
+//                UserHelper.setUserAllowUpdatePushes(getActivity(), updateNotifPref.isChecked());
                 return true;
             }
         });
-        updateNotifPref.setChecked(UserHelper.isUserAllowingUpdatePushes(getActivity()));
+//        updateNotifPref.setChecked(UserHelper.isUserAllowingUpdatePushes(getActivity()));
 
         /*
          * Hide dev preferences if needed
@@ -487,8 +487,8 @@ public class PreferencesFragment extends PreferenceFragment
      */
     private void refreshPremiumPreference()
     {
-        boolean isPremium = UserHelper.isUserPremium(getActivity().getApplication());
-
+//        boolean isPremium = UserHelper.isUserPremium(getActivity().getApplication());
+        boolean isPremium = true;
         if( isPremium )
         {
             if( notPremiumShown )
