@@ -94,23 +94,23 @@ public class SelectCurrencyRecyclerViewAdapter extends RecyclerView.Adapter<Sele
 
             holder.selectedIndicator.setVisibility(userCurrency ? View.VISIBLE : View.INVISIBLE);
             holder.currencyTitle.setText(CurrencyHelper.getCurrencyDisplayName(currency));
-            holder.view.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View v)
-                {
-                    // Set the currency
-                    CurrencyHelper.setUserCurrency(v.getContext(), currency);
-                    // Reload date to change the checkmark
-                    notifyDataSetChanged();
-
-                    // Broadcast the intent
-                    Intent intent = new Intent(SelectCurrencyFragment.CURRENCY_SELECTED_INTENT);
-                    intent.putExtra(SelectCurrencyFragment.CURRENCY_ISO_EXTRA, currency.getCurrencyCode());
-
-                    LocalBroadcastManager.getInstance(v.getContext()).sendBroadcast(intent);
-                }
-            });
+//            holder.view.setOnClickListener(new View.OnClickListener()
+//            {
+//                @Override
+//                public void onClick(View v)
+//                {
+//                    // Set the currency
+//                    CurrencyHelper.setUserCurrency(v.getContext(), currency);
+//                    // Reload date to change the checkmark
+//                    notifyDataSetChanged();
+//
+//                    // Broadcast the intent
+//                    Intent intent = new Intent(SelectCurrencyFragment.CURRENCY_SELECTED_INTENT);
+//                    intent.putExtra(SelectCurrencyFragment.CURRENCY_ISO_EXTRA, currency.getCurrencyCode());
+//
+//                    LocalBroadcastManager.getInstance(v.getContext()).sendBroadcast(intent);
+//                }
+//            });
         }
     }
 

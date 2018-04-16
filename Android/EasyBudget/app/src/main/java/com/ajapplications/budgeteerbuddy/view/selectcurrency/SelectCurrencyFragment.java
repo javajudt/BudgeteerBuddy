@@ -114,25 +114,25 @@ public class SelectCurrencyFragment extends DialogFragment
         recyclerView.setLayoutManager(new LinearLayoutManager(v.getContext()));
 
         // Load available currencies asynchronously
-        new AsyncTask<Void, Void, Pair<SelectCurrencyRecyclerViewAdapter, Integer>>()
-        {
-            @Override
-            protected Pair<SelectCurrencyRecyclerViewAdapter, Integer> doInBackground(Void... voids)
-            {
-                SelectCurrencyRecyclerViewAdapter adapter = new SelectCurrencyRecyclerViewAdapter(CurrencyHelper.getMainAvailableCurrencies(), CurrencyHelper.getOtherAvailableCurrencies());
-                return Pair.create(adapter, adapter.getSelectedCurrencyPosition(getContext()));
-            }
+//        new AsyncTask<Void, Void, Pair<SelectCurrencyRecyclerViewAdapter, Integer>>()
+//        {
+//            @Override
+//            protected Pair<SelectCurrencyRecyclerViewAdapter, Integer> doInBackground(Void... voids)
+//            {
+////                SelectCurrencyRecyclerViewAdapter adapter = new SelectCurrencyRecyclerViewAdapter(CurrencyHelper.getMainAvailableCurrencies(), CurrencyHelper.getOtherAvailableCurrencies());
+////                return Pair.create(adapter, adapter.getSelectedCurrencyPosition(getContext()));
+//            }
 
-            @Override
-            protected void onPostExecute(Pair<SelectCurrencyRecyclerViewAdapter, Integer> data)
-            {
-                recyclerView.setAdapter(data.first);
-
-                if( data.second > 1 )
-                {
-                    recyclerView.scrollToPosition(data.second-1);
-                }
-            }
-        }.execute();
+//            @Override
+//            protected void onPostExecute(Pair<SelectCurrencyRecyclerViewAdapter, Integer> data)
+//            {
+//                recyclerView.setAdapter(data.first);
+//
+//                if( data.second > 1 )
+//                {
+//                    recyclerView.scrollToPosition(data.second-1);
+//                }
+//            }
+//        }.execute();
     }
 }
