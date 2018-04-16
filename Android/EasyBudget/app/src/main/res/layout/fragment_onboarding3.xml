@@ -15,19 +15,18 @@
 -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/secondary"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.ajapplications.budgeteerbuddy.view.welcome.Onboarding2Fragment"
-    android:focusable="true"
-    android:focusableInTouchMode="true">
+                xmlns:tools="http://schemas.android.com/tools"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/accent"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                tools:context="com.ajapplications.budgeteerbuddy.view.welcome.Onboarding2Fragment">
 
-    <ScrollView android:id="@+id/onboarding_screen_3_top_layout"
+    <ScrollView android:id="@+id/onboarding_screen4_top_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="95dp">
@@ -37,69 +36,73 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_done_white_48dp"
+                android:layout_gravity="center_horizontal" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:textSize="30dp"
                 android:textColor="@android:color/white"
-                android:text="@string/onboarding_screen_2_title"
+                android:text="@string/onboarding_screen_3_title"
                 android:gravity="center_horizontal" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="5dp"
                 android:textSize="18dp"
-                android:text="@string/onboarding_screen_2_message"
+                android:text="@string/onboarding_screen_3_message"
                 android:textColor="@android:color/white"
                 android:gravity="center_horizontal" />
 
-            <LinearLayout
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:orientation="horizontal"
-                android:maxWidth="300dp"
-                android:layout_marginLeft="60dp"
-                android:layout_marginRight="60dp">
+                android:layout_marginTop="50dp"
+                android:textSize="20dp"
+                android:text="@string/onboarding_screen_3_message2"
+                android:textColor="@android:color/white"
+                android:gravity="center_horizontal" />
 
-                <EditText android:id="@+id/onboarding_screen3_initial_amount_et"
-                          android:layout_width="0dip"
-                          android:layout_weight="1.0"
-                          android:layout_height="wrap_content"
-                          android:background="@android:color/white"
-                          android:maxLines="1"
-                          android:textSize="30dp"
-                          android:padding="5dp"
-                          android:inputType="numberDecimal"
-                          android:digits="-0123456789.," />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textSize="18dp"
+                android:text="@string/onboarding_screen_3_message3"
+                android:textColor="@android:color/white"/>
 
-                <TextView android:id="@+id/onboarding_screen3_initial_amount_money_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="10dp"
-                    android:textSize="30dp"
-                    android:textColor="@android:color/white"/>
-
-            </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:textSize="20dp"
+                android:gravity="center"
+                android:text="@string/onboarding_screen_3_message4"
+                android:textColor="@android:color/white" />
 
         </LinearLayout>
 
     </ScrollView>
 
-    <Button android:id="@+id/onboarding_screen3_next_button"
+    <Button android:id="@+id/onboarding_screen4_next_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:textSize="20dp"
         android:paddingLeft="30dp"
         android:paddingRight="30dp"
+        android:text="@string/onboarding_screen_3_cta"
         android:layout_marginBottom="15dp"
-        android:layout_below="@id/onboarding_screen_3_top_layout"
+        android:layout_below="@id/onboarding_screen4_top_layout"
         android:layout_centerHorizontal="true"
-        android:textAllCaps="false"
         android:layout_marginTop="-65dp"
-        android:theme="@style/GreenButton"/>
+        android:textAllCaps="false"
+        android:theme="@style/BlueButton"/>
 
 </RelativeLayout>

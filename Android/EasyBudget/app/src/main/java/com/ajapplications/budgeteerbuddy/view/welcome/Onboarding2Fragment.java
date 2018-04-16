@@ -67,7 +67,7 @@ public class Onboarding2Fragment extends OnboardingFragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_onboarding3, container, false);
+        View v = inflater.inflate(R.layout.fragment_onboarding2, container, false);
 
         DB db = getDB();
 

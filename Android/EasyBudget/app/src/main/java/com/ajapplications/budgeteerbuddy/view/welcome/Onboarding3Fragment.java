@@ -41,7 +41,7 @@ public class Onboarding3Fragment extends OnboardingFragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_onboarding4, container, false);
+        View v = inflater.inflate(R.layout.fragment_onboarding3, container, false);
 
         v.findViewById(R.id.onboarding_screen4_next_button).setOnClickListener(new View.OnClickListener()
         {
