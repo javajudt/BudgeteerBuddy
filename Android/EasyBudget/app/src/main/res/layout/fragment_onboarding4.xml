@@ -48,7 +48,7 @@
                 android:layout_marginTop="10dp"
                 android:textSize="30dp"
                 android:textColor="@android:color/white"
-                android:text="@string/onboarding_screen_4_title"
+                android:text="@string/onboarding_screen_3_title"
                 android:gravity="center_horizontal" />
 
             <TextView
@@ -56,7 +56,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:textSize="18dp"
-                android:text="@string/onboarding_screen_4_message"
+                android:text="@string/onboarding_screen_3_message"
                 android:textColor="@android:color/white"
                 android:gravity="center_horizontal" />
 
@@ -65,7 +65,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="50dp"
                 android:textSize="20dp"
-                android:text="@string/onboarding_screen_4_message2"
+                android:text="@string/onboarding_screen_3_message2"
                 android:textColor="@android:color/white"
                 android:gravity="center_horizontal" />
 
@@ -74,7 +74,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:textSize="18dp"
-                android:text="@string/onboarding_screen_4_message3"
+                android:text="@string/onboarding_screen_3_message3"
                 android:textColor="@android:color/white"/>
 
             <TextView
@@ -83,7 +83,7 @@
                 android:layout_marginTop="50dp"
                 android:textSize="20dp"
                 android:gravity="center"
-                android:text="@string/onboarding_screen_4_message4"
+                android:text="@string/onboarding_screen_3_message4"
                 android:textColor="@android:color/white" />
 
         </LinearLayout>
@@ -97,7 +97,7 @@
         android:textSize="20dp"
         android:paddingLeft="30dp"
         android:paddingRight="30dp"
-        android:text="@string/onboarding_screen_4_cta"
+        android:text="@string/onboarding_screen_3_cta"
         android:layout_marginBottom="15dp"
         android:layout_below="@id/onboarding_screen4_top_layout"
         android:layout_centerHorizontal="true"

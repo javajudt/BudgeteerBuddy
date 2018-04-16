@@ -206,7 +206,7 @@ public class Onboarding3Fragment extends OnboardingFragment
         {
             double value = getAmountValue();
 
-            nextButton.setText(getActivity().getString(R.string.onboarding_screen_3_cta, CurrencyHelper.getFormattedCurrencyString(getActivity(), value)));
+            nextButton.setText(getActivity().getString(R.string.onboarding_screen_2_cta, CurrencyHelper.getFormattedCurrencyString(getActivity(), value)));
         }
     }
 }

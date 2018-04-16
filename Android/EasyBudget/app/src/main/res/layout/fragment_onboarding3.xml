@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="30dp"
                 android:textColor="@android:color/white"
-                android:text="@string/onboarding_screen_3_title"
+                android:text="@string/onboarding_screen_2_title"
                 android:gravity="center_horizontal" />
 
             <TextView
@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:textSize="18dp"
-                android:text="@string/onboarding_screen_3_message"
+                android:text="@string/onboarding_screen_2_message"
                 android:textColor="@android:color/white"
                 android:gravity="center_horizontal" />
 
