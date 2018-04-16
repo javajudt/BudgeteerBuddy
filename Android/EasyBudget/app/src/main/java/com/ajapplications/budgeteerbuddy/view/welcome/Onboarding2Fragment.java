@@ -16,38 +16,43 @@
 
 package com.ajapplications.budgeteerbuddy.view.welcome;
 
-import android.content.BroadcastReceiver;
+
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
+import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.app.AlertDialog;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.ajapplications.budgeteerbuddy.helper.CurrencyHelper;
-import com.ajapplications.budgeteerbuddy.view.selectcurrency.SelectCurrencyFragment;
+import com.ajapplications.budgeteerbuddy.helper.Logger;
+import com.ajapplications.budgeteerbuddy.helper.UIHelper;
+import com.ajapplications.budgeteerbuddy.model.Category;
+import com.ajapplications.budgeteerbuddy.model.Expense;
+import com.ajapplications.budgeteerbuddy.model.db.DB;
 import com.ajapplications.budgeteerbuddy.R;
 
-import java.util.Currency;
+import java.util.Date;
 
 /**
- * Onboarding step 2 fragment
+ * Onboarding step 3 fragment
  *
  * @author Benoit LETONDOR
  */
 public class Onboarding2Fragment extends OnboardingFragment
 {
-    private Currency selectedCurrency;
+    private TextView moneyTextView;
+    private EditText amountEditText;
     private Button nextButton;
 
-    private BroadcastReceiver receiver;
-
-// ------------------------------------->
+// -------------------------------------->
 
     /**
      * Required empty public constructor
@@ -57,7 +62,6 @@ public class Onboarding2Fragment extends OnboardingFragment
 
     }
 
-// ------------------------------------->
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -65,45 +69,91 @@ public class Onboarding2Fragment extends OnboardingFragment
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_onboarding2, container, false);
 
-        nextButton = (Button) v.findViewById(R.id.onboarding_screen2_next_button);
+        DB db = getDB();
+
+        double amount = 0;
+        if( db != null )
+        {
+            amount = -db.getBalanceForDay(new Date());
+        }
+
+        moneyTextView = (TextView) v.findViewById(R.id.onboarding_screen3_initial_amount_money_tv);
+        setCurrency();
+
+        amountEditText = (EditText) v.findViewById(R.id.onboarding_screen3_initial_amount_et);
+        amountEditText.setText(amount == 0 ? "0" : String.valueOf(amount));
+        UIHelper.preventUnsupportedInputForDecimals(amountEditText);
+        amountEditText.addTextChangedListener(new TextWatcher()
+        {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after)
+            {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count)
+            {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s)
+            {
+                setButtonText();
+            }
+        });
+
+        nextButton = (Button) v.findViewById(R.id.onboarding_screen3_next_button);
         nextButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                next();
+                DB db = getDB();
+                if (db != null)
+                {
+                    double currentBalance = -db.getBalanceForDay(new Date());
+                    double newBalance = getAmountValue();
+
+                    if (newBalance != currentBalance)
+                    {
+                        double diff = newBalance - currentBalance;
+
+                        final Expense expense = new Expense(new Category("Income"), getResources().getString(R.string.adjust_balance_expense_title), -diff, new Date());
+                        db.persistExpense(expense);
+                    }
+                }
+
+                // Hide keyboard
+                try
+                {
+                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(amountEditText.getWindowToken(), 0);
+                }
+                catch(Exception e)
+                {
+                    Logger.error("Error while hiding keyboard", e);
+                }
+
+                next(v);
             }
         });
-
-        selectedCurrency = CurrencyHelper.getUserCurrency(v.getContext());
-        setNextButtonText();
-
-        Fragment selectCurrencyFragment = new SelectCurrencyFragment();
-        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        transaction.add(R.id.expense_select_container, selectCurrencyFragment).commit();
-
-        IntentFilter filter = new IntentFilter(SelectCurrencyFragment.CURRENCY_SELECTED_INTENT);
-        receiver = new BroadcastReceiver()
-        {
-            @Override
-            public void onReceive(Context context, Intent intent)
-            {
-                selectedCurrency = Currency.getInstance(intent.getStringExtra(SelectCurrencyFragment.CURRENCY_ISO_EXTRA));
-                setNextButtonText();
-            }
-        };
-
-        LocalBroadcastManager.getInstance(v.getContext()).registerReceiver(receiver, filter);
+        setButtonText();
 
         return v;
     }
 
     @Override
-    public void onDestroyView()
+    public void setUserVisibleHint(boolean isVisibleToUser)
     {
-        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(receiver);
+        super.setUserVisibleHint(isVisibleToUser);
 
-        super.onDestroyView();
+        if( isVisibleToUser ) // Update values on display
+        {
+            setCurrency();
+            setButtonText();
+        }
     }
 
     @Override
@@ -112,11 +162,51 @@ public class Onboarding2Fragment extends OnboardingFragment
         return R.color.secondary_dark;
     }
 
-    /**
-     * Set the next button text according to the selected currency
-     */
-    private void setNextButtonText()
+// -------------------------------------->
+
+    private void setCurrency()
     {
-        nextButton.setText(getResources().getString(R.string.onboarding_screen_2_cta, selectedCurrency.getSymbol()));
+        if( moneyTextView != null ) // Will be null if view is not yet created
+        {
+            moneyTextView.setText(CurrencyHelper.getUserCurrency(getActivity()).getSymbol());
+        }
+    }
+
+    private double getAmountValue()
+    {
+        String valueString = amountEditText.getText().toString();
+
+        try
+        {
+            return ("".equals(valueString) || "-".equals(valueString)) ? 0 : Double.valueOf(valueString);
+        }
+        catch (Exception e)
+        {
+            new AlertDialog.Builder(getActivity())
+                .setTitle(R.string.adjust_balance_error_title)
+                .setMessage(R.string.adjust_balance_error_message)
+                .setNegativeButton(R.string.ok, new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
+
+            Logger.warning("An error occurred during initial amount parsing: "+valueString, e);
+            return 0;
+        }
+    }
+
+    private void setButtonText()
+    {
+        if( nextButton != null )
+        {
+            double value = getAmountValue();
+
+            nextButton.setText(getActivity().getString(R.string.onboarding_screen_2_cta, CurrencyHelper.getFormattedCurrencyString(getActivity(), value)));
+        }
     }
 }

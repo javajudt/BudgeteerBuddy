@@ -38,7 +38,6 @@ import com.ajapplications.budgeteerbuddy.model.db.DB;
 import com.ajapplications.budgeteerbuddy.view.welcome.Onboarding1Fragment;
 import com.ajapplications.budgeteerbuddy.view.welcome.Onboarding2Fragment;
 import com.ajapplications.budgeteerbuddy.view.welcome.Onboarding3Fragment;
-import com.ajapplications.budgeteerbuddy.view.welcome.Onboarding4Fragment;
 import com.ajapplications.budgeteerbuddy.view.welcome.OnboardingFragment;
 import com.ajapplications.budgeteerbuddy.R;
 
@@ -112,8 +111,6 @@ public class WelcomeActivity extends DBActivity
                         return new Onboarding2Fragment();
                     case 2:
                         return new Onboarding3Fragment();
-                    case 3:
-                        return new Onboarding4Fragment();
                 }
 
                 return null;
@@ -122,7 +119,7 @@ public class WelcomeActivity extends DBActivity
             @Override
             public int getCount()
             {
-                return 4;
+                return 3;
             }
         });
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener()

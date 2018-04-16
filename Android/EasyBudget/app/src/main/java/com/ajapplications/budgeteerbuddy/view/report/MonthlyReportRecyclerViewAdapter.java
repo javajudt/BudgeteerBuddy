@@ -108,7 +108,13 @@ public class MonthlyReportRecyclerViewAdapter extends RecyclerView.Adapter<Recyc
             ExpenseViewHolder viewHolder = (ExpenseViewHolder) holder;
             Expense expense = getExpense(position);
 
-            viewHolder.expenseTitleTextView.setText(expense.getTitle());
+            String category = expense.getCategory().getLabel();
+            String memo = expense.getTitle();
+            if (!memo.trim().isEmpty())
+                category += "  ";
+
+            viewHolder.expenseTitleTextView.setText(category);
+            viewHolder.expenseMemoTextView.setText(memo);
             viewHolder.expenseAmountTextView.setText(CurrencyHelper.getFormattedCurrencyString(viewHolder.view.getContext(), -expense.getAmount()));
             viewHolder.expenseAmountTextView.setTextColor(ContextCompat.getColor(viewHolder.view.getContext(), expense.isRevenue() ? R.color.budget_green : R.color.budget_red));
             viewHolder.monthlyIndicator.setVisibility(expense.isRecurring() ? View.VISIBLE : View.GONE);
@@ -183,6 +189,7 @@ public class MonthlyReportRecyclerViewAdapter extends RecyclerView.Adapter<Recyc
     public static class ExpenseViewHolder extends RecyclerView.ViewHolder
     {
         public final TextView expenseTitleTextView;
+        public final TextView expenseMemoTextView;
         public final TextView expenseAmountTextView;
         public final ViewGroup monthlyIndicator;
         public final TextView dateTextView;
@@ -194,6 +201,7 @@ public class MonthlyReportRecyclerViewAdapter extends RecyclerView.Adapter<Recyc
 
             view = v;
             expenseTitleTextView = (TextView) v.findViewById(R.id.expense_title);
+            expenseMemoTextView = (TextView) v.findViewById(R.id.expense_memo);
             expenseAmountTextView = (TextView) v.findViewById(R.id.expense_amount);
             monthlyIndicator = (ViewGroup) v.findViewById(R.id.recurring_indicator);
             dateTextView = (TextView) v.findViewById(R.id.date_tv);

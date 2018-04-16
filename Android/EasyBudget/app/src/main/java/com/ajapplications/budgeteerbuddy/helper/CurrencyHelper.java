@@ -44,7 +44,7 @@ public class CurrencyHelper
     /**
      * List of main currencies ISO 4217 code
      */
-    private static final String[] MAIN_CURRENCIES = {"USD", "EUR", "GBP", "IRN", "AUD", "CAD", "SGD", "CHF", "MYR", "JPY", "CNY", "NZD"};
+    //private static final String[] MAIN_CURRENCIES = {"USD", "EUR", "GBP", "IRN", "AUD", "CAD", "SGD", "CHF", "MYR", "JPY", "CNY", "NZD"};
 
     /**
      * Static formatter, that should be used with a synchronized block
@@ -57,7 +57,7 @@ public class CurrencyHelper
      * Return a list of available main currencies based on {@link #MAIN_CURRENCIES} codes
      *
      * @return a list of currencies
-     */
+     *//*
     @NonNull
     public static List<Currency> getMainAvailableCurrencies()
     {
@@ -80,13 +80,13 @@ public class CurrencyHelper
         }
 
         return mainCurrencies;
-    }
+    }*/
 
     /**
      * Return a list of available currencies (using compat code) minus main ones
      *
      * @return a list of other available currencies
-     */
+     *//*
     public static List<Currency> getOtherAvailableCurrencies()
     {
         List<Currency> mainCurrencies = getMainAvailableCurrencies();
@@ -145,7 +145,7 @@ public class CurrencyHelper
 
             return currencies;
         }
-    }
+    }*/
 
     /**
      * Get the currency display name (using compat)
@@ -253,7 +253,8 @@ public class CurrencyHelper
      */
     public static Currency getUserCurrency(@NonNull Context context)
     {
-        return Currency.getInstance(Parameters.getInstance(context).getString(ParameterKeys.CURRENCY_ISO));
+        //return Currency.getInstance(Parameters.getInstance(context).getString(ParameterKeys.CURRENCY_ISO));
+        return Currency.getInstance("USD");
     }
 
     /**
@@ -261,9 +262,9 @@ public class CurrencyHelper
      *
      * @param context
      * @param currency
-     */
+     *//*
     public static void setUserCurrency(@NonNull Context context, @NonNull Currency currency)
     {
         Parameters.getInstance(context).putString(ParameterKeys.CURRENCY_ISO, currency.getCurrencyCode());
-    }
+    }*/
 }

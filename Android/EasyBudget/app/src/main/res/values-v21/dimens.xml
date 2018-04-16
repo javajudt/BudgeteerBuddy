@@ -16,4 +16,5 @@
 
 <resources>
     <dimen name="fab_margin_top">-28dp</dimen>
+    <dimen name="edit_expense_height">225dp</dimen>
 </resources>
