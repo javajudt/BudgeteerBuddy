@@ -36,7 +36,6 @@ import com.ajapplications.budgeteerbuddy.helper.Parameters;
 import com.ajapplications.budgeteerbuddy.helper.UIHelper;
 import com.ajapplications.budgeteerbuddy.model.db.DB;
 import com.ajapplications.budgeteerbuddy.view.welcome.Onboarding1Fragment;
-import com.ajapplications.budgeteerbuddy.view.welcome.Onboarding2Fragment;
 import com.ajapplications.budgeteerbuddy.view.welcome.Onboarding3Fragment;
 import com.ajapplications.budgeteerbuddy.view.welcome.Onboarding4Fragment;
 import com.ajapplications.budgeteerbuddy.view.welcome.OnboardingFragment;
@@ -109,9 +108,9 @@ public class WelcomeActivity extends DBActivity
                     case 0:
                         return new Onboarding1Fragment();
                     case 1:
-                        return new Onboarding2Fragment();
-                    case 2:
                         return new Onboarding3Fragment();
+                    case 2:
+                        return new Onboarding4Fragment();
                     case 3:
                         return new Onboarding4Fragment();
                 }
