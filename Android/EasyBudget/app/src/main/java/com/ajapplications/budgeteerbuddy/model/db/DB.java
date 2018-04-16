@@ -700,6 +700,7 @@ public final class DB
             values.put(SQLiteDBHelper.COLUMN_EXPENSE_DB_ID, expense.getId());
         }
 
+        values.put(SQLiteDBHelper.COLUMN_EXPENSE_CATEGORY, expense.getCategory().getLabel());
         values.put(SQLiteDBHelper.COLUMN_EXPENSE_TITLE, expense.getTitle());
         values.put(SQLiteDBHelper.COLUMN_EXPENSE_DATE, expense.getDate().getTime());
         values.put(SQLiteDBHelper.COLUMN_EXPENSE_AMOUNT, CurrencyHelper.getDBValueForDouble(expense.getAmount()));
@@ -752,6 +753,7 @@ public final class DB
             values.put(SQLiteDBHelper.COLUMN_RECURRING_DB_ID, expense.getId());
         }
 
+        values.put(SQLiteDBHelper.COLUMN_RECURRING_CATEGORY, expense.getCategory().getLabel());
         values.put(SQLiteDBHelper.COLUMN_RECURRING_TITLE, expense.getTitle());
         values.put(SQLiteDBHelper.COLUMN_RECURRING_RECURRING_DATE, expense.getRecurringDate().getTime());
         values.put(SQLiteDBHelper.COLUMN_RECURRING_AMOUNT, CurrencyHelper.getDBValueForDouble(expense.getAmount()));

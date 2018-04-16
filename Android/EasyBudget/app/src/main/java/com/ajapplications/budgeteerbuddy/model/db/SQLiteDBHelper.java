@@ -63,17 +63,22 @@ public final class SQLiteDBHelper extends SQLiteOpenHelper
         database.execSQL("create table "
             + TABLE_EXPENSE + "("
             + COLUMN_EXPENSE_DB_ID + " integer primary key autoincrement, "
-            + COLUMN_EXPENSE_TITLE + " text not null, "
+            + COLUMN_EXPENSE_CATEGORY + " text not null, "
+            + COLUMN_EXPENSE_TITLE + " text, "
             + COLUMN_EXPENSE_AMOUNT + " integer not null, "
             + COLUMN_EXPENSE_DATE + " integer not null, "
-            + COLUMN_EXPENSE_RECURRING_ID + " integer null );");
+            + COLUMN_EXPENSE_RECURRING_ID + " integer,"
+            + "FOREIGN KEY(" + COLUMN_EXPENSE_RECURRING_ID + ")"
+            + "REFERENCES " + TABLE_RECURRING_EXPENSE + "(" + COLUMN_RECURRING_DB_ID + ")"
+            + ");");
 
         database.execSQL("CREATE INDEX D_i on "+ TABLE_EXPENSE +"("+ COLUMN_EXPENSE_DATE +");");
 
         database.execSQL("create table "
             + TABLE_RECURRING_EXPENSE + "("
             + COLUMN_RECURRING_DB_ID + " integer primary key autoincrement, "
-            + COLUMN_RECURRING_TITLE + " text not null, "
+            + COLUMN_RECURRING_CATEGORY + " text not null, "
+            + COLUMN_RECURRING_TITLE + " text, "
             + COLUMN_RECURRING_AMOUNT + " integer not null, "
             + COLUMN_RECURRING_MODIFIED + " integer not null, "
             + COLUMN_RECURRING_RECURRING_DATE + " integer not null, "
@@ -82,7 +87,7 @@ public final class SQLiteDBHelper extends SQLiteOpenHelper
 
 	@Override
 	public void onUpgrade(SQLiteDatabase database, int oldVersion, int newVersion)
-	{
+	{/*
         if( oldVersion<2 )
         {
             database.execSQL("UPDATE "+TABLE_EXPENSE+" SET "+COLUMN_EXPENSE_AMOUNT+" = "+COLUMN_EXPENSE_AMOUNT+" * 100");
@@ -92,6 +97,6 @@ public final class SQLiteDBHelper extends SQLiteOpenHelper
         if( oldVersion < 3 )
         {
             database.execSQL("ALTER TABLE "+TABLE_RECURRING_EXPENSE+" ADD COLUMN "+COLUMN_RECURRING_TYPE+" text not null DEFAULT '"+RecurringExpenseType.MONTHLY+"'");
-        }
+        }*/
 	}
 }

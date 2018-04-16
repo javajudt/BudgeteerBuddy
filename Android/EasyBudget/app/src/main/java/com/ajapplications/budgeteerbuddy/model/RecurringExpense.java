@@ -108,6 +108,7 @@ public class RecurringExpense implements Parcelable
     private RecurringExpense(Parcel in)
     {
         id = (Long) in.readValue(Long.class.getClassLoader());
+        category = new Category(in.readString());
         title = in.readString();
         recurringDate = new Date(in.readLong());
         amount = in.readDouble();
@@ -153,6 +154,7 @@ public class RecurringExpense implements Parcelable
     public void writeToParcel(Parcel dest, int flags)
     {
         dest.writeValue(id);
+        dest.writeString(category.getLabel());
         dest.writeString(title);
         dest.writeLong(recurringDate.getTime());
         dest.writeDouble(amount);

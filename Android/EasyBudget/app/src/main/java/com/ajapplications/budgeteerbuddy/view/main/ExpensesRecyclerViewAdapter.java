@@ -48,8 +48,7 @@ import java.util.List;
  *
  * @author Benoit LETONDOR
  */
-public class ExpensesRecyclerViewAdapter extends RecyclerView.Adapter<ExpensesRecyclerViewAdapter.ViewHolder>
-{
+public class ExpensesRecyclerViewAdapter extends RecyclerView.Adapter<ExpensesRecyclerViewAdapter.ViewHolder> {
     private List<Expense> expenses;
     private Date date;
     private Activity activity;
@@ -63,8 +62,7 @@ public class ExpensesRecyclerViewAdapter extends RecyclerView.Adapter<ExpensesRe
      * @param db
      * @param date
      */
-    public ExpensesRecyclerViewAdapter(@NonNull Activity activity, @NonNull DB db, @NonNull Date date)
-    {
+    public ExpensesRecyclerViewAdapter(@NonNull Activity activity, @NonNull DB db, @NonNull Date date) {
         this.activity = activity;
         this.date = date;
         this.expenses = db.getExpensesForDay(date);
@@ -75,8 +73,7 @@ public class ExpensesRecyclerViewAdapter extends RecyclerView.Adapter<ExpensesRe
      *
      * @return
      */
-    public Date getDate()
-    {
+    public Date getDate() {
         return date;
     }
 
@@ -86,8 +83,7 @@ public class ExpensesRecyclerViewAdapter extends RecyclerView.Adapter<ExpensesRe
      * @param date
      * @param db
      */
-    public void setDate(@NonNull Date date, @NonNull DB db)
-    {
+    public void setDate(@NonNull Date date, @NonNull DB db) {
         this.date = date;
         this.expenses = db.getExpensesForDay(date);
         notifyDataSetChanged();
@@ -99,15 +95,12 @@ public class ExpensesRecyclerViewAdapter extends RecyclerView.Adapter<ExpensesRe
      * @param expense
      * @return position of the deleted expense (-1 if not found)
      */
-    public int removeExpense(Expense expense)
-    {
+    public int removeExpense(Expense expense) {
         Iterator<Expense> expenseIterator = expenses.iterator();
         int position = 0;
-        while( expenseIterator.hasNext() )
-        {
+        while (expenseIterator.hasNext()) {
             Expense shownExpense = expenseIterator.next();
-            if( shownExpense.getId().equals(expense.getId()) )
-            {
+            if (shownExpense.getId().equals(expense.getId())) {
                 expenseIterator.remove();
                 notifyItemRemoved(position);
                 return position;
@@ -125,8 +118,7 @@ public class ExpensesRecyclerViewAdapter extends RecyclerView.Adapter<ExpensesRe
      * @param expense
      * @param position
      */
-    public void addExpense(Expense expense, int position)
-    {
+    public void addExpense(Expense expense, int position) {
         expenses.add(position, expense);
         notifyItemRangeInserted(position, 1);
     }
@@ -134,58 +126,54 @@ public class ExpensesRecyclerViewAdapter extends RecyclerView.Adapter<ExpensesRe
 // ------------------------------------------>
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i)
-    {
+    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.recycleview_expense_cell, viewGroup, false);
         return new ViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder viewHolder, int i)
-    {
+    public void onBindViewHolder(final ViewHolder viewHolder, int i) {
         final Expense expense = expenses.get(i);
 
-        viewHolder.expenseTitleTextView.setText(expense.getTitle());
+        String category = expense.getCategory().getLabel();
+        String memo = expense.getTitle();
+        if (!memo.trim().isEmpty())
+            category += "  ";
+
+        viewHolder.expenseTitleTextView.setText(category);
+        viewHolder.expenseMemoTextView.setText(memo);
         viewHolder.expenseAmountTextView.setText(CurrencyHelper.getFormattedCurrencyString(viewHolder.view.getContext(), -expense.getAmount()));
         viewHolder.expenseAmountTextView.setTextColor(ContextCompat.getColor(viewHolder.view.getContext(), expense.isRevenue() ? R.color.budget_green : R.color.budget_red));
         viewHolder.recurringIndicator.setVisibility(expense.isRecurring() ? View.VISIBLE : View.GONE);
         viewHolder.positiveIndicator.setImageResource(expense.isRevenue() ? R.drawable.ic_label_green : R.drawable.ic_label_red);
 
-        if( expense.isRecurring() )
-        {
+        if (expense.isRecurring()) {
             assert expense.getAssociatedRecurringExpense() != null;
-            switch (expense.getAssociatedRecurringExpense().getType())
-            {
+            switch (expense.getAssociatedRecurringExpense().getType()) {
                 case WEEKLY:
-                    viewHolder.recurringIndicatorTextview.setText(viewHolder.view.getContext().getString(R.string.weekly));
+                    viewHolder.recurringIndicatorTextView.setText(viewHolder.view.getContext().getString(R.string.weekly));
                     break;
                 case BI_WEEKLY:
-                    viewHolder.recurringIndicatorTextview.setText(viewHolder.view.getContext().getString(R.string.bi_weekly));
+                    viewHolder.recurringIndicatorTextView.setText(viewHolder.view.getContext().getString(R.string.bi_weekly));
                     break;
                 case MONTHLY:
-                    viewHolder.recurringIndicatorTextview.setText(viewHolder.view.getContext().getString(R.string.monthly));
+                    viewHolder.recurringIndicatorTextView.setText(viewHolder.view.getContext().getString(R.string.monthly));
                     break;
                 case YEARLY:
-                    viewHolder.recurringIndicatorTextview.setText(viewHolder.view.getContext().getString(R.string.yearly));
+                    viewHolder.recurringIndicatorTextView.setText(viewHolder.view.getContext().getString(R.string.yearly));
                     break;
             }
         }
 
-        final View.OnClickListener onClickListener = new View.OnClickListener()
-        {
+        final View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
-                if (expense.isRecurring())
-                {
+            public void onClick(View v) {
+                if (expense.isRecurring()) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(activity);
                     builder.setTitle(expense.isRevenue() ? R.string.dialog_edit_recurring_income_title : R.string.dialog_edit_recurring_expense_title);
-                    builder.setItems(expense.isRevenue() ? R.array.dialog_edit_recurring_income_choices : R.array.dialog_edit_recurring_expense_choices, new DialogInterface.OnClickListener()
-                    {
-                        public void onClick(DialogInterface dialog, int which)
-                        {
-                            switch (which)
-                            {
+                    builder.setItems(expense.isRevenue() ? R.array.dialog_edit_recurring_income_choices : R.array.dialog_edit_recurring_expense_choices, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which) {
                                 case 0: // Edit this one
                                 {
                                     Intent startIntent = new Intent(viewHolder.view.getContext(), ExpenseEditActivity.class);
@@ -240,17 +228,12 @@ public class ExpensesRecyclerViewAdapter extends RecyclerView.Adapter<ExpensesRe
                         }
                     });
                     builder.show();
-                }
-                else
-                {
+                } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(activity);
                     builder.setTitle(expense.isRevenue() ? R.string.dialog_edit_income_title : R.string.dialog_edit_expense_title);
-                    builder.setItems(expense.isRevenue() ? R.array.dialog_edit_income_choices : R.array.dialog_edit_expense_choices, new DialogInterface.OnClickListener()
-                    {
-                        public void onClick(DialogInterface dialog, int which)
-                        {
-                            switch (which)
-                            {
+                    builder.setItems(expense.isRevenue() ? R.array.dialog_edit_income_choices : R.array.dialog_edit_expense_choices, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which) {
                                 case 0: // Edit expense
                                 {
                                     Intent startIntent = new Intent(viewHolder.view.getContext(), ExpenseEditActivity.class);
@@ -281,11 +264,9 @@ public class ExpensesRecyclerViewAdapter extends RecyclerView.Adapter<ExpensesRe
 
         viewHolder.view.setOnClickListener(onClickListener);
 
-        viewHolder.view.setOnLongClickListener(new View.OnLongClickListener()
-        {
+        viewHolder.view.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public boolean onLongClick(View v)
-            {
+            public boolean onLongClick(View v) {
                 onClickListener.onClick(v);
                 return true;
             }
@@ -293,8 +274,7 @@ public class ExpensesRecyclerViewAdapter extends RecyclerView.Adapter<ExpensesRe
     }
 
     @Override
-    public int getItemCount()
-    {
+    public int getItemCount() {
         return expenses.size();
     }
 
@@ -303,24 +283,24 @@ public class ExpensesRecyclerViewAdapter extends RecyclerView.Adapter<ExpensesRe
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
-    public static class ViewHolder extends RecyclerView.ViewHolder
-    {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         public final TextView expenseTitleTextView;
+        public final TextView expenseMemoTextView;
         public final TextView expenseAmountTextView;
         public final ViewGroup recurringIndicator;
-        public final TextView recurringIndicatorTextview;
+        public final TextView recurringIndicatorTextView;
         public final ImageView positiveIndicator;
         public final View view;
 
-        public ViewHolder(View v)
-        {
+        public ViewHolder(View v) {
             super(v);
 
             view = v;
             expenseTitleTextView = (TextView) v.findViewById(R.id.expense_title);
+            expenseMemoTextView = (TextView) v.findViewById(R.id.expense_memo);
             expenseAmountTextView = (TextView) v.findViewById(R.id.expense_amount);
             recurringIndicator = (ViewGroup) v.findViewById(R.id.recurring_indicator);
-            recurringIndicatorTextview = (TextView) v.findViewById(R.id.recurring_indicator_textview);
+            recurringIndicatorTextView = (TextView) v.findViewById(R.id.recurring_indicator_textview);
             positiveIndicator = (ImageView) v.findViewById(R.id.positive_indicator);
         }
     }

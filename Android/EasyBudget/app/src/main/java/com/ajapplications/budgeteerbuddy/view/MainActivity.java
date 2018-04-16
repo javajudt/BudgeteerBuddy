@@ -16,14 +16,12 @@
 
 package com.ajapplications.budgeteerbuddy.view;
 
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -42,16 +40,15 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ajapplications.budgeteerbuddy.EasyBudget;
+import com.ajapplications.budgeteerbuddy.R;
 import com.ajapplications.budgeteerbuddy.helper.CurrencyHelper;
 import com.ajapplications.budgeteerbuddy.helper.Logger;
 import com.ajapplications.budgeteerbuddy.helper.ParameterKeys;
@@ -65,7 +62,6 @@ import com.ajapplications.budgeteerbuddy.model.db.DBCache;
 import com.ajapplications.budgeteerbuddy.view.main.ExpensesRecyclerViewAdapter;
 import com.ajapplications.budgeteerbuddy.view.main.calendar.CalendarFragment;
 import com.ajapplications.budgeteerbuddy.view.selectcurrency.SelectCurrencyFragment;
-import com.ajapplications.budgeteerbuddy.R;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.google.android.gms.appinvite.AppInviteReferral;
@@ -84,8 +80,7 @@ import java.util.Locale;
  *
  * @author Benoit LETONDOR
  */
-public class MainActivity extends DBActivity
-{
+public class MainActivity extends DBActivity {
     /**
      * Snackbar with actions must be shown 5s
      */
@@ -104,8 +99,8 @@ public class MainActivity extends DBActivity
     public static final String INTENT_REDIRECT_TO_SETTINGS_EXTRA = "intent.extra.redirecttosettings";
 
     public final static String ANIMATE_TRANSITION_KEY = "animate";
-    public final static String CENTER_X_KEY           = "centerX";
-    public final static String CENTER_Y_KEY           = "centerY";
+    public final static String CENTER_X_KEY = "centerX";
+    public final static String CENTER_Y_KEY = "centerY";
 
     private static final String CALENDAR_SAVED_STATE = "calendar_saved_state";
     private static final String RECYCLE_VIEW_SAVED_DATE = "recycleViewSavedDate";
@@ -114,11 +109,11 @@ public class MainActivity extends DBActivity
 
     private CalendarFragment calendarFragment;
     private ExpensesRecyclerViewAdapter expensesViewAdapter;
-    private CoordinatorLayout           coordinatorLayout;
+    private CoordinatorLayout coordinatorLayout;
 
-    private RecyclerView                recyclerView;
-    private View                        recyclerViewPlaceholder;
-    private FloatingActionsMenu         menu;
+    private RecyclerView recyclerView;
+    private View recyclerViewPlaceholder;
+    private FloatingActionsMenu menu;
 
     private TextView budgetLine;
     private TextView budgetLineAmount;
@@ -129,11 +124,9 @@ public class MainActivity extends DBActivity
 // ------------------------------------------>
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         // Launch welcome screen if needed
-        if( Parameters.getInstance(this).getInt(ParameterKeys.ONBOARDING_STEP, -1) != WelcomeActivity.STEP_COMPLETED )
-        {
+        if (Parameters.getInstance(this).getInt(ParameterKeys.ONBOARDING_STEP, -1) != WelcomeActivity.STEP_COMPLETED) {
             Intent startIntent = new Intent(this, WelcomeActivity.class);
             ActivityCompat.startActivityForResult(this, startIntent, WELCOME_SCREEN_ACTIVITY_CODE, null);
         }
@@ -142,8 +135,7 @@ public class MainActivity extends DBActivity
         setContentView(R.layout.activity_main);
 
         // App invites
-        if( savedInstanceState == null && AppInviteReferral.hasReferral(getIntent()) )
-        {
+        if (savedInstanceState == null && AppInviteReferral.hasReferral(getIntent())) {
             updateInvitationStatus(getIntent());
         }
 
@@ -165,31 +157,24 @@ public class MainActivity extends DBActivity
         filter.addAction(Intent.ACTION_VIEW);
 //        filter.addAction(EasyBudget.INTENT_IAB_STATUS_CHANGED);
 
-        receiver = new BroadcastReceiver()
-        {
+        receiver = new BroadcastReceiver() {
             @Override
-            public void onReceive(Context context, Intent intent)
-            {
-                if( INTENT_EXPENSE_DELETED.equals(intent.getAction()) )
-                {
+            public void onReceive(Context context, Intent intent) {
+                if (INTENT_EXPENSE_DELETED.equals(intent.getAction())) {
                     final Expense expense = (Expense) intent.getParcelableExtra("expense");
 
-                    if( db.deleteExpense(expense) )
-                    {
+                    if (db.deleteExpense(expense)) {
                         final int position = expensesViewAdapter.removeExpense(expense);
                         updateBalanceDisplayForDay(expensesViewAdapter.getDate());
                         calendarFragment.refreshView();
 
                         Snackbar snackbar = Snackbar.make(coordinatorLayout, expense.isRevenue() ? R.string.income_delete_snackbar_text : R.string.expense_delete_snackbar_text, Snackbar.LENGTH_LONG);
-                        snackbar.setAction(R.string.undo, new View.OnClickListener()
-                        {
+                        snackbar.setAction(R.string.undo, new View.OnClickListener() {
                             @Override
-                            public void onClick(View v)
-                            {
+                            public void onClick(View v) {
                                 db.persistExpense(expense, true);
 
-                                if( calendarFragment.getSelectedDate().equals(expense.getDate()) )
-                                {
+                                if (calendarFragment.getSelectedDate().equals(expense.getDate())) {
                                     expensesViewAdapter.addExpense(expense, position);
                                 }
 
@@ -201,39 +186,31 @@ public class MainActivity extends DBActivity
                         //noinspection ResourceType
                         snackbar.setDuration(ACTION_SNACKBAR_LENGTH);
                         snackbar.show();
-                    }
-                    else
-                    {
+                    } else {
                         new AlertDialog.Builder(MainActivity.this)
-                            .setTitle(R.string.expense_delete_error_title)
-                            .setMessage(R.string.expense_delete_error_message)
-                            .setNegativeButton(R.string.ok, new DialogInterface.OnClickListener()
-                            {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which)
-                                {
-                                    dialog.dismiss();
-                                }
-                            })
-                            .show();
+                                .setTitle(R.string.expense_delete_error_title)
+                                .setMessage(R.string.expense_delete_error_message)
+                                .setNegativeButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .show();
                     }
 
-                }
-                else if( INTENT_RECURRING_EXPENSE_DELETED.equals(intent.getAction()) )
-                {
+                } else if (INTENT_RECURRING_EXPENSE_DELETED.equals(intent.getAction())) {
                     final Expense expense = intent.getParcelableExtra("expense");
                     final RecurringExpenseDeleteType deleteType = RecurringExpenseDeleteType.fromValue(intent.getIntExtra("deleteType", RecurringExpenseDeleteType.ALL.getValue()));
 
-                    if( deleteType == null )
-                    {
+                    if (deleteType == null) {
                         showGenericRecurringDeleteErrorDialog();
                         Logger.error("INTENT_RECURRING_EXPENSE_DELETED came with null delete type");
 
                         return;
                     }
 
-                    if( expense.getAssociatedRecurringExpense() == null )
-                    {
+                    if (expense.getAssociatedRecurringExpense() == null) {
                         showGenericRecurringDeleteErrorDialog();
                         Logger.error("INTENT_RECURRING_EXPENSE_DELETED: Unable to retrieve recurring expense");
 
@@ -241,39 +218,30 @@ public class MainActivity extends DBActivity
                     }
 
                     // Check that if the user wants to delete series before this one, there are actually series to delete
-                    if( deleteType == RecurringExpenseDeleteType.TO && !db.hasExpensesForRecurringExpenseBeforeDate(expense.getAssociatedRecurringExpense(), expense.getDate()) )
-                    {
+                    if (deleteType == RecurringExpenseDeleteType.TO && !db.hasExpensesForRecurringExpenseBeforeDate(expense.getAssociatedRecurringExpense(), expense.getDate())) {
                         new AlertDialog.Builder(MainActivity.this)
-                            .setTitle(R.string.recurring_expense_delete_first_error_title)
-                            .setMessage(getResources().getString(R.string.recurring_expense_delete_first_error_message))
-                            .setNegativeButton(R.string.ok, new DialogInterface.OnClickListener()
-                            {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which)
-                                {
-                                    dialog.dismiss();
-                                }
-                            })
-                            .show();
+                                .setTitle(R.string.recurring_expense_delete_first_error_title)
+                                .setMessage(getResources().getString(R.string.recurring_expense_delete_first_error_message))
+                                .setNegativeButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .show();
 
                         return;
                     }
 
                     new DeleteRecurringExpenseTask(expense.getAssociatedRecurringExpense(), expense, deleteType).execute();
-                }
-                else if( SelectCurrencyFragment.CURRENCY_SELECTED_INTENT.equals(intent.getAction()) )
-                {
+                } else if (SelectCurrencyFragment.CURRENCY_SELECTED_INTENT.equals(intent.getAction())) {
                     refreshAllForDate(expensesViewAdapter.getDate());
-                }
-                else if( INTENT_SHOW_WELCOME_SCREEN.equals(intent.getAction()) )
-                {
+                } else if (INTENT_SHOW_WELCOME_SCREEN.equals(intent.getAction())) {
                     Intent startIntent = new Intent(MainActivity.this, WelcomeActivity.class);
                     ActivityCompat.startActivityForResult(MainActivity.this, startIntent, WELCOME_SCREEN_ACTIVITY_CODE, null);
-                }
-                else if( Intent.ACTION_VIEW.equals(intent.getAction()) ) // App invites referrer
+                } else if (Intent.ACTION_VIEW.equals(intent.getAction())) // App invites referrer
                 {
-                    if( AppInviteReferral.hasReferral(intent) )
-                    {
+                    if (AppInviteReferral.hasReferral(intent)) {
                         updateInvitationStatus(intent);
                     }
                 }
@@ -286,8 +254,7 @@ public class MainActivity extends DBActivity
 
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(receiver, filter);
 
-        if( getIntent() != null )
-        {
+        if (getIntent() != null) {
             openSettingsIfNeeded(getIntent());
             openMonthlyReportIfNeeded(getIntent());
             openPremiumIfNeeded(getIntent());
@@ -297,21 +264,18 @@ public class MainActivity extends DBActivity
     }
 
     @Override
-    protected void onStart()
-    {
+    protected void onStart() {
         super.onStart();
 
         // If the last stop happened yesterday (or another day), set and refresh to the current date
-        if( lastStopDate != null )
-        {
+        if (lastStopDate != null) {
             Calendar cal = Calendar.getInstance();
             int currentDay = cal.get(Calendar.DAY_OF_YEAR);
 
             cal.setTime(lastStopDate);
             int lastStopDay = cal.get(Calendar.DAY_OF_YEAR);
 
-            if( currentDay != lastStopDay )
-            {
+            if (currentDay != lastStopDay) {
                 refreshAllForDate(new Date());
             }
 
@@ -320,31 +284,26 @@ public class MainActivity extends DBActivity
     }
 
     @Override
-    protected void onStop()
-    {
+    protected void onStop() {
         lastStopDate = new Date();
 
         super.onStop();
     }
 
     @Override
-    protected void onDestroy()
-    {
+    protected void onDestroy() {
         LocalBroadcastManager.getInstance(getApplicationContext()).unregisterReceiver(receiver);
 
         super.onDestroy();
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState)
-    {
-        if (calendarFragment != null)
-        {
+    protected void onSaveInstanceState(Bundle outState) {
+        if (calendarFragment != null) {
             calendarFragment.saveStatesToKey(outState, CALENDAR_SAVED_STATE);
         }
 
-        if( expensesViewAdapter != null  )
-        {
+        if (expensesViewAdapter != null) {
             outState.putSerializable(RECYCLE_VIEW_SAVED_DATE, expensesViewAdapter.getDate());
         }
 
@@ -352,56 +311,41 @@ public class MainActivity extends DBActivity
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if( requestCode == ADD_EXPENSE_ACTIVITY_CODE || requestCode == MANAGE_RECURRING_EXPENSE_ACTIVITY_CODE)
-        {
-            if( resultCode == RESULT_OK )
-            {
+        if (requestCode == ADD_EXPENSE_ACTIVITY_CODE || requestCode == MANAGE_RECURRING_EXPENSE_ACTIVITY_CODE) {
+            if (resultCode == RESULT_OK) {
                 refreshAllForDate(calendarFragment.getSelectedDate());
             }
-        }
-        else if( requestCode == WELCOME_SCREEN_ACTIVITY_CODE )
-        {
-            if( resultCode == RESULT_OK )
-            {
+        } else if (requestCode == WELCOME_SCREEN_ACTIVITY_CODE) {
+            if (resultCode == RESULT_OK) {
                 refreshAllForDate(calendarFragment.getSelectedDate());
-            }
-            else if( resultCode == RESULT_CANCELED )
-            {
+            } else if (resultCode == RESULT_CANCELED) {
                 finish(); // Finish activity if welcome screen is finish via back button
             }
         }
     }
 
     @Override
-    public void onBackPressed()
-    {
-        if( menu != null && menu.isExpanded() )
-        {
+    public void onBackPressed() {
+        if (menu != null && menu.isExpanded()) {
             menu.collapse();
-        }
-        else
-        {
+        } else {
             super.onBackPressed();
         }
     }
 
     @Override
-    protected void onNewIntent(Intent intent)
-    {
+    protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
 
-        if( intent == null )
-        {
+        if (intent == null) {
             return;
         }
 
         // App invites
-        if (AppInviteReferral.hasReferral(intent))
-        {
+        if (AppInviteReferral.hasReferral(intent)) {
             updateInvitationStatus(intent);
         }
 
@@ -417,30 +361,24 @@ public class MainActivity extends DBActivity
      *
      * @param intent
      */
-    private void updateInvitationStatus(Intent intent)
-    {
-        try
-        {
+    private void updateInvitationStatus(Intent intent) {
+        try {
             String invitationId = AppInviteReferral.getInvitationId(intent);
-            if( invitationId != null && !invitationId.isEmpty() )
-            {
-                Logger.debug("Installation from invitation: "+invitationId);
+            if (invitationId != null && !invitationId.isEmpty()) {
+                Logger.debug("Installation from invitation: " + invitationId);
 
                 String existingId = Parameters.getInstance(getApplicationContext()).getString(ParameterKeys.INVITATION_ID);
-                if( existingId == null )
-                {
+                if (existingId == null) {
                     new AlertDialog.Builder(this)
-                        .setTitle(R.string.app_invite_welcome_title)
-                        .setMessage(R.string.app_invite_welcome_message)
-                        .setPositiveButton(R.string.app_invite_welcome_cta, new DialogInterface.OnClickListener()
-                        {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which)
-                            {
+                            .setTitle(R.string.app_invite_welcome_title)
+                            .setMessage(R.string.app_invite_welcome_message)
+                            .setPositiveButton(R.string.app_invite_welcome_cta, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
 
-                            }
-                        })
-                        .show();
+                                }
+                            })
+                            .show();
                 }
 
                 Parameters.getInstance(getApplicationContext()).putString(ParameterKeys.INVITATION_ID, invitationId);
@@ -453,18 +391,14 @@ public class MainActivity extends DBActivity
 
             Logger.debug("Found conversion from source: " + source + " and referrer: " + referrer);
 
-            if( source != null )
-            {
+            if (source != null) {
                 Parameters.getInstance(getApplicationContext()).putString(ParameterKeys.INSTALLATION_SOURCE, source);
             }
 
-            if( referrer != null )
-            {
+            if (referrer != null) {
                 Parameters.getInstance(getApplicationContext()).putString(ParameterKeys.INSTALLATION_REFERRER, referrer);
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             Logger.error("Error while getting invitation id from intent", e);
         }
     }
@@ -475,16 +409,14 @@ public class MainActivity extends DBActivity
      * @param context
      * @return
      */
-    public static String buildAppInvitesReferrerDeeplink(@NonNull Context context)
-    {
+    public static String buildAppInvitesReferrerDeeplink(@NonNull Context context) {
         return context.getResources().getString(R.string.app_invite_referral, Parameters.getInstance(context).getString(ParameterKeys.LOCAL_ID));
     }
 
 // ------------------------------------------>
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
+    public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
@@ -494,16 +426,13 @@ public class MainActivity extends DBActivity
 //            menu.removeItem(R.id.action_monthly_report);
 //        }
 //        else if( !UserHelper.hasUserSawMonthlyReportHint(this) )
-        if( !UserHelper.hasUserSawMonthlyReportHint(this) )
-        {
+        if (!UserHelper.hasUserSawMonthlyReportHint(this)) {
             final View monthlyReportHint = findViewById(R.id.monthly_report_hint);
             monthlyReportHint.setVisibility(View.VISIBLE);
 
-            findViewById(R.id.monthly_report_hint_button).setOnClickListener(new View.OnClickListener()
-            {
+            findViewById(R.id.monthly_report_hint_button).setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v)
-                {
+                public void onClick(View v) {
                     monthlyReportHint.setVisibility(View.GONE);
                     UserHelper.setUserSawMonthlyReportHint(MainActivity.this);
                 }
@@ -514,16 +443,14 @@ public class MainActivity extends DBActivity
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
+    public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if ( id == R.id.action_settings)
-        {
+        if (id == R.id.action_settings) {
             Intent startIntent = new Intent(this, SettingsActivity.class);
             ActivityCompat.startActivity(MainActivity.this, startIntent, null);
 
@@ -672,9 +599,7 @@ public class MainActivity extends DBActivity
             });
 
             return true;
-        }*/
-        else if( id == R.id.action_monthly_report )
-        {
+        }*/ else if (id == R.id.action_monthly_report) {
             Intent startIntent = new Intent(this, MonthlyReportActivity.class);
             ActivityCompat.startActivity(MainActivity.this, startIntent, null);
 
@@ -692,38 +617,27 @@ public class MainActivity extends DBActivity
      *
      * @param day
      */
-    private void updateBalanceDisplayForDay(@NonNull Date day)
-    {
+    private void updateBalanceDisplayForDay(@NonNull Date day) {
         double balance = 0; // Just to keep a positive number if balance == 0
         balance -= db.getBalanceForDay(day);
 
         SimpleDateFormat format = new SimpleDateFormat(getResources().getString(R.string.account_balance_date_format), Locale.getDefault());
 
         String formatted = getResources().getString(R.string.account_balance_format, format.format(day));
-        if( formatted.endsWith(".:") ) //FIXME it's ugly!!
-        {
+        if (formatted.endsWith(".:")) //FIXME it's ugly!!
             formatted = formatted.substring(0, formatted.length() - 2) + ":"; // Remove . at the end of the month (ex: nov.: -> nov:)
-        }
-        else if( formatted.endsWith(". :") ) //FIXME it's ugly!!
-        {
+        else if (formatted.endsWith(". :")) //FIXME it's ugly!!
             formatted = formatted.substring(0, formatted.length() - 3) + " :"; // Remove . at the end of the month (ex: nov. : -> nov :)
-        }
 
         budgetLine.setText(formatted);
         budgetLineAmount.setText(CurrencyHelper.getFormattedCurrencyString(this, balance));
 
-        if( balance <= 0 )
-        {
+        if (balance <= 0)
             budgetLineContainer.setBackgroundResource(R.color.budget_red);
-        }
-        else if( balance < Parameters.getInstance(getApplicationContext()).getInt(ParameterKeys.LOW_MONEY_WARNING_AMOUNT, EasyBudget.DEFAULT_LOW_MONEY_WARNING_AMOUNT) )
-        {
+        else if (balance < Parameters.getInstance(getApplicationContext()).getInt(ParameterKeys.LOW_MONEY_WARNING_AMOUNT, EasyBudget.DEFAULT_LOW_MONEY_WARNING_AMOUNT))
             budgetLineContainer.setBackgroundResource(R.color.budget_orange);
-        }
         else
-        {
             budgetLineContainer.setBackgroundResource(R.color.budget_green);
-        }
     }
 
     /**
@@ -732,10 +646,8 @@ public class MainActivity extends DBActivity
      *
      * @param intent
      */
-    private void openSettingsIfNeeded(Intent intent)
-    {
-        if( intent.getBooleanExtra(INTENT_REDIRECT_TO_SETTINGS_EXTRA, false) )
-        {
+    private void openSettingsIfNeeded(Intent intent) {
+        if (intent.getBooleanExtra(INTENT_REDIRECT_TO_SETTINGS_EXTRA, false)) {
             Intent startIntent = new Intent(this, SettingsActivity.class);
             ActivityCompat.startActivity(MainActivity.this, startIntent, null);
         }
@@ -746,20 +658,15 @@ public class MainActivity extends DBActivity
      *
      * @param intent
      */
-    private void openMonthlyReportIfNeeded(Intent intent)
-    {
-        try
-        {
+    private void openMonthlyReportIfNeeded(Intent intent) {
+        try {
             Uri data = intent.getData();
-            if( data != null && "true".equals(data.getQueryParameter("monthly")) )
-            {
+            if (data != null && "true".equals(data.getQueryParameter("monthly"))) {
                 Intent startIntent = new Intent(this, MonthlyReportActivity.class);
                 startIntent.putExtra(MonthlyReportActivity.FROM_NOTIFICATION_EXTRA, true);
                 ActivityCompat.startActivity(MainActivity.this, startIntent, null);
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             Logger.error("Error while opening report activity", e);
         }
     }
@@ -770,10 +677,8 @@ public class MainActivity extends DBActivity
      *
      * @param intent
      */
-    private void openPremiumIfNeeded(Intent intent)
-    {
-        if( intent.getBooleanExtra(INTENT_REDIRECT_TO_PREMIUM_EXTRA, false) )
-        {
+    private void openPremiumIfNeeded(Intent intent) {
+        if (intent.getBooleanExtra(INTENT_REDIRECT_TO_PREMIUM_EXTRA, false)) {
             Intent startIntent = new Intent(this, SettingsActivity.class);
             startIntent.putExtra(SettingsActivity.SHOW_PREMIUM_INTENT_KEY, true);
 
@@ -787,10 +692,8 @@ public class MainActivity extends DBActivity
      *
      * @param intent
      */
-    private void openAddExpenseIfNeeded(Intent intent)
-    {
-        if( intent.getBooleanExtra(INTENT_SHOW_ADD_EXPENSE, false) )
-        {
+    private void openAddExpenseIfNeeded(Intent intent) {
+        if (intent.getBooleanExtra(INTENT_SHOW_ADD_EXPENSE, false)) {
             Intent startIntent = new Intent(this, ExpenseEditActivity.class);
             startIntent.putExtra("date", new Date().getTime());
 
@@ -804,10 +707,8 @@ public class MainActivity extends DBActivity
      *
      * @param intent
      */
-    private void openAddRecurringExpenseIfNeeded(Intent intent)
-    {
-        if( intent.getBooleanExtra(INTENT_SHOW_ADD_RECURRING_EXPENSE, false) )
-        {
+    private void openAddRecurringExpenseIfNeeded(Intent intent) {
+        if (intent.getBooleanExtra(INTENT_SHOW_ADD_RECURRING_EXPENSE, false)) {
             Intent startIntent = new Intent(this, RecurringExpenseEditActivity.class);
             startIntent.putExtra("dateStart", new Date().getTime());
 
@@ -817,20 +718,16 @@ public class MainActivity extends DBActivity
 
 // ------------------------------------------>
 
-    private void initCalendarFragment(Bundle savedInstanceState)
-    {
+    private void initCalendarFragment(Bundle savedInstanceState) {
         calendarFragment = new CalendarFragment();
 
-        if( savedInstanceState != null && savedInstanceState.containsKey(CALENDAR_SAVED_STATE) && savedInstanceState.containsKey(RECYCLE_VIEW_SAVED_DATE))
-        {
+        if (savedInstanceState != null && savedInstanceState.containsKey(CALENDAR_SAVED_STATE) && savedInstanceState.containsKey(RECYCLE_VIEW_SAVED_DATE)) {
             calendarFragment.restoreStatesFromKey(savedInstanceState, CALENDAR_SAVED_STATE);
 
             Date selectedDate = (Date) savedInstanceState.getSerializable(RECYCLE_VIEW_SAVED_DATE);
             calendarFragment.setSelectedDates(selectedDate, selectedDate);
             lastStopDate = selectedDate; // Set last stop date that will be check on next onStart call
-        }
-        else
-        {
+        } else {
             Bundle args = new Bundle();
             Calendar cal = Calendar.getInstance();
             args.putInt(CaldroidFragment.MONTH, cal.get(Calendar.MONTH) + 1);
@@ -848,11 +745,9 @@ public class MainActivity extends DBActivity
             calendarFragment.setMinDate(minDate);
         }
 
-        final CaldroidListener listener = new CaldroidListener()
-        {
+        final CaldroidListener listener = new CaldroidListener() {
             @Override
-            public void onSelectDate(Date date, View view)
-            {
+            public void onSelectDate(Date date, View view) {
                 refreshAllForDate(date);
             }
 
@@ -862,8 +757,7 @@ public class MainActivity extends DBActivity
                 Intent startIntent = new Intent(MainActivity.this, ExpenseEditActivity.class);
                 startIntent.putExtra("date", date.getTime());
 
-                if( UIHelper.areAnimationsEnabled(MainActivity.this) )
-                {
+                if (UIHelper.areAnimationsEnabled(MainActivity.this)) {
                     // Get the absolute location on window for Y value
                     int viewLocation[] = new int[2];
                     view.getLocationInWindow(viewLocation);
@@ -877,8 +771,7 @@ public class MainActivity extends DBActivity
             }
 
             @Override
-            public void onChangeMonth(int month, int year)
-            {
+            public void onChangeMonth(int month, int year) {
                 Calendar cal = Calendar.getInstance();
                 cal.set(Calendar.MONTH, month);
                 cal.set(Calendar.YEAR, year);
@@ -887,15 +780,14 @@ public class MainActivity extends DBActivity
             }
 
             @Override
-            public void onCaldroidViewCreated()
-            {
+            public void onCaldroidViewCreated() {
                 Button leftButton = calendarFragment.getLeftArrowButton();
                 Button rightButton = calendarFragment.getRightArrowButton();
                 TextView textView = calendarFragment.getMonthTitleTextView();
                 GridView weekDayGreedView = calendarFragment.getWeekdayGridView();
                 LinearLayout topLayout = (LinearLayout) MainActivity.this.findViewById(com.caldroid.R.id.calendar_title_view);
 
-                LinearLayout.LayoutParams  params = (LinearLayout.LayoutParams)textView.getLayoutParams();
+                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) textView.getLayoutParams();
                 params.gravity = Gravity.TOP;
                 params.setMargins(0, 0, 0, MainActivity.this.getResources().getDimensionPixelSize(R.dimen.calendar_month_text_padding_bottom));
                 textView.setLayoutParams(params);
@@ -940,8 +832,7 @@ public class MainActivity extends DBActivity
         t.commit();
     }
 
-    private void initRecyclerView(Bundle savedInstanceState)
-    {
+    private void initRecyclerView(Bundle savedInstanceState) {
         /*
          * FAB
          */
@@ -951,41 +842,33 @@ public class MainActivity extends DBActivity
         final float backgroundAlpha = 0.8f;
         final long backgroundAnimationDuration = 200;
 
-        background.setOnClickListener(new View.OnClickListener()
-        {
+        background.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 menu.collapse();
             }
         });
 
-        menu.setOnFloatingActionsMenuUpdateListener(new FloatingActionsMenu.OnFloatingActionsMenuUpdateListener()
-        {
+        menu.setOnFloatingActionsMenuUpdateListener(new FloatingActionsMenu.OnFloatingActionsMenuUpdateListener() {
             @Override
-            public void onMenuExpanded()
-            {
+            public void onMenuExpanded() {
                 AlphaAnimation fadeInAnimation = new AlphaAnimation(0.0f, backgroundAlpha);
                 fadeInAnimation.setDuration(backgroundAnimationDuration);
                 fadeInAnimation.setFillAfter(true);
-                fadeInAnimation.setAnimationListener(new Animation.AnimationListener()
-                {
+                fadeInAnimation.setAnimationListener(new Animation.AnimationListener() {
                     @Override
-                    public void onAnimationStart(Animation animation)
-                    {
+                    public void onAnimationStart(Animation animation) {
                         background.setVisibility(View.VISIBLE);
                         background.setClickable(true);
                     }
 
                     @Override
-                    public void onAnimationEnd(Animation animation)
-                    {
+                    public void onAnimationEnd(Animation animation) {
 
                     }
 
                     @Override
-                    public void onAnimationRepeat(Animation animation)
-                    {
+                    public void onAnimationRepeat(Animation animation) {
 
                     }
                 });
@@ -994,29 +877,24 @@ public class MainActivity extends DBActivity
             }
 
             @Override
-            public void onMenuCollapsed()
-            {
+            public void onMenuCollapsed() {
                 AlphaAnimation fadeOutAnimation = new AlphaAnimation(backgroundAlpha, 0.0f);
                 fadeOutAnimation.setDuration(backgroundAnimationDuration);
                 fadeOutAnimation.setFillAfter(true);
-                fadeOutAnimation.setAnimationListener(new Animation.AnimationListener()
-                {
+                fadeOutAnimation.setAnimationListener(new Animation.AnimationListener() {
                     @Override
-                    public void onAnimationStart(Animation animation)
-                    {
+                    public void onAnimationStart(Animation animation) {
 
                     }
 
                     @Override
-                    public void onAnimationEnd(Animation animation)
-                    {
+                    public void onAnimationEnd(Animation animation) {
                         background.setVisibility(View.GONE);
                         background.setClickable(false);
                     }
 
                     @Override
-                    public void onAnimationRepeat(Animation animation)
-                    {
+                    public void onAnimationRepeat(Animation animation) {
 
                     }
                 });
@@ -1026,16 +904,13 @@ public class MainActivity extends DBActivity
         });
 
         FloatingActionButton fabNewExpense = (FloatingActionButton) findViewById(R.id.fab_new_expense);
-        fabNewExpense.setOnClickListener(new View.OnClickListener()
-        {
+        fabNewExpense.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 Intent startIntent = new Intent(MainActivity.this, ExpenseEditActivity.class);
                 startIntent.putExtra("date", calendarFragment.getSelectedDate().getTime());
 
-                if( UIHelper.areAnimationsEnabled(MainActivity.this) )
-                {
+                if (UIHelper.areAnimationsEnabled(MainActivity.this)) {
                     startIntent.putExtra(ANIMATE_TRANSITION_KEY, true);
                     startIntent.putExtra(CENTER_X_KEY, (int) menu.getX() + (int) ((float) menu.getWidth() / 1.2f));
                     startIntent.putExtra(CENTER_Y_KEY, (int) menu.getY() + (int) ((float) menu.getHeight() / 1.2f));
@@ -1048,16 +923,13 @@ public class MainActivity extends DBActivity
         });
 
         FloatingActionButton fabNewRecurringExpense = (FloatingActionButton) findViewById(R.id.fab_new_recurring_expense);
-        fabNewRecurringExpense.setOnClickListener(new View.OnClickListener()
-        {
+        fabNewRecurringExpense.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 Intent startIntent = new Intent(MainActivity.this, RecurringExpenseEditActivity.class);
                 startIntent.putExtra("dateStart", calendarFragment.getSelectedDate().getTime());
 
-                if( UIHelper.areAnimationsEnabled(MainActivity.this) )
-                {
+                if (UIHelper.areAnimationsEnabled(MainActivity.this)) {
                     startIntent.putExtra(ANIMATE_TRANSITION_KEY, true);
                     startIntent.putExtra(CENTER_X_KEY, (int) menu.getX() + (int) ((float) menu.getWidth() / 1.2f));
                     startIntent.putExtra(CENTER_Y_KEY, (int) menu.getY() + (int) ((float) menu.getHeight() / 1.2f));
@@ -1076,11 +948,9 @@ public class MainActivity extends DBActivity
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         Date date = new Date();
-        if( savedInstanceState != null && savedInstanceState.containsKey(RECYCLE_VIEW_SAVED_DATE) )
-        {
+        if (savedInstanceState != null && savedInstanceState.containsKey(RECYCLE_VIEW_SAVED_DATE)) {
             Date savedDate = (Date) savedInstanceState.getSerializable(RECYCLE_VIEW_SAVED_DATE);
-            if ( savedDate != null )
-            {
+            if (savedDate != null) {
                 date = savedDate;
             }
         }
@@ -1092,24 +962,19 @@ public class MainActivity extends DBActivity
         updateBalanceDisplayForDay(date);
     }
 
-    private void refreshRecyclerViewForDate(@NonNull Date date)
-    {
+    private void refreshRecyclerViewForDate(@NonNull Date date) {
         expensesViewAdapter.setDate(date, db);
 
-        if( db.hasExpensesForDay(date) )
-        {
+        if (db.hasExpensesForDay(date)) {
             recyclerView.setVisibility(View.VISIBLE);
             recyclerViewPlaceholder.setVisibility(View.GONE);
-        }
-        else
-        {
+        } else {
             recyclerView.setVisibility(View.GONE);
             recyclerViewPlaceholder.setVisibility(View.VISIBLE);
         }
     }
 
-    private void refreshAllForDate(@NonNull Date date)
-    {
+    private void refreshAllForDate(@NonNull Date date) {
         refreshRecyclerViewForDate(date);
         updateBalanceDisplayForDay(date);
         calendarFragment.setSelectedDates(date, date);
@@ -1119,20 +984,17 @@ public class MainActivity extends DBActivity
     /**
      * Show a generic alert dialog telling the user an error occured while deleting recurring expense
      */
-    private void showGenericRecurringDeleteErrorDialog()
-    {
+    private void showGenericRecurringDeleteErrorDialog() {
         new AlertDialog.Builder(MainActivity.this)
-            .setTitle(R.string.recurring_expense_delete_error_title)
-            .setMessage(R.string.recurring_expense_delete_error_message)
-            .setNegativeButton(R.string.ok, new DialogInterface.OnClickListener()
-            {
-                @Override
-                public void onClick(DialogInterface dialog, int which)
-                {
-                    dialog.dismiss();
-                }
-            })
-            .show();
+                .setTitle(R.string.recurring_expense_delete_error_title)
+                .setMessage(R.string.recurring_expense_delete_error_message)
+                .setNegativeButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
     }
 
 // ---------------------------------------->
@@ -1140,8 +1002,7 @@ public class MainActivity extends DBActivity
     /**
      * An asynctask to delete a recurring expense from DB
      */
-    private class DeleteRecurringExpenseTask extends AsyncTask<Void, Integer, Boolean>
-    {
+    private class DeleteRecurringExpenseTask extends AsyncTask<Void, Integer, Boolean> {
         /**
          * Dialog used to display loading to the user
          */
@@ -1150,7 +1011,7 @@ public class MainActivity extends DBActivity
         /**
          * The expense deleted by the user
          */
-        private final Expense                  expense;
+        private final Expense expense;
         /**
          * The recurring expense associated with the expense deleted by the user
          */
@@ -1173,8 +1034,7 @@ public class MainActivity extends DBActivity
 
         // ------------------------------------------->
 
-        DeleteRecurringExpenseTask(@NonNull RecurringExpense recurringExpense, @NonNull Expense expense, @NonNull RecurringExpenseDeleteType deleteType)
-        {
+        DeleteRecurringExpenseTask(@NonNull RecurringExpense recurringExpense, @NonNull Expense expense, @NonNull RecurringExpenseDeleteType deleteType) {
             this.recurringExpense = recurringExpense;
             this.expense = expense;
             this.deleteType = deleteType;
@@ -1183,65 +1043,54 @@ public class MainActivity extends DBActivity
         // ------------------------------------------->
 
         @Override
-        protected Boolean doInBackground(Void... nothing)
-        {
-            switch (deleteType)
-            {
-                case ALL:
-                {
+        protected Boolean doInBackground(Void... nothing) {
+            switch (deleteType) {
+                case ALL: {
                     recurringExpenseToRestore = recurringExpense;
                     expensesToRestore = db.getAllExpenseForRecurringExpense(recurringExpense);
 
                     boolean expensesDeleted = db.deleteAllExpenseForRecurringExpense(recurringExpense);
-                    if( !expensesDeleted )
-                    {
+                    if (!expensesDeleted) {
                         Logger.error(false, "Error while deleting expenses for recurring expense (mode ALL). deleteAllExpenseForRecurringExpense returned false");
                         return false;
                     }
 
                     boolean recurringExpenseDeleted = db.deleteRecurringExpense(recurringExpense);
-                    if( !recurringExpenseDeleted )
-                    {
+                    if (!recurringExpenseDeleted) {
                         Logger.error(false, "Error while deleting recurring expense (mode ALL). deleteRecurringExpense returned false");
                         return false;
                     }
 
                     break;
                 }
-                case FROM:
-                {
+                case FROM: {
                     expensesToRestore = db.getAllExpensesForRecurringExpenseFromDate(recurringExpense, expense.getDate());
 
                     boolean expensesDeleted = db.deleteAllExpenseForRecurringExpenseFromDate(recurringExpense, expense.getDate());
-                    if( !expensesDeleted )
-                    {
+                    if (!expensesDeleted) {
                         Logger.error(false, "Error while deleting expenses for recurring expense (mode FROM). deleteAllExpenseForRecurringExpenseFromDate returned false");
                         return false;
                     }
 
                     break;
                 }
-                case TO:
-                {
+                case TO: {
                     expensesToRestore = db.getAllExpensesForRecurringExpenseBeforeDate(recurringExpense, expense.getDate());
 
                     boolean expensesDeleted = db.deleteAllExpenseForRecurringExpenseBeforeDate(recurringExpense, expense.getDate());
-                    if( !expensesDeleted )
-                    {
+                    if (!expensesDeleted) {
                         Logger.error(false, "Error while deleting expenses for recurring expense (mode TO). deleteAllExpenseForRecurringExpenseBeforeDate returned false");
                         return false;
                     }
 
                     break;
                 }
-                case ONE:
-                {
+                case ONE: {
                     expensesToRestore = new ArrayList<>(1);
                     expensesToRestore.add(expense);
 
                     boolean expenseDeleted = db.deleteExpense(expense);
-                    if( !expenseDeleted )
-                    {
+                    if (!expenseDeleted) {
                         Logger.error("Error while deleting expense for recurring expense (mode ONE). deleteExpense returned false");
                         return false;
                     }
@@ -1254,8 +1103,7 @@ public class MainActivity extends DBActivity
         }
 
         @Override
-        protected void onPreExecute()
-        {
+        protected void onPreExecute() {
             // Show a ProgressDialog
             dialog = new ProgressDialog(MainActivity.this);
             dialog.setIndeterminate(true);
@@ -1267,24 +1115,20 @@ public class MainActivity extends DBActivity
         }
 
         @Override
-        protected void onPostExecute(Boolean result)
-        {
+        protected void onPostExecute(Boolean result) {
             // Dismiss the dialog
             dialog.dismiss();
 
-            if (result)
-            {
+            if (result) {
                 // Refresh and show confirm snackbar
                 refreshAllForDate(expensesViewAdapter.getDate());
                 Snackbar snackbar = Snackbar.make(coordinatorLayout, R.string.recurring_expense_delete_success_message, Snackbar.LENGTH_LONG);
 
-                if( expensesToRestore != null ) // just in case..
+                if (expensesToRestore != null) // just in case..
                 {
-                    snackbar.setAction(R.string.undo, new View.OnClickListener()
-                    {
+                    snackbar.setAction(R.string.undo, new View.OnClickListener() {
                         @Override
-                        public void onClick(View v)
-                        {
+                        public void onClick(View v) {
                             new CancelDeleteRecurringExpenseTask(expensesToRestore, recurringExpenseToRestore).execute();
                         }
                     });
@@ -1295,9 +1139,7 @@ public class MainActivity extends DBActivity
                 //noinspection ResourceType
                 snackbar.setDuration(ACTION_SNACKBAR_LENGTH);
                 snackbar.show();
-            }
-            else
-            {
+            } else {
                 showGenericRecurringDeleteErrorDialog();
             }
         }
@@ -1308,8 +1150,7 @@ public class MainActivity extends DBActivity
     /**
      * An asynctask to restore deleted recurring expense from DB
      */
-    private class CancelDeleteRecurringExpenseTask extends AsyncTask<Void, Void, Boolean>
-    {
+    private class CancelDeleteRecurringExpenseTask extends AsyncTask<Void, Void, Boolean> {
         /**
          * Dialog used to display loading to the user
          */
@@ -1327,12 +1168,10 @@ public class MainActivity extends DBActivity
         // ------------------------------------------->
 
         /**
-         *
-         * @param expensesToRestore The deleted expenses to restore
+         * @param expensesToRestore         The deleted expenses to restore
          * @param recurringExpenseToRestore the deleted recurring expense to restore
          */
-        private CancelDeleteRecurringExpenseTask(@NonNull List<Expense> expensesToRestore, @Nullable RecurringExpense recurringExpenseToRestore)
-        {
+        private CancelDeleteRecurringExpenseTask(@NonNull List<Expense> expensesToRestore, @Nullable RecurringExpense recurringExpenseToRestore) {
             this.expensesToRestore = expensesToRestore;
             this.recurringExpenseToRestore = recurringExpenseToRestore;
         }
@@ -1340,8 +1179,7 @@ public class MainActivity extends DBActivity
         // ------------------------------------------->
 
         @Override
-        protected void onPreExecute()
-        {
+        protected void onPreExecute() {
             // Show a ProgressDialog
             dialog = new ProgressDialog(MainActivity.this);
             dialog.setIndeterminate(true);
@@ -1353,20 +1191,15 @@ public class MainActivity extends DBActivity
         }
 
         @Override
-        protected Boolean doInBackground(Void... params)
-        {
-            if( recurringExpenseToRestore != null )
-            {
-                if( !db.addRecurringExpense(recurringExpenseToRestore) )
-                {
+        protected Boolean doInBackground(Void... params) {
+            if (recurringExpenseToRestore != null) {
+                if (!db.addRecurringExpense(recurringExpenseToRestore)) {
                     return false;
                 }
             }
 
-            for(Expense expense: expensesToRestore)
-            {
-                if( !db.persistExpense(expense, true) )
-                {
+            for (Expense expense : expensesToRestore) {
+                if (!db.persistExpense(expense, true)) {
                     return false;
                 }
             }
@@ -1375,31 +1208,25 @@ public class MainActivity extends DBActivity
         }
 
         @Override
-        protected void onPostExecute(Boolean result)
-        {
+        protected void onPostExecute(Boolean result) {
             // Dismiss the dialog
             dialog.dismiss();
 
-            if (result)
-            {
+            if (result) {
                 // Refresh and show confirm snackbar
                 refreshAllForDate(expensesViewAdapter.getDate());
                 Snackbar.make(coordinatorLayout, R.string.recurring_expense_restored_success_message, Snackbar.LENGTH_LONG).show();
-            }
-            else
-            {
+            } else {
                 new AlertDialog.Builder(MainActivity.this)
-                    .setTitle(R.string.recurring_expense_restore_error_title)
-                    .setMessage(getResources().getString(R.string.recurring_expense_restore_error_message))
-                    .setNegativeButton(R.string.ok, new DialogInterface.OnClickListener()
-                    {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which)
-                        {
-                            dialog.dismiss();
-                        }
-                    })
-                    .show();
+                        .setTitle(R.string.recurring_expense_restore_error_title)
+                        .setMessage(getResources().getString(R.string.recurring_expense_restore_error_message))
+                        .setNegativeButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .show();
             }
         }
     }

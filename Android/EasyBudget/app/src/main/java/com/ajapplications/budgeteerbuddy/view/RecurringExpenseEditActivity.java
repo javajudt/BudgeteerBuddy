@@ -186,9 +186,9 @@ public class RecurringExpenseEditActivity extends DBActivity {
     private boolean validateInputs() {
         boolean ok = true;
 
-        String description = memoEditText.getText().toString();
-        if (description.trim().isEmpty()) {
-            memoEditText.setError(getResources().getString(R.string.no_description_error));
+        String category = categoryEditText.getText().toString();
+        if (category.trim().isEmpty()){
+            categoryEditText.setError(getResources().getString(R.string.no_category_error));
             ok = false;
         }
 
@@ -277,9 +277,9 @@ public class RecurringExpenseEditActivity extends DBActivity {
      * Set up text fields, spinner and focus behavior
      */
     private void setUpInputs() {
-        ((TextInputLayout) findViewById(R.id.amount_inputlayout)).setHint(getResources().getString(R.string.amount, CurrencyHelper.getUserCurrency(this).getSymbol()));
+        ((TextInputLayout) findViewById(R.id.amount_inputlayout)).setHint(getResources().getString(R.string.amount));
 
-        memoEditText = (EditText) findViewById(R.id.description_edittext);
+        memoEditText = (EditText) findViewById(R.id.memo_edittext);
 
         amountEditText = (EditText) findViewById(R.id.amount_edittext);
         UIHelper.preventUnsupportedInputForDecimals(amountEditText);

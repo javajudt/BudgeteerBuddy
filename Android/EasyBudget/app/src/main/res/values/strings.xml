@@ -49,8 +49,8 @@
     <string name="cancel">Cancel</string>
     <string name="undo">UNDO</string>
     <string name="ok">OK</string>
-    <string name="amount">Amount ( %s )</string>
-    <string name="memo">Memo</string>
+    <string name="amount">Amount ( $ )</string>
+    <string name="memo">Memo (Optional)</string>
     <string name="type">Type</string>
     <string name="payment">Expense</string>
     <string name="income">Income</string>
