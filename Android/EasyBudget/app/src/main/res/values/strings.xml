@@ -238,19 +238,15 @@
     <string name="onboarding_screen_1_cta">Yes!</string>
 
     <string name="onboarding_screen_2_title">Let\'s get to know each other!</string>
-    <string name="onboarding_screen_2_message">Step 1: What currency do you use?\n(You can change it later in the settings)</string>
-    <string name="onboarding_screen_2_cta">Go with %s</string>
+    <string name="onboarding_screen_2_message">Step 2: How much do you currently have on your account?\n(You can set and change it later)</string>
+    <string name="onboarding_screen_2_cta">Start with %s</string>
 
-    <string name="onboarding_screen_3_title">Let\'s get to know each other!</string>
-    <string name="onboarding_screen_3_message">Step 2: How much do you currently have on your account?\n(You can set and change it later)</string>
-    <string name="onboarding_screen_3_cta">Start with %s</string>
-
-    <string name="onboarding_screen_4_title">All set!</string>
-    <string name="onboarding_screen_4_message">(That was easy, huh?)</string>
-    <string name="onboarding_screen_4_message2">What do you have to do next?</string>
-    <string name="onboarding_screen_4_message3">1. Add recurring expenses and incomes (salary, rent, bills…)\n2. Don\'t forget to add your daily expenses and incomes during the day</string>
-    <string name="onboarding_screen_4_message4">Thank you for using EasyBudget, and welcome :)</string>
-    <string name="onboarding_screen_4_cta">Let\'s go!</string>
+    <string name="onboarding_screen_3_title">All set!</string>
+    <string name="onboarding_screen_3_message">(That was easy, huh?)</string>
+    <string name="onboarding_screen_3_message2">What do you have to do next?</string>
+    <string name="onboarding_screen_3_message3">1. Add recurring expenses and incomes (salary, rent, bills…)\n2. Don\'t forget to add your daily expenses and incomes during the day</string>
+    <string name="onboarding_screen_3_message4">Thank you for using EasyBudget, and welcome :)</string>
+    <string name="onboarding_screen_3_cta">Let\'s go!</string>
 
     <string name="app_invite_title">Tell your friends!</string>
     <string name="app_invite_message">You should try EasyBudget: An incredibly easy to use app to manage your budget!</string>
