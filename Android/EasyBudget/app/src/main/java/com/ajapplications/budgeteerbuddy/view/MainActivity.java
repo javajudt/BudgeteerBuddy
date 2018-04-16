@@ -61,7 +61,6 @@ import com.ajapplications.budgeteerbuddy.model.RecurringExpenseDeleteType;
 import com.ajapplications.budgeteerbuddy.model.db.DBCache;
 import com.ajapplications.budgeteerbuddy.view.main.ExpensesRecyclerViewAdapter;
 import com.ajapplications.budgeteerbuddy.view.main.calendar.CalendarFragment;
-import com.ajapplications.budgeteerbuddy.view.selectcurrency.SelectCurrencyFragment;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.google.android.gms.appinvite.AppInviteReferral;
@@ -152,7 +151,7 @@ public class MainActivity extends DBActivity {
         IntentFilter filter = new IntentFilter();
         filter.addAction(INTENT_EXPENSE_DELETED);
         filter.addAction(INTENT_RECURRING_EXPENSE_DELETED);
-        filter.addAction(SelectCurrencyFragment.CURRENCY_SELECTED_INTENT);
+        //filter.addAction(SelectCurrencyFragment.CURRENCY_SELECTED_INTENT);
         filter.addAction(INTENT_SHOW_WELCOME_SCREEN);
         filter.addAction(Intent.ACTION_VIEW);
 //        filter.addAction(EasyBudget.INTENT_IAB_STATUS_CHANGED);
@@ -234,8 +233,8 @@ public class MainActivity extends DBActivity {
                     }
 
                     new DeleteRecurringExpenseTask(expense.getAssociatedRecurringExpense(), expense, deleteType).execute();
-                } else if (SelectCurrencyFragment.CURRENCY_SELECTED_INTENT.equals(intent.getAction())) {
-                    refreshAllForDate(expensesViewAdapter.getDate());
+//                } else if (SelectCurrencyFragment.CURRENCY_SELECTED_INTENT.equals(intent.getAction())) {
+//                    refreshAllForDate(expensesViewAdapter.getDate());
                 } else if (INTENT_SHOW_WELCOME_SCREEN.equals(intent.getAction())) {
                     Intent startIntent = new Intent(MainActivity.this, WelcomeActivity.class);
                     ActivityCompat.startActivityForResult(MainActivity.this, startIntent, WELCOME_SCREEN_ACTIVITY_CODE, null);

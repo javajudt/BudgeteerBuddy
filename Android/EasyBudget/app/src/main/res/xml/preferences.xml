@@ -18,9 +18,6 @@
     <PreferenceCategory
         android:title="@string/setting_category_general_title">
 
-        <Preference android:key="@string/setting_category_currency_change_button_key"
-            android:summary="@string/setting_category_currency_change_button_message"/>
-
         <Preference android:key="@string/setting_category_limit_set_button_key"
             android:title="@string/setting_category_limit_set_button_title"
             android:summary="@string/setting_category_limit_set_button_message" />

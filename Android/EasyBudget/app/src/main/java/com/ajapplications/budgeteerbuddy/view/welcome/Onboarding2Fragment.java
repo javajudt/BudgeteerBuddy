@@ -17,12 +17,7 @@
 package com.ajapplications.budgeteerbuddy.view.welcome;
 
 import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,7 +25,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.ajapplications.budgeteerbuddy.helper.CurrencyHelper;
-import com.ajapplications.budgeteerbuddy.view.selectcurrency.SelectCurrencyFragment;
 import com.ajapplications.budgeteerbuddy.R;
 
 import java.util.Currency;
@@ -78,22 +72,22 @@ public class Onboarding2Fragment extends OnboardingFragment
         selectedCurrency = CurrencyHelper.getUserCurrency(v.getContext());
         setNextButtonText();
 
-        Fragment selectCurrencyFragment = new SelectCurrencyFragment();
-        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        transaction.add(R.id.expense_select_container, selectCurrencyFragment).commit();
+//        Fragment selectCurrencyFragment = new SelectCurrencyFragment();
+//        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+//        transaction.add(R.id.expense_select_container, selectCurrencyFragment).commit();
 
-        IntentFilter filter = new IntentFilter(SelectCurrencyFragment.CURRENCY_SELECTED_INTENT);
-        receiver = new BroadcastReceiver()
-        {
-            @Override
-            public void onReceive(Context context, Intent intent)
-            {
-                selectedCurrency = Currency.getInstance(intent.getStringExtra(SelectCurrencyFragment.CURRENCY_ISO_EXTRA));
-                setNextButtonText();
-            }
-        };
-
-        LocalBroadcastManager.getInstance(v.getContext()).registerReceiver(receiver, filter);
+//        IntentFilter filter = new IntentFilter(SelectCurrencyFragment.CURRENCY_SELECTED_INTENT);
+//        receiver = new BroadcastReceiver()
+//        {
+//            @Override
+//            public void onReceive(Context context, Intent intent)
+//            {
+//                selectedCurrency = Currency.getInstance(intent.getStringExtra(SelectCurrencyFragment.CURRENCY_ISO_EXTRA));
+//                setNextButtonText();
+//            }
+//        };
+//
+//        LocalBroadcastManager.getInstance(v.getContext()).registerReceiver(receiver, filter);
 
         return v;
     }

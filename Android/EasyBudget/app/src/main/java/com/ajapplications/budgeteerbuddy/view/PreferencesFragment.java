@@ -18,10 +18,8 @@ package com.ajapplications.budgeteerbuddy.view;
 
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
@@ -38,7 +36,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.ajapplications.budgeteerbuddy.EasyBudget;
-import com.ajapplications.budgeteerbuddy.PremiumCheckStatus;
 import com.ajapplications.budgeteerbuddy.helper.CurrencyHelper;
 import com.ajapplications.budgeteerbuddy.helper.Logger;
 import com.ajapplications.budgeteerbuddy.helper.ParameterKeys;
@@ -47,7 +44,6 @@ import com.ajapplications.budgeteerbuddy.helper.UIHelper;
 import com.ajapplications.budgeteerbuddy.helper.UserHelper;
 import com.ajapplications.budgeteerbuddy.notif.DailyNotifOptinService;
 import com.ajapplications.budgeteerbuddy.notif.MonthlyReportNotifService;
-import com.ajapplications.budgeteerbuddy.view.selectcurrency.SelectCurrencyFragment;
 import com.ajapplications.budgeteerbuddy.BuildConfig;
 import com.ajapplications.budgeteerbuddy.R;
 import com.google.android.gms.appinvite.AppInviteInvitation;
@@ -59,10 +55,10 @@ import com.google.android.gms.appinvite.AppInviteInvitation;
  */
 public class PreferencesFragment extends PreferenceFragment
 {
-    /**
-     * The dialog to select a new currency (will be null if not shown)
-     */
-    private SelectCurrencyFragment selectCurrencyDialog;
+//    /**
+//     * The dialog to select a new currency (will be null if not shown)
+//     */
+//    private SelectCurrencyFragment selectCurrencyDialog;
     /**
      * Broadcast receiver (used for currency selection)
      */
@@ -185,19 +181,19 @@ public class PreferencesFragment extends PreferenceFragment
         /*
          * Currency change button
          */
-        final Preference currencyPreference = findPreference(getResources().getString(R.string.setting_category_currency_change_button_key));
-        currencyPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
-        {
-            @Override
-            public boolean onPreferenceClick(Preference preference)
-            {
-                selectCurrencyDialog = new SelectCurrencyFragment();
-                selectCurrencyDialog.show(((SettingsActivity) getActivity()).getSupportFragmentManager(), "SelectCurrency");
-
-                return false;
-            }
-        });
-        setCurrencyPreferenceTitle(currencyPreference);
+//        final Preference currencyPreference = findPreference(getResources().getString(R.string.setting_category_currency_change_button_key));
+//        currencyPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
+//        {
+//            @Override
+//            public boolean onPreferenceClick(Preference preference)
+//            {
+//                selectCurrencyDialog = new SelectCurrencyFragment();
+//                selectCurrencyDialog.show(((SettingsActivity) getActivity()).getSupportFragmentManager(), "SelectCurrency");
+//
+//                return false;
+//            }
+//        });
+//        setCurrencyPreferenceTitle(currencyPreference);
 
         /*
          * Warning limit button
@@ -402,21 +398,21 @@ public class PreferencesFragment extends PreferenceFragment
         /*
          * Broadcast receiver
          */
-        IntentFilter filter = new IntentFilter(SelectCurrencyFragment.CURRENCY_SELECTED_INTENT);
+//        IntentFilter filter = new IntentFilter(SelectCurrencyFragment.CURRENCY_SELECTED_INTENT);
 //        filter.addAction(EasyBudget.INTENT_IAB_STATUS_CHANGED);
 //        filter.addAction(USER_GONE_PREMIUM_INTENT);
-        receiver = new BroadcastReceiver()
-        {
-            @Override
-            public void onReceive(Context context, Intent intent)
-            {
-                if( SelectCurrencyFragment.CURRENCY_SELECTED_INTENT.equals(intent.getAction()) && selectCurrencyDialog != null )
-                {
-                    setCurrencyPreferenceTitle(currencyPreference);
-
-                    selectCurrencyDialog.dismiss();
-                    selectCurrencyDialog = null;
-                }
+//        receiver = new BroadcastReceiver()
+//        {
+//            @Override
+//            public void onReceive(Context context, Intent intent)
+//            {
+//                if( SelectCurrencyFragment.CURRENCY_SELECTED_INTENT.equals(intent.getAction()) && selectCurrencyDialog != null )
+//                {
+//                    setCurrencyPreferenceTitle(currencyPreference);
+//
+//                    selectCurrencyDialog.dismiss();
+//                    selectCurrencyDialog = null;
+//                }
 //                else if( EasyBudget.INTENT_IAB_STATUS_CHANGED.equals(intent.getAction()) )
 //                {
 //                    try
@@ -449,9 +445,9 @@ public class PreferencesFragment extends PreferenceFragment
 //
 //                    refreshPremiumPreference();
 //                }
-            }
-        };
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(receiver, filter);
+//            }
+//        };
+//        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(receiver, filter);
 
         /*
          * Check if we should show premium popup
