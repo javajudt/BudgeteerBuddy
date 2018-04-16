@@ -111,8 +111,6 @@ public class WelcomeActivity extends DBActivity
                         return new Onboarding3Fragment();
                     case 2:
                         return new Onboarding4Fragment();
-                    case 3:
-                        return new Onboarding4Fragment();
                 }
 
                 return null;
@@ -121,7 +119,7 @@ public class WelcomeActivity extends DBActivity
             @Override
             public int getCount()
             {
-                return 4;
+                return 3;
             }
         });
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener()
