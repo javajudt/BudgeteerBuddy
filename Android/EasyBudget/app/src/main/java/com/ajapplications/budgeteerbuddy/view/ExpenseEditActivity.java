@@ -103,10 +103,6 @@ public class ExpenseEditActivity extends DBActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_expense_edit);
 
-        //delete if it works
-        //@InjectView(R.id.category_selectedittext)
-        //ClickToSelectEditText<Category> categoryEditText;
-
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -124,7 +120,7 @@ public class ExpenseEditActivity extends DBActivity {
         }
 
         setUpButtons();
-        setUpTextFields();
+        setUpInputs();
         setUpDateButton();
 
         setResult(RESULT_CANCELED);
@@ -133,20 +129,20 @@ public class ExpenseEditActivity extends DBActivity {
             UIHelper.animateActivityEnter(this, new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    //UIHelper.setFocus(memoEditText);
                     UIHelper.showFAB(fab);
                 }
             });
-        } else {
-            //UIHelper.setFocus(memoEditText);
+        } else
             UIHelper.showFAB(fab);
-        }
     }
 
 // ----------------------------------->
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         if (id == android.R.id.home) // Back button of the actionbar
@@ -189,7 +185,7 @@ public class ExpenseEditActivity extends DBActivity {
             ok = false;
         } else {
             try {
-                double value = Double.valueOf(amount);
+                double value = Double.parseDouble(amount);
                 if (value <= 0) {
                     amountEditText.setError(getResources().getString(R.string.negative_amount_error));
                     ok = false;
@@ -218,7 +214,7 @@ public class ExpenseEditActivity extends DBActivity {
             }
         });
 
-        // Init value to checked if already a revenue (can be true if we are editing an expense)
+        // Init value to check if already a revenue (can be true if we are editing an expense)
         if (isRevenue) {
             expenseTypeSwitch.setChecked(true);
             setExpenseTypeTextViewLayout();
@@ -279,7 +275,7 @@ public class ExpenseEditActivity extends DBActivity {
     /**
      * Set up text field focus behavior
      */
-    private void setUpTextFields() {
+    private void setUpInputs() {
         ((TextInputLayout) findViewById(R.id.amount_inputlayout)).setHint(getResources().getString(R.string.amount, CurrencyHelper.getUserCurrency(this).getSymbol()));
 
         memoEditText = (EditText) findViewById(R.id.description_edittext);

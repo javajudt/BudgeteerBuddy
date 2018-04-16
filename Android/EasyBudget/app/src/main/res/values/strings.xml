@@ -41,7 +41,7 @@
     <string name="title_activity_recurring_expense_add">Add recurring expense</string>
     <string name="title_activity_recurring_income_add">Add recurring income</string>
     <string name="title_activity_recurring_expense_edit">Edit recurring expense</string>
-    <string name="title_activity_monthly_income_edit">Edit recurring income</string>
+    <string name="title_activity_recurring_income_edit">Edit recurring income</string>
     <string name="title_activity_settings">Settings</string>
     <string name="title_activity_welcome">EasyBudget</string>
     <string name="title_activity_premium">Premium</string>

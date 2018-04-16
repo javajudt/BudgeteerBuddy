@@ -79,7 +79,7 @@ public class RecurringExpense implements Parcelable
         this.category = category;
         this.title = title;
         this.amount = startAmount;
-        this.recurringDate = DateHelper.cleanDate(recurringDate);
+        setRecurringDate(recurringDate);
         this.type = type;
     }
 
@@ -117,57 +117,35 @@ public class RecurringExpense implements Parcelable
 
 // ---------------------------------->
 
-    /**
-     *
-     * @return
-     */
     @NonNull
     public Category getCategory(){ return category; }
 
-    /**
-     *
-     * @return
-     */
-    @NonNull
-    public String getTitle(){ return title; }
+    public void setCategory(@NonNull Category category){ this.category = category; }
 
-    /**
-     *
-     * @return
-     */
+    @NonNull
+    public String getTitle() { return title; }
+
+    public void setTitle(@NonNull String title) { this.title = title; }
+
     @NonNull
     public Date getRecurringDate(){ return recurringDate; }
 
-    /**
-     *
-     * @return
-     */
-    public double getAmount(){ return amount; }
+    public void setRecurringDate(@NonNull Date recurringDate){ this.recurringDate = DateHelper.cleanDate(recurringDate); }
 
-    /**
-     *
-     * @return
-     */
+    public double getAmount() { return amount; }
+
+    public void setAmount(double amount) { this.amount = amount; }
+
     public boolean isModified(){ return modified; }
 
-    /**
-     *
-     * @param id
-     */
-    public void setId(Long id){ this.id = id; }
-
-    /**
-     *
-     * @return
-     */
     public Long getId(){ return id; }
 
-    /**
-     *
-     * @return
-     */
+    public void setId(Long id){ this.id = id; }
+
     @NonNull
     public RecurringExpenseType getType(){ return type; }
+
+    public boolean isRevenue() { return amount < 0; }
 
 // -------------------------------->
 

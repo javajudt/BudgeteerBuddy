@@ -48,38 +48,42 @@ import com.ajapplications.budgeteerbuddy.model.Expense;
 import com.ajapplications.budgeteerbuddy.model.RecurringExpense;
 import com.ajapplications.budgeteerbuddy.model.RecurringExpenseType;
 import com.ajapplications.budgeteerbuddy.R;
+import com.ajapplications.budgeteerbuddy.view.main.ClickToSelectEditText;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class RecurringExpenseEditActivity extends DBActivity
-{
+public class RecurringExpenseEditActivity extends DBActivity {
     /**
      * Save floating action button
      */
     private FloatingActionButton fab;
     /**
+     * Edit text that contains the category
+     */
+    private ClickToSelectEditText categoryEditText;
+    /**
      * Edit text that contains the description
      */
-    private EditText             descriptionEditText;
+    private EditText memoEditText;
     /**
      * Edit text that contains the amount
      */
-    private EditText             amountEditText;
+    private EditText amountEditText;
     /**
      * Button for date selection
      */
-    private Button               dateButton;
+    private Button dateButton;
     /**
      * Textview that displays the type of expense
      */
-    private TextView             expenseType;
+    private TextView expenseType;
     /**
      * Spinner to display recurrence interval options
      */
-    private Spinner              recurringTypeSpinner;
+    private Spinner recurringTypeSpinner;
 
     /**
      * Expense that is being edited (will be null if it's a new one)
@@ -88,11 +92,11 @@ public class RecurringExpenseEditActivity extends DBActivity
     /**
      * The start date of the expense
      */
-    private Date           dateStart;
+    private Date dateStart;
     /**
      * The end date of the expense (not implemented yet)
      */
-    private Date           dateEnd;
+    private Date dateEnd;
     /**
      * Is the new expense a revenue
      */
@@ -101,12 +105,15 @@ public class RecurringExpenseEditActivity extends DBActivity
      * Selected category for the expense
      */
     private Category category;
+    /**
+     * Switch for expense or income
+     */
+    private SwitchCompat expenseTypeSwitch;
 
 // ------------------------------------------->
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recurring_expense_edit);
 
@@ -117,11 +124,12 @@ public class RecurringExpenseEditActivity extends DBActivity
 
         dateStart = new Date(getIntent().getLongExtra("dateStart", 0));
 
-        if (getIntent().hasExtra("expense"))
-        {
+        if (isEdit()) {
             expense = getIntent().getParcelableExtra("expense");
+            isRevenue = expense.isRevenue();
+            category = expense.getCategory();
 
-            setTitle(R.string.title_activity_recurring_expense_edit);
+            setTitle(isRevenue ? R.string.title_activity_recurring_income_edit : R.string.title_activity_recurring_expense_edit);
         }
 
         setUpButtons();
@@ -130,35 +138,27 @@ public class RecurringExpenseEditActivity extends DBActivity
 
         setResult(RESULT_CANCELED);
 
-        if ( UIHelper.willAnimateActivityEnter(this) )
-        {
-            UIHelper.animateActivityEnter(this, new AnimatorListenerAdapter()
-            {
+        if (UIHelper.willAnimateActivityEnter(this)) {
+            UIHelper.animateActivityEnter(this, new AnimatorListenerAdapter() {
                 @Override
-                public void onAnimationEnd(Animator animation)
-                {
-                    UIHelper.setFocus(descriptionEditText);
+                public void onAnimationEnd(Animator animation) {
                     UIHelper.showFAB(fab);
                 }
             });
-        }
-        else
-        {
-            UIHelper.setFocus(descriptionEditText);
+        } else
             UIHelper.showFAB(fab);
-        }
     }
 
+// ----------------------------------->
+
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
+    public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if( id == android.R.id.home ) // Back button of the actionbar
+        if (id == android.R.id.home) // Back button of the actionbar
         {
             finish();
             return true;
@@ -170,40 +170,40 @@ public class RecurringExpenseEditActivity extends DBActivity
 // ----------------------------------->
 
     /**
+     * Is the current action an edit (vs a creation of a new one)
+     *
+     * @return
+     */
+    private boolean isEdit() {
+        return getIntent().hasExtra("expense");
+    }
+
+    /**
      * Validate user inputs
      *
      * @return true if user inputs are ok, false otherwise
      */
-    private boolean validateInputs()
-    {
+    private boolean validateInputs() {
         boolean ok = true;
 
-        String description = descriptionEditText.getText().toString();
-        if( description.trim().isEmpty() )
-        {
-            descriptionEditText.setError(getResources().getString(R.string.no_description_error));
+        String description = memoEditText.getText().toString();
+        if (description.trim().isEmpty()) {
+            memoEditText.setError(getResources().getString(R.string.no_description_error));
             ok = false;
         }
 
         String amount = amountEditText.getText().toString();
-        if( amount.trim().isEmpty() )
-        {
+        if (amount.trim().isEmpty()) {
             amountEditText.setError(getResources().getString(R.string.no_amount_error));
             ok = false;
-        }
-        else
-        {
-            try
-            {
+        } else {
+            try {
                 double value = Double.parseDouble(amount);
-                if( value <= 0 )
-                {
+                if (value <= 0) {
                     amountEditText.setError(getResources().getString(R.string.negative_amount_error));
                     ok = false;
                 }
-            }
-            catch(Exception e)
-            {
+            } catch (Exception e) {
                 amountEditText.setError(getResources().getString(R.string.invalid_amount));
                 ok = false;
             }
@@ -215,41 +215,34 @@ public class RecurringExpenseEditActivity extends DBActivity
     /**
      * Set-up revenue and payment buttons
      */
-    private void setUpButtons()
-    {
+    private void setUpButtons() {
         expenseType = (TextView) findViewById(R.id.expense_type_tv);
 
-        SwitchCompat expenseTypeSwitch = (SwitchCompat) findViewById(R.id.expense_type_switch);
-        expenseTypeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
-        {
+        expenseTypeSwitch = (SwitchCompat) findViewById(R.id.expense_type_switch);
+        expenseTypeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
-            {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 isRevenue = isChecked;
                 setExpenseTypeTextViewLayout();
             }
         });
 
-        // Init value to checked if already a revenue (can be true if we are editing an expense)
-        if( isRevenue )
-        {
+        // Init value to check if already a revenue (can be true if we are editing an expense)
+        if (isRevenue) {
             expenseTypeSwitch.setChecked(true);
             setExpenseTypeTextViewLayout();
         }
 
         fab = (FloatingActionButton) findViewById(R.id.save_expense_fab);
-        fab.setOnClickListener(new View.OnClickListener()
-        {
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
-                if( validateInputs() )
-                {
+            public void onClick(View v) {
+                if (validateInputs()) {
                     double value = Double.parseDouble(amountEditText.getText().toString());
 
-                    RecurringExpense expense = new RecurringExpense(category, descriptionEditText.getText().toString(), isRevenue? -value : value, dateStart, getRecurringTypeFromSpinnerSelection(recurringTypeSpinner.getSelectedItemPosition()));
+                    RecurringExpense expenseToSave = new RecurringExpense(category, memoEditText.getText().toString(), isRevenue ? -value : value, dateStart, getRecurringTypeFromSpinnerSelection(recurringTypeSpinner.getSelectedItemPosition()));
 
-                    new SaveRecurringExpenseTask().execute(expense);
+                    new SaveRecurringExpenseTask().execute(expenseToSave);
                 }
             }
         });
@@ -258,46 +251,50 @@ public class RecurringExpenseEditActivity extends DBActivity
     /**
      * Set revenue text view layout
      */
-    private void setExpenseTypeTextViewLayout()
-    {
-        if( isRevenue )
-        {
+    private void setExpenseTypeTextViewLayout() {
+        if (isRevenue) {
             expenseType.setText(R.string.income);
             expenseType.setTextColor(ContextCompat.getColor(this, R.color.budget_green));
 
-            setTitle(R.string.title_activity_recurring_income_add);
-        }
-        else
-        {
+            setTitle(isEdit() ? R.string.title_activity_recurring_income_edit : R.string.title_activity_recurring_income_add);
+
+            category = new Category("Income");
+            categoryEditText.setText(category.getLabel());
+        } else {
             expenseType.setText(R.string.payment);
             expenseType.setTextColor(ContextCompat.getColor(this, R.color.budget_red));
 
-            setTitle(R.string.title_activity_recurring_expense_add);
+            setTitle(isEdit() ? R.string.title_activity_recurring_expense_add : R.string.title_activity_recurring_expense_add);
+
+            if (category.getLabel().equals("Income")) {
+                category = null;
+                categoryEditText.setText("");
+            }
         }
     }
 
     /**
      * Set up text fields, spinner and focus behavior
      */
-    private void setUpInputs()
-    {
+    private void setUpInputs() {
         ((TextInputLayout) findViewById(R.id.amount_inputlayout)).setHint(getResources().getString(R.string.amount, CurrencyHelper.getUserCurrency(this).getSymbol()));
 
-        descriptionEditText = (EditText) findViewById(R.id.description_edittext);
-
-        if( expense != null )
-        {
-            descriptionEditText.setText(expense.getTitle());
-            descriptionEditText.setSelection(descriptionEditText.getText().length()); // Put focus at the end of the text
-        }
+        memoEditText = (EditText) findViewById(R.id.description_edittext);
 
         amountEditText = (EditText) findViewById(R.id.amount_edittext);
         UIHelper.preventUnsupportedInputForDecimals(amountEditText);
 
-        if( expense != null )
-        {
-            amountEditText.setText(CurrencyHelper.getFormattedAmountValue(Math.abs(expense.getAmount())));
-        }
+        categoryEditText = (ClickToSelectEditText) findViewById(R.id.category_selectedittext);
+        categoryEditText.setItems(Category.generateCategories());
+        categoryEditText.setOnItemSelectedListener(new ClickToSelectEditText.OnItemSelectedListener() {
+            @Override
+            public void onItemSelectedListener(Category item, int selectedIndex) {
+                category = item;
+                categoryEditText.setText(category.getLabel());
+
+                expenseTypeSwitch.setChecked(category.getLabel().equals("Income"));
+            }
+        });
 
         recurringTypeSpinner = (Spinner) findViewById(R.id.expense_type_spinner);
 
@@ -311,12 +308,16 @@ public class RecurringExpenseEditActivity extends DBActivity
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         recurringTypeSpinner.setAdapter(adapter);
 
-        if( expense != null )
-        {
+        if (expense != null) {
+            categoryEditText.setText(category.getLabel());
+
+            memoEditText.setText(expense.getTitle());
+            memoEditText.setSelection(memoEditText.getText().length()); // Put focus at the end of the text
+
+            amountEditText.setText(CurrencyHelper.getFormattedAmountValue(Math.abs(expense.getAmount())));
+
             recurringTypeSpinner.setSelection(expense.getType().ordinal(), false);
-        }
-        else
-        {
+        } else {
             recurringTypeSpinner.setSelection(2, false);
         }
     }
@@ -327,10 +328,8 @@ public class RecurringExpenseEditActivity extends DBActivity
      * @param spinnerSelectedItem index of the spinner selection
      * @return the corresponding expense type
      */
-    private RecurringExpenseType getRecurringTypeFromSpinnerSelection(int spinnerSelectedItem)
-    {
-        switch (spinnerSelectedItem)
-        {
+    private RecurringExpenseType getRecurringTypeFromSpinnerSelection(int spinnerSelectedItem) {
+        switch (spinnerSelectedItem) {
             case 0:
                 return RecurringExpenseType.WEEKLY;
             case 1:
@@ -341,47 +340,41 @@ public class RecurringExpenseEditActivity extends DBActivity
                 return RecurringExpenseType.YEARLY;
         }
 
-        throw new IllegalStateException("getRecurringTypeFromSpinnerSelection unable to get value for "+spinnerSelectedItem);
+        throw new IllegalStateException("getRecurringTypeFromSpinnerSelection unable to get value for " + spinnerSelectedItem);
     }
 
     /**
      * Set up the date button
      */
-    private void setUpDateButton()
-    {
+    private void setUpDateButton() {
         dateButton = (Button) findViewById(R.id.date_button);
         UIHelper.removeButtonBorder(dateButton); // Remove border on lollipop
 
         updateDateButtonDisplay();
 
-        dateButton.setOnClickListener(new View.OnClickListener()
-        {
+        dateButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
-            DatePickerDialogFragment fragment = new DatePickerDialogFragment(dateStart, new DatePickerDialog.OnDateSetListener()
-            {
-                @Override
-                public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)
-                {
-                Calendar cal = Calendar.getInstance();
+            public void onClick(View v) {
+                DatePickerDialogFragment fragment = new DatePickerDialogFragment(dateStart, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        Calendar cal = Calendar.getInstance();
 
-                cal.set(Calendar.YEAR, year);
-                cal.set(Calendar.MONTH, monthOfYear);
-                cal.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                        cal.set(Calendar.YEAR, year);
+                        cal.set(Calendar.MONTH, monthOfYear);
+                        cal.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
-                dateStart = cal.getTime();
-                updateDateButtonDisplay();
-                }
-            });
+                        dateStart = cal.getTime();
+                        updateDateButtonDisplay();
+                    }
+                });
 
-            fragment.show(getSupportFragmentManager(), "datePicker");
+                fragment.show(getSupportFragmentManager(), "datePicker");
             }
         });
     }
 
-    private void updateDateButtonDisplay()
-    {
+    private void updateDateButtonDisplay() {
         SimpleDateFormat formatter = new SimpleDateFormat(getResources().getString(R.string.add_expense_date_format), Locale.getDefault());
         dateButton.setText(formatter.format(dateStart));
     }
@@ -391,27 +384,22 @@ public class RecurringExpenseEditActivity extends DBActivity
     /**
      * An asynctask to save recurring expense to DB
      */
-    private class SaveRecurringExpenseTask extends AsyncTask<RecurringExpense, Integer, Boolean>
-    {
+    private class SaveRecurringExpenseTask extends AsyncTask<RecurringExpense, Integer, Boolean> {
         /**
          * Dialog used to display loading to the user
          */
         private ProgressDialog dialog;
 
         @Override
-        protected Boolean doInBackground(RecurringExpense... expenses)
-        {
-            for (RecurringExpense expense : expenses)
-            {
+        protected Boolean doInBackground(RecurringExpense... expenses) {
+            for (RecurringExpense expense : expenses) {
                 boolean inserted = db.addRecurringExpense(expense);
-                if( !inserted )
-                {
+                if (!inserted) {
                     Logger.error(false, "Error while inserting recurring expense into DB: addRecurringExpense returned false");
                     return false;
                 }
 
-                if( !flattenExpensesForRecurringExpense(expense) )
-                {
+                if (!flattenExpensesForRecurringExpense(expense)) {
                     Logger.error(false, "Error while flattening expenses for recurring expense: flattenExpensesForRecurringExpense returned false");
                     return false;
                 }
@@ -420,20 +408,16 @@ public class RecurringExpenseEditActivity extends DBActivity
             return true;
         }
 
-        private boolean flattenExpensesForRecurringExpense(@NonNull RecurringExpense expense)
-        {
+        private boolean flattenExpensesForRecurringExpense(@NonNull RecurringExpense expense) {
             Calendar cal = Calendar.getInstance();
             cal.setTime(dateStart);
 
-            switch (expense.getType())
-            {
+            switch (expense.getType()) {
                 case WEEKLY:
                     // Add up to 5 years of expenses
-                    for (int i = 0; i < 12*4*5; i++)
-                    {
+                    for (int i = 0; i < 12 * 4 * 5; i++) {
                         boolean expenseInserted = db.persistExpense(new Expense(category, expense.getTitle(), expense.getAmount(), cal.getTime(), expense));
-                        if (!expenseInserted)
-                        {
+                        if (!expenseInserted) {
                             Logger.error(false, "Error while inserting expense for recurring expense into DB: persistExpense returned false");
                             return false;
                         }
@@ -448,11 +432,9 @@ public class RecurringExpenseEditActivity extends DBActivity
                     break;
                 case BI_WEEKLY:
                     // Add up to 5 years of expenses
-                    for (int i = 0; i < 12*4*5; i++)
-                    {
+                    for (int i = 0; i < 12 * 4 * 5; i++) {
                         boolean expenseInserted = db.persistExpense(new Expense(category, expense.getTitle(), expense.getAmount(), cal.getTime(), expense));
-                        if (!expenseInserted)
-                        {
+                        if (!expenseInserted) {
                             Logger.error(false, "Error while inserting expense for recurring expense into DB: persistExpense returned false");
                             return false;
                         }
@@ -467,11 +449,9 @@ public class RecurringExpenseEditActivity extends DBActivity
                     break;
                 case MONTHLY:
                     // Add up to 10 years of expenses
-                    for (int i = 0; i < 12 * 10; i++)
-                    {
+                    for (int i = 0; i < 12 * 10; i++) {
                         boolean expenseInserted = db.persistExpense(new Expense(category, expense.getTitle(), expense.getAmount(), cal.getTime(), expense));
-                        if (!expenseInserted)
-                        {
+                        if (!expenseInserted) {
                             Logger.error(false, "Error while inserting expense for recurring expense into DB: persistExpense returned false");
                             return false;
                         }
@@ -486,11 +466,9 @@ public class RecurringExpenseEditActivity extends DBActivity
                     break;
                 case YEARLY:
                     // Add up to 100 years of expenses
-                    for (int i = 0; i < 100; i++)
-                    {
+                    for (int i = 0; i < 100; i++) {
                         boolean expenseInserted = db.persistExpense(new Expense(category, expense.getTitle(), expense.getAmount(), cal.getTime(), expense));
-                        if (!expenseInserted)
-                        {
+                        if (!expenseInserted) {
                             Logger.error(false, "Error while inserting expense for recurring expense into DB: persistExpense returned false");
                             return false;
                         }
@@ -509,8 +487,7 @@ public class RecurringExpenseEditActivity extends DBActivity
         }
 
         @Override
-        protected void onPreExecute()
-        {
+        protected void onPreExecute() {
             // Show a ProgressDialog
             dialog = new ProgressDialog(RecurringExpenseEditActivity.this);
             dialog.setIndeterminate(true);
@@ -522,30 +499,24 @@ public class RecurringExpenseEditActivity extends DBActivity
         }
 
         @Override
-        protected void onPostExecute(Boolean result)
-        {
+        protected void onPostExecute(Boolean result) {
             // Dismiss the dialog
             dialog.dismiss();
 
-            if (result)
-            {
+            if (result) {
                 setResult(RESULT_OK);
                 finish();
-            }
-            else
-            {
+            } else {
                 new AlertDialog.Builder(RecurringExpenseEditActivity.this)
-                    .setTitle(R.string.recurring_expense_add_error_title)
-                    .setMessage(getResources().getString(R.string.recurring_expense_add_error_message))
-                    .setNegativeButton(R.string.ok, new DialogInterface.OnClickListener()
-                    {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which)
-                        {
-                            dialog.dismiss();
-                        }
-                    })
-                    .show();
+                        .setTitle(R.string.recurring_expense_add_error_title)
+                        .setMessage(getResources().getString(R.string.recurring_expense_add_error_message))
+                        .setNegativeButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .show();
             }
         }
     }
