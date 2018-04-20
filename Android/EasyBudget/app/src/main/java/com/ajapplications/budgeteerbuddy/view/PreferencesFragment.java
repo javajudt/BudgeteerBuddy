@@ -64,22 +64,22 @@ public class PreferencesFragment extends PreferenceFragment
      */
     private BroadcastReceiver      receiver;
 
-    /**
-     * Category containing premium features (shown to premium users)
-     */
-    private PreferenceCategory premiumCategory;
-    /**
-     * Category containing ways to become premium (shown to not premium users)
-     */
-    private PreferenceCategory notPremiumCategory;
-    /**
-     * Is the premium category shown
-     */
-    private boolean premiumShown = true;
-    /**
-     * Is the not premium category shown
-     */
-    private boolean notPremiumShown = true;
+//    /**
+//     * Category containing premium features (shown to premium users)
+//     */
+//    private PreferenceCategory premiumCategory;
+//    /**
+//     * Category containing ways to become premium (shown to not premium users)
+//     */
+//    private PreferenceCategory notPremiumCategory;
+//    /**
+//     * Is the premium category shown
+//     */
+//    private boolean premiumShown = true;
+//    /**
+//     * Is the not premium category shown
+//     */
+//    private boolean notPremiumShown = true;
 
 // ---------------------------------------->
 
@@ -283,9 +283,9 @@ public class PreferencesFragment extends PreferenceFragment
         /*
          * Premium status
          */
-        premiumCategory = (PreferenceCategory) findPreference(getResources().getString(R.string.setting_category_premium_key));
-        notPremiumCategory = (PreferenceCategory) findPreference(getResources().getString(R.string.setting_category_not_premium_key));
-        refreshPremiumPreference();
+//        premiumCategory = (PreferenceCategory) findPreference(getResources().getString(R.string.setting_category_premium_key));
+//        notPremiumCategory = (PreferenceCategory) findPreference(getResources().getString(R.string.setting_category_not_premium_key));
+//        refreshPremiumPreference();
 
         /*
          * Notifications
@@ -330,15 +330,15 @@ public class PreferencesFragment extends PreferenceFragment
             /*
              * Show premium screen
              */
-            findPreference(getResources().getString(R.string.setting_category_dev_show_premium_key)).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
-            {
-                @Override
-                public boolean onPreferenceClick(Preference preference)
-                {
-                    showBecomePremiumDialog();
-                    return false;
-                }
-            });
+//            findPreference(getResources().getString(R.string.setting_category_dev_show_premium_key)).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
+//            {
+//                @Override
+//                public boolean onPreferenceClick(Preference preference)
+//                {
+//                    showBecomePremiumDialog();
+//                    return false;
+//                }
+//            });
 
             /*
              * Show daily reminder opt-in notif
@@ -452,10 +452,10 @@ public class PreferencesFragment extends PreferenceFragment
         /*
          * Check if we should show premium popup
          */
-        if( getActivity().getIntent().getBooleanExtra(SettingsActivity.SHOW_PREMIUM_INTENT_KEY, false) )
-        {
-            showBecomePremiumDialog();
-        }
+//        if( getActivity().getIntent().getBooleanExtra(SettingsActivity.SHOW_PREMIUM_INTENT_KEY, false) )
+//        {
+//            showBecomePremiumDialog();
+//        }
     }
 
     /**
@@ -481,142 +481,124 @@ public class PreferencesFragment extends PreferenceFragment
     /**
      * Show the right premium preference depending on the user state
      */
-    private void refreshPremiumPreference()
-    {
-//        boolean isPremium = UserHelper.isUserPremium(getActivity().getApplication());
-        boolean isPremium = true;
-        if( isPremium )
-        {
-            if( notPremiumShown )
-            {
-                getPreferenceScreen().removePreference(notPremiumCategory);
-                notPremiumShown = false;
-            }
-
-            if( !premiumShown )
-            {
-                getPreferenceScreen().addPreference(premiumCategory);
-                premiumShown = true;
-            }
-
-            // Premium preference
-            findPreference(getResources().getString(R.string.setting_category_premium_status_key)).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
-            {
-                @Override
-                public boolean onPreferenceClick(Preference preference)
-                {
-                    new AlertDialog.Builder(getActivity())
-                            .setTitle(R.string.premium_popup_premium_title)
-                            .setMessage(R.string.premium_popup_premium_message)
-                            .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener()
-                            {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which)
-                                {
-                                    dialog.dismiss();
-                                }
-                            })
-                            .show();
-
-                    return false;
-                }
-            });
-
-            // Daily reminder notif preference
-            final CheckBoxPreference dailyNotifPref = (CheckBoxPreference) findPreference(getResources().getString(R.string.setting_category_notifications_daily_key));
-            dailyNotifPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
-            {
-                @Override
-                public boolean onPreferenceClick(Preference preference)
-                {
-                    UserHelper.setUserAllowDailyReminderPushes(getActivity(), dailyNotifPref.isChecked());
-                    return true;
-                }
-            });
-            dailyNotifPref.setChecked(UserHelper.isUserAllowingDailyReminderPushes(getActivity()));
-
-            // Monthly reminder for reports
-            final CheckBoxPreference monthlyNotifPref = (CheckBoxPreference) findPreference(getResources().getString(R.string.setting_category_notifications_monthly_key));
-            monthlyNotifPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
-            {
-                @Override
-                public boolean onPreferenceClick(Preference preference)
-                {
-                    UserHelper.setUserAllowMonthlyReminderPushes(getActivity(), monthlyNotifPref.isChecked());
-                    return true;
-                }
-            });
-            monthlyNotifPref.setChecked(UserHelper.isUserAllowingMonthlyReminderPushes(getActivity()));
-        }
-        else
-        {
-            if( premiumShown )
-            {
-                getPreferenceScreen().removePreference(premiumCategory);
-                premiumShown = false;
-            }
-
-            if( !notPremiumShown )
-            {
-                getPreferenceScreen().addPreference(notPremiumCategory);
-                notPremiumShown = true;
-            }
-
-            // Not premium preference
-            findPreference(getResources().getString(R.string.setting_category_not_premium_status_key)).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
-            {
-                @Override
-                public boolean onPreferenceClick(Preference preference)
-                {
-                    showBecomePremiumDialog();
-                    return false;
-                }
-            });
-
-            // Redeem promo code pref
-            findPreference(getResources().getString(R.string.setting_category_premium_redeem_key)).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
-            {
-                @Override
-                public boolean onPreferenceClick(Preference preference)
-                {
-                    View dialogView = getActivity().getLayoutInflater().inflate(R.layout.dialog_redeem_voucher, null);
-                    final EditText voucherEditText = (EditText) dialogView.findViewById(R.id.voucher);
-
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
-                        .setTitle(R.string.voucher_redeem_dialog_title)
-                        .setMessage(R.string.voucher_redeem_dialog_message)
-                        .setView(dialogView)
-                        .setPositiveButton(R.string.voucher_redeem_dialog_cta, new DialogInterface.OnClickListener()
-                        {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which)
-                            {
-                                dialog.dismiss();
-
-                                String promocode = voucherEditText.getText().toString();
-                                if( promocode.trim().isEmpty() )
-                                {
-                                    new AlertDialog.Builder(getActivity())
-                                        .setTitle(R.string.voucher_redeem_error_dialog_title)
-                                        .setMessage(R.string.voucher_redeem_error_code_invalid_dialog_message)
-                                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener()
-                                        {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which)
-                                            {
-                                                dialog.dismiss();
-                                            }
-                                        })
-                                        .show();
-
-                                    return;
-                                }
-
-//                                if( !((EasyBudget) getActivity().getApplication()).launchRedeemPromocodeFlow(promocode, getActivity()) )
+//    private void refreshPremiumPreference()
+//    {
+////        boolean isPremium = UserHelper.isUserPremium(getActivity().getApplication());
+//        boolean isPremium = true;
+//        if( isPremium )
+//        {
+//            if( notPremiumShown )
+//            {
+//                getPreferenceScreen().removePreference(notPremiumCategory);
+//                notPremiumShown = false;
+//            }
+//
+//            if( !premiumShown )
+//            {
+//                getPreferenceScreen().addPreference(premiumCategory);
+//                premiumShown = true;
+//            }
+//
+//            // Premium preference
+//            findPreference(getResources().getString(R.string.setting_category_premium_status_key)).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
+//            {
+//                @Override
+//                public boolean onPreferenceClick(Preference preference)
+//                {
+//                    new AlertDialog.Builder(getActivity())
+//                            .setTitle(R.string.premium_popup_premium_title)
+//                            .setMessage(R.string.premium_popup_premium_message)
+//                            .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener()
+//                            {
+//                                @Override
+//                                public void onClick(DialogInterface dialog, int which)
+//                                {
+//                                    dialog.dismiss();
+//                                }
+//                            })
+//                            .show();
+//
+//                    return false;
+//                }
+//            });
+//
+//            // Daily reminder notif preference
+//            final CheckBoxPreference dailyNotifPref = (CheckBoxPreference) findPreference(getResources().getString(R.string.setting_category_notifications_daily_key));
+//            dailyNotifPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
+//            {
+//                @Override
+//                public boolean onPreferenceClick(Preference preference)
+//                {
+//                    UserHelper.setUserAllowDailyReminderPushes(getActivity(), dailyNotifPref.isChecked());
+//                    return true;
+//                }
+//            });
+//            dailyNotifPref.setChecked(UserHelper.isUserAllowingDailyReminderPushes(getActivity()));
+//
+//            // Monthly reminder for reports
+//            final CheckBoxPreference monthlyNotifPref = (CheckBoxPreference) findPreference(getResources().getString(R.string.setting_category_notifications_monthly_key));
+//            monthlyNotifPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
+//            {
+//                @Override
+//                public boolean onPreferenceClick(Preference preference)
+//                {
+//                    UserHelper.setUserAllowMonthlyReminderPushes(getActivity(), monthlyNotifPref.isChecked());
+//                    return true;
+//                }
+//            });
+//            monthlyNotifPref.setChecked(UserHelper.isUserAllowingMonthlyReminderPushes(getActivity()));
+//        }
+//        else
+//        {
+//            if( premiumShown )
+//            {
+//                getPreferenceScreen().removePreference(premiumCategory);
+//                premiumShown = false;
+//            }
+//
+//            if( !notPremiumShown )
+//            {
+//                getPreferenceScreen().addPreference(notPremiumCategory);
+//                notPremiumShown = true;
+//            }
+//
+//            // Not premium preference
+//            findPreference(getResources().getString(R.string.setting_category_not_premium_status_key)).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
+//            {
+//                @Override
+//                public boolean onPreferenceClick(Preference preference)
+//                {
+//                    showBecomePremiumDialog();
+//                    return false;
+//                }
+//            });
+//
+//            // Redeem promo code pref
+//            findPreference(getResources().getString(R.string.setting_category_premium_redeem_key)).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
+//            {
+//                @Override
+//                public boolean onPreferenceClick(Preference preference)
+//                {
+//                    View dialogView = getActivity().getLayoutInflater().inflate(R.layout.dialog_redeem_voucher, null);
+//                    final EditText voucherEditText = (EditText) dialogView.findViewById(R.id.voucher);
+//
+//                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+//                        .setTitle(R.string.voucher_redeem_dialog_title)
+//                        .setMessage(R.string.voucher_redeem_dialog_message)
+//                        .setView(dialogView)
+//                        .setPositiveButton(R.string.voucher_redeem_dialog_cta, new DialogInterface.OnClickListener()
+//                        {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which)
+//                            {
+//                                dialog.dismiss();
+//
+//                                String promocode = voucherEditText.getText().toString();
+//                                if( promocode.trim().isEmpty() )
 //                                {
 //                                    new AlertDialog.Builder(getActivity())
-//                                        .setTitle(R.string.iab_purchase_error_title)
-//                                        .setMessage(getResources().getString(R.string.iab_purchase_error_message, "Error redeeming promo code"))
+//                                        .setTitle(R.string.voucher_redeem_error_dialog_title)
+//                                        .setMessage(R.string.voucher_redeem_error_code_invalid_dialog_message)
 //                                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener()
 //                                        {
 //                                            @Override
@@ -626,44 +608,62 @@ public class PreferencesFragment extends PreferenceFragment
 //                                            }
 //                                        })
 //                                        .show();
+//
+//                                    return;
 //                                }
-                            }
-                        })
-                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener()
-                        {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which)
-                            {
-                                dialog.dismiss();
-                            }
-                        });
+//
+////                                if( !((EasyBudget) getActivity().getApplication()).launchRedeemPromocodeFlow(promocode, getActivity()) )
+////                                {
+////                                    new AlertDialog.Builder(getActivity())
+////                                        .setTitle(R.string.iab_purchase_error_title)
+////                                        .setMessage(getResources().getString(R.string.iab_purchase_error_message, "Error redeeming promo code"))
+////                                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener()
+////                                        {
+////                                            @Override
+////                                            public void onClick(DialogInterface dialog, int which)
+////                                            {
+////                                                dialog.dismiss();
+////                                            }
+////                                        })
+////                                        .show();
+////                                }
+//                            }
+//                        })
+//                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener()
+//                        {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which)
+//                            {
+//                                dialog.dismiss();
+//                            }
+//                        });
+//
+//                    final Dialog dialog = builder.show();
+//
+//                    // Directly show keyboard when the dialog pops
+//                    voucherEditText.setOnFocusChangeListener(new View.OnFocusChangeListener()
+//                    {
+//                        @Override
+//                        public void onFocusChange(View v, boolean hasFocus)
+//                        {
+//                            if (hasFocus && getResources().getConfiguration().keyboard == Configuration.KEYBOARD_NOKEYS ) // Check if the device doesn't have a physical keyboard
+//                            {
+//                                dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+//                            }
+//                        }
+//                    });
+//
+//                    return false;
+//                }
+//            });
+//        }
+//    }
 
-                    final Dialog dialog = builder.show();
-
-                    // Directly show keyboard when the dialog pops
-                    voucherEditText.setOnFocusChangeListener(new View.OnFocusChangeListener()
-                    {
-                        @Override
-                        public void onFocusChange(View v, boolean hasFocus)
-                        {
-                            if (hasFocus && getResources().getConfiguration().keyboard == Configuration.KEYBOARD_NOKEYS ) // Check if the device doesn't have a physical keyboard
-                            {
-                                dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-                            }
-                        }
-                    });
-
-                    return false;
-                }
-            });
-        }
-    }
-
-    private void showBecomePremiumDialog()
-    {
-        Intent intent = new Intent(getActivity(), PremiumActivity.class);
-        ActivityCompat.startActivityForResult(getActivity(), intent, SettingsActivity.PREMIUM_ACTIVITY, null);
-    }
+//    private void showBecomePremiumDialog()
+//    {
+//        Intent intent = new Intent(getActivity(), PremiumActivity.class);
+//        ActivityCompat.startActivityForResult(getActivity(), intent, SettingsActivity.PREMIUM_ACTIVITY, null);
+//    }
 
     @Override
     public void onDestroy()

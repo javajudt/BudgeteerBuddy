@@ -16,18 +16,6 @@
 
 <resources>
 
-    <string name="category">Category</string>
-    <string-array name="category_list">
-        <item>Category</item>
-        <item>Savings</item>
-        <item>Rent/Mortgage</item>
-        <item>Transportation</item>
-        <item>Food/Household Needs</item>
-        <item>Medical</item>
-        <item>Entertainment</item>
-        <item>Other</item>
-    </string-array>
-
     <string name="app_name" translatable="false">Budgeteer Buddy</string>
 
     <string name="action_settings">Settings</string>
@@ -43,19 +31,20 @@
     <string name="title_activity_recurring_expense_edit">Edit recurring expense</string>
     <string name="title_activity_recurring_income_edit">Edit recurring income</string>
     <string name="title_activity_settings">Settings</string>
-    <string name="title_activity_welcome">EasyBudget</string>
+    <string name="title_activity_welcome">Budgeteer Buddy</string>
     <string name="title_activity_premium">Premium</string>
     <string name="title_activity_monthly_report">Monthly report</string>
     <string name="cancel">Cancel</string>
     <string name="undo">UNDO</string>
     <string name="ok">OK</string>
+    <string name="category">Category</string>
     <string name="amount">Amount ( $ )</string>
     <string name="memo">Memo (Optional)</string>
     <string name="type">Type</string>
     <string name="payment">Expense</string>
     <string name="income">Income</string>
     <string name="date">Date</string>
-    <string name="first_occurence">First instance</string>
+    <string name="first_occurrence">First instance</string>
     <string name="no_expense_for_today">No income or expense yet.</string>
 
     <string name="no_category_error">Enter a category</string>
@@ -142,9 +131,9 @@
     <string name="setting_category_rate_button_title">Like the app?</string>
     <string name="setting_category_rate_button_message">Let me know what you think</string>
     <string name="setting_category_bug_report_send_button_title">Report a bug</string>
-    <string name="bug_report_email" translatable="false">easybudget@benoitletondor.com</string>
-    <string name="setting_category_bug_report_send_subject" translatable="false">EasyBudget - Bug report</string>
-    <string name="setting_category_bug_report_send_text">\n\n---\n*Please do not remove this part*\nEasyBudget id: %s</string>
+    <string name="bug_report_email" translatable="false">budgeteerbuddy@jordanjudt.com</string>
+    <string name="setting_category_bug_report_send_subject" translatable="false">Budgeteer Buddy - Bug report</string>
+    <string name="setting_category_bug_report_send_text">\n\n---\n*Please do not remove this part*\nBudgeteer Buddy id: %s</string>
     <string name="setting_category_bug_report_send_error">Unable to find an app to send bug report email</string>
     <string name="setting_category_general_title">General</string>
     <string name="setting_category_currency_change_button_title">Change currency (%s)</string>
@@ -152,10 +141,10 @@
     <string name="setting_category_currency_change_dialog_title">Select your currency</string>
     <string name="setting_category_limit_set_button_title">Set low balance warning threshold (%s)</string>
     <string name="setting_category_limit_set_button_message">Change the threshold at which you want to be warned about a low balance</string>
-    <string name="setting_category_app_version_title" translatable="false">EasyBudget %s</string>
-    <string name="setting_category_app_version_message">Made by @BenoitLetondor</string>
+    <string name="setting_category_app_version_title" translatable="false">Budgeteer Buddy %s</string>
+    <string name="setting_category_app_version_message">Made by the *Wildcards*</string>
     <string name="setting_category_share_app_title">Tell your friends</string>
-    <string name="setting_category_share_app_message">EasyBudget is free, so why not sharing it with your friends!</string>
+    <string name="setting_category_share_app_message">Budgeteer Buddy is free, so why not share it with your friends!</string>
     <string name="setting_category_dev_title" translatable="false">Dev</string>
     <string name="setting_category_show_welcome_screen_button_title" translatable="false">Show welcome screen</string>
     <string name="setting_category_disable_animation_title" translatable="false">Animations</string>
@@ -189,7 +178,7 @@
     <string name="premium_popup_not_premium_feature_more_title">… and more premium features that will be added soon!</string>
     <string name="premium_popup_not_premium_cta">Purchase</string>
     <string name="premium_popup_become_title">Become a premium user</string>
-    <string name="premium_popup_become_message">It seems that you like using EasyBudget!\nWould you like to take it to next level and discover premium features?</string>
+    <string name="premium_popup_become_message">It seems that you like using Budgeteer Buddy!\nWould you like to take it to next level and discover premium features?</string>
     <string name="premium_popup_become_cta">Discover</string>
     <string name="premium_popup_become_not_now">Not now</string>
     <string name="premium_popup_become_not_ask_again">Don\'t ask me again</string>
@@ -214,7 +203,7 @@
     <string name="voucher_redeem_error_no_internet_dialog_message">Network error. Please check your connection and try again.</string>
     <string name="voucher_redeem_error_generic_dialog_message">An error occurred, try again later.</string>
 
-    <string name="rating_popup_question_title">What do you think of EasyBudget?</string>
+    <string name="rating_popup_question_title">What do you think of Budgeteer Buddy?</string>
     <string name="rating_popup_question_message">I develop this app in my free time and provide it for free. There still might be things to improve and I would really appreciate your feedback.</string>
     <string name="rating_popup_question_cta_negative">I don\'t like it</string>
     <string name="rating_popup_question_cta_positive">I like it</string>
@@ -223,16 +212,16 @@
     <string name="rating_popup_negative_cta_negative">No thanks</string>
     <string name="rating_popup_negative_cta_positive">Sure</string>
     <string name="rating_popup_positive_title">:)</string>
-    <string name="rating_popup_positive_message">I\'m glad you enjoy using EasyBudget. Would you mind giving it a positive review on the PlayStore?</string>
+    <string name="rating_popup_positive_message">I\'m glad you enjoy using Budgeteer Buddy. Would you mind giving it a positive review on the PlayStore?</string>
     <string name="rating_popup_positive_cta_negative">No thanks</string>
     <string name="rating_popup_positive_cta_positive">Sure</string>
     <string name="rating_feedback_send_error">Unable to find an app to send feedback email.</string>
-    <string name="rating_feedback_email" translatable="false">easybudget@benoitletondor.com</string>
-    <string name="rating_feedback_send_subject" translatable="false">EasyBudget - Feedback</string>
+    <string name="rating_feedback_email" translatable="false">budgeteerbuddy@jordanjudt.com</string>
+    <string name="rating_feedback_send_subject" translatable="false">Budgeteer Buddy - Feedback</string>
     <string name="rating_feedback_send_text"></string>
     <string name="rating_popup_question_cta_dont_ask_again">Don\'t ask me again</string>
 
-    <string name="onboarding_screen_1_title">Welcome to EasyBudget</string>
+    <string name="onboarding_screen_1_title">Welcome to Budgeteer Buddy</string>
     <string name="onboarding_screen_1_message">The concept is simple: You enter your recurring and daily expenses and incomes and the app keeps track of how much money you have, had and will have at any given moment.\n\nIt\'s as simple as that.</string>
     <string name="onboarding_screen_1_message2">Ready?</string>
     <string name="onboarding_screen_1_cta">Yes!</string>
@@ -249,10 +238,10 @@
     <string name="onboarding_screen_3_cta">Let\'s go!</string>
 
     <string name="app_invite_title">Tell your friends!</string>
-    <string name="app_invite_message">You should try EasyBudget: An incredibly easy to use app to manage your budget!</string>
+    <string name="app_invite_message">You should try Budgeteer Buddy: An incredibly easy to use app to manage your budget!</string>
     <!-- 100 chars or less -->
     <string name="app_invite_referral" translatable="false">easybudget://referral?type=appinvite&amp;referrer=%s</string>
-    <string name="app_invite_welcome_title">Welcome to EasyBudget</string>
+    <string name="app_invite_welcome_title">Welcome to Budgeteer Buddy</string>
     <string name="app_invite_welcome_message">It looks like a friend recommended this app to you. Welcome on board and don\'t forget to thank your friend for that great advice ;)</string>
     <string name="app_invite_welcome_cta">Go!</string>
 
