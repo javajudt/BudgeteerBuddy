@@ -98,13 +98,6 @@
             android:label="@string/title_activity_welcome"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoActionBar"/>
-        <activity
-            android:name="com.ajapplications.budgeteerbuddy.view.PremiumActivity"
-            android:configChanges="locale|keyboardHidden|orientation|screenSize"
-            android:label="@string/title_activity_premium"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppThemeNoActionBar">
-        </activity>
 
         <!-- Batch SDK -->
         <service android:name="com.batch.android.BatchPushService"/>

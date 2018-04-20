@@ -165,18 +165,18 @@ public class PreferencesFragment extends PreferenceFragment
          */
         final Preference appVersionPreference = findPreference(getResources().getString(R.string.setting_category_app_version_key));
         appVersionPreference.setTitle(getResources().getString(R.string.setting_category_app_version_title, BuildConfig.VERSION_NAME));
-        appVersionPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
-        {
-            @Override
-            public boolean onPreferenceClick(Preference preference)
-            {
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse("https://twitter.com/BenoitLetondor"));
-                getActivity().startActivity(i);
-
-                return false;
-            }
-        });
+//        appVersionPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
+//        {
+//            @Override
+//            public boolean onPreferenceClick(Preference preference)
+//            {
+//                Intent i = new Intent(Intent.ACTION_VIEW);
+//                i.setData(Uri.parse("https://twitter.com/BenoitLetondor"));
+//                getActivity().startActivity(i);
+//
+//                return false;
+//            }
+//        });
 
         /*
          * Currency change button
