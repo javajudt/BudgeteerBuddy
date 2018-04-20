@@ -135,7 +135,7 @@ public class ExpensesRecyclerViewAdapter extends RecyclerView.Adapter<ExpensesRe
     public void onBindViewHolder(final ViewHolder viewHolder, int i) {
         final Expense expense = expenses.get(i);
 
-        String category = expense.getCategory().getLabel();
+        String category = expense.getCategory().toString();
         String memo = expense.getTitle();
         if (!memo.trim().isEmpty())
             category += "  ";

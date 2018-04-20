@@ -39,7 +39,6 @@ import com.ajapplications.budgeteerbuddy.model.Expense;
 import com.ajapplications.budgeteerbuddy.model.db.DB;
 import com.ajapplications.budgeteerbuddy.R;
 
-import java.util.Currency;
 import java.util.Date;
 
 /**
@@ -121,7 +120,7 @@ public class Onboarding2Fragment extends OnboardingFragment
                     {
                         double diff = newBalance - currentBalance;
 
-                        final Expense expense = new Expense(new Category("Income"), getResources().getString(R.string.adjust_balance_expense_title), -diff, new Date());
+                        final Expense expense = new Expense(Category.Income, getResources().getString(R.string.adjust_balance_expense_title), -diff, new Date());
                         db.persistExpense(expense);
                     }
                 }

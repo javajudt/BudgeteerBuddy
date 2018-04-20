@@ -62,7 +62,7 @@ public class ClickToSelectEditText extends AppCompatEditText {
         int i = 0;
 
         for (Category item : mItems) {
-            mListableItems[i++] = item.getLabel();
+            mListableItems[i++] = item.toString();
         }
 
         configureOnClickListener();

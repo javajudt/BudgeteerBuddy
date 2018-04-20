@@ -649,7 +649,7 @@ public final class DB
         return new Expense
         (
             cursor.getLong(cursor.getColumnIndex(SQLiteDBHelper.COLUMN_EXPENSE_DB_ID)),
-            new Category(cursor.getString(cursor.getColumnIndex(SQLiteDBHelper.COLUMN_EXPENSE_CATEGORY))),
+                Category.valueOf(cursor.getString(cursor.getColumnIndex(SQLiteDBHelper.COLUMN_EXPENSE_CATEGORY))),
             cursor.getString(cursor.getColumnIndex(SQLiteDBHelper.COLUMN_EXPENSE_TITLE)),
             (double) cursor.getLong(cursor.getColumnIndex(SQLiteDBHelper.COLUMN_EXPENSE_AMOUNT)) / 100.d,
             new Date(cursor.getLong(cursor.getColumnIndex(SQLiteDBHelper.COLUMN_EXPENSE_DATE))),
@@ -700,7 +700,7 @@ public final class DB
             values.put(SQLiteDBHelper.COLUMN_EXPENSE_DB_ID, expense.getId());
         }
 
-        values.put(SQLiteDBHelper.COLUMN_EXPENSE_CATEGORY, expense.getCategory().getLabel());
+        values.put(SQLiteDBHelper.COLUMN_EXPENSE_CATEGORY, expense.getCategory().toString());
         values.put(SQLiteDBHelper.COLUMN_EXPENSE_TITLE, expense.getTitle());
         values.put(SQLiteDBHelper.COLUMN_EXPENSE_DATE, expense.getDate().getTime());
         values.put(SQLiteDBHelper.COLUMN_EXPENSE_AMOUNT, CurrencyHelper.getDBValueForDouble(expense.getAmount()));
@@ -727,7 +727,7 @@ public final class DB
         return new RecurringExpense
         (
             cursor.getLong(cursor.getColumnIndex(SQLiteDBHelper.COLUMN_RECURRING_DB_ID)),
-            new Category(cursor.getString(cursor.getColumnIndex(SQLiteDBHelper.COLUMN_RECURRING_CATEGORY))),
+            Category.valueOf(cursor.getString(cursor.getColumnIndex(SQLiteDBHelper.COLUMN_RECURRING_CATEGORY))),
             cursor.getString(cursor.getColumnIndex(SQLiteDBHelper.COLUMN_RECURRING_TITLE)),
             (double) cursor.getLong(cursor.getColumnIndex(SQLiteDBHelper.COLUMN_RECURRING_AMOUNT)) / 100.d,
             new Date(cursor.getInt(cursor.getColumnIndex(SQLiteDBHelper.COLUMN_RECURRING_RECURRING_DATE))),
@@ -753,7 +753,7 @@ public final class DB
             values.put(SQLiteDBHelper.COLUMN_RECURRING_DB_ID, expense.getId());
         }
 
-        values.put(SQLiteDBHelper.COLUMN_RECURRING_CATEGORY, expense.getCategory().getLabel());
+        values.put(SQLiteDBHelper.COLUMN_RECURRING_CATEGORY, expense.getCategory().toString());
         values.put(SQLiteDBHelper.COLUMN_RECURRING_TITLE, expense.getTitle());
         values.put(SQLiteDBHelper.COLUMN_RECURRING_RECURRING_DATE, expense.getRecurringDate().getTime());
         values.put(SQLiteDBHelper.COLUMN_RECURRING_AMOUNT, CurrencyHelper.getDBValueForDouble(expense.getAmount()));

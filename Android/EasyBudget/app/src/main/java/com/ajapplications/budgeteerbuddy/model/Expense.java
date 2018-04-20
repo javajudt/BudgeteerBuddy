@@ -36,7 +36,7 @@ public class Expense implements Parcelable {
      */
     private Long id;
     /**
-     * Category of the expense
+     * CategoryHelper of the expense
      */
     private Category category;
     /**
@@ -92,7 +92,7 @@ public class Expense implements Parcelable {
         this.id = id;
 
         if (category == null)
-            throw new IllegalArgumentException("Category is null");
+            throw new IllegalArgumentException("CategoryHelper is null");
 
         if (amount == 0)
             throw new IllegalArgumentException("amount should be != 0");
@@ -109,7 +109,7 @@ public class Expense implements Parcelable {
      */
     private Expense(Parcel in) {
         id = (Long) in.readValue(Long.class.getClassLoader());
-        category = new Category(in.readString());
+        category = Category.valueOf(in.readString());
         title = in.readString();
         amount = in.readDouble();
         date = new Date(in.readLong());
@@ -183,7 +183,7 @@ public class Expense implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(id);
-        dest.writeString(category.getLabel());
+        dest.writeString(category.toString());
         dest.writeString(title);
         dest.writeDouble(amount);
         dest.writeLong(date.getTime());
