@@ -47,8 +47,8 @@ public final class SQLiteDBHelper extends SQLiteOpenHelper
 
 // -------------------------------------------->
 
-    private static final String DATABASE_NAME    = "easybudget.db";
-    private static final int    DATABASE_VERSION = 3;
+    private static final String DATABASE_NAME    = "budgeteerbuddy.db";
+    private static final int    DATABASE_VERSION = 0;
 
 // -------------------------------------------->
 
