@@ -1,5 +1,5 @@
 package com.ajapplications.budgeteerbuddy.model;
 
 public enum Category{
-    Income, Savings, RentMortgage, Transportation, FoodHousehold, Medical, Entertainment, Other
+    Income, Savings, Rent_Mortgage, Transportation, Food_Household, Medical, Entertainment, Other
 }
