@@ -292,7 +292,7 @@ public class RecurringExpenseEditActivity extends DBActivity {
                 category = item;
                 categoryEditText.setText(category.toString());
 
-                expenseTypeSwitch.setChecked(category.toString().equals("Income"));
+                expenseTypeSwitch.setChecked(category.equals(Category.Income));
             }
         });
 

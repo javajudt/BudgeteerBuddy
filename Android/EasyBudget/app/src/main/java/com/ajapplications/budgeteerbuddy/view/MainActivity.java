@@ -90,11 +90,10 @@ public class MainActivity extends DBActivity {
     public static final int WELCOME_SCREEN_ACTIVITY_CODE = 103;
     public static final String INTENT_EXPENSE_DELETED = "intent.expense.deleted";
     public static final String INTENT_RECURRING_EXPENSE_DELETED = "intent.expense.monthly.deleted";
-    public static final String INTENT_SHOW_WELCOME_SCREEN = "intent.welcomscreen.show";
+    public static final String INTENT_SHOW_WELCOME_SCREEN = "intent.welcomescreen.show";
     public static final String INTENT_SHOW_ADD_EXPENSE = "intent.addexpense.show";
     public final static String INTENT_SHOW_ADD_RECURRING_EXPENSE = "intent.addrecurringexpense.show";
 
-    public static final String INTENT_REDIRECT_TO_PREMIUM_EXTRA = "intent.extra.premiumshow";
     public static final String INTENT_REDIRECT_TO_SETTINGS_EXTRA = "intent.extra.redirecttosettings";
 
     public final static String ANIMATE_TRANSITION_KEY = "animate";
@@ -151,10 +150,8 @@ public class MainActivity extends DBActivity {
         IntentFilter filter = new IntentFilter();
         filter.addAction(INTENT_EXPENSE_DELETED);
         filter.addAction(INTENT_RECURRING_EXPENSE_DELETED);
-        //filter.addAction(SelectCurrencyFragment.CURRENCY_SELECTED_INTENT);
         filter.addAction(INTENT_SHOW_WELCOME_SCREEN);
         filter.addAction(Intent.ACTION_VIEW);
-//        filter.addAction(BudgeteerBuddy.INTENT_IAB_STATUS_CHANGED);
 
         receiver = new BroadcastReceiver() {
             @Override
@@ -233,8 +230,6 @@ public class MainActivity extends DBActivity {
                     }
 
                     new DeleteRecurringExpenseTask(expense.getAssociatedRecurringExpense(), expense, deleteType).execute();
-//                } else if (SelectCurrencyFragment.CURRENCY_SELECTED_INTENT.equals(intent.getAction())) {
-//                    refreshAllForDate(expensesViewAdapter.getDate());
                 } else if (INTENT_SHOW_WELCOME_SCREEN.equals(intent.getAction())) {
                     Intent startIntent = new Intent(MainActivity.this, WelcomeActivity.class);
                     ActivityCompat.startActivityForResult(MainActivity.this, startIntent, WELCOME_SCREEN_ACTIVITY_CODE, null);
@@ -244,10 +239,6 @@ public class MainActivity extends DBActivity {
                         updateInvitationStatus(intent);
                     }
                 }
-//                else if( BudgeteerBuddy.INTENT_IAB_STATUS_CHANGED.equals(intent.getAction()) )
-//                {
-//                    invalidateOptionsMenu();
-//                }
             }
         };
 
@@ -256,7 +247,6 @@ public class MainActivity extends DBActivity {
         if (getIntent() != null) {
             openSettingsIfNeeded(getIntent());
             openMonthlyReportIfNeeded(getIntent());
-            openPremiumIfNeeded(getIntent());
             openAddExpenseIfNeeded(getIntent());
             openAddRecurringExpenseIfNeeded(getIntent());
         }
@@ -350,7 +340,6 @@ public class MainActivity extends DBActivity {
 
         openSettingsIfNeeded(intent);
         openMonthlyReportIfNeeded(intent);
-        openPremiumIfNeeded(intent);
         openAddExpenseIfNeeded(intent);
         openAddRecurringExpenseIfNeeded(intent);
     }
@@ -381,7 +370,6 @@ public class MainActivity extends DBActivity {
                 }
 
                 Parameters.getInstance(getApplicationContext()).putString(ParameterKeys.INVITATION_ID, invitationId);
-                ((BudgeteerBuddy) getApplication()).trackInvitationId(invitationId);
             }
 
             Uri data = intent.getData();
@@ -419,12 +407,6 @@ public class MainActivity extends DBActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
-        // Remove monthly report for non premium users
-//        if( !UserHelper.isUserPremium(getApplication()) )
-//        {
-//            menu.removeItem(R.id.action_monthly_report);
-//        }
-//        else if( !UserHelper.hasUserSawMonthlyReportHint(this) )
         if (!UserHelper.hasUserSawMonthlyReportHint(this)) {
             final View monthlyReportHint = findViewById(R.id.monthly_report_hint);
             monthlyReportHint.setVisibility(View.VISIBLE);
@@ -454,151 +436,7 @@ public class MainActivity extends DBActivity {
             ActivityCompat.startActivity(MainActivity.this, startIntent, null);
 
             return true;
-        }/*
-        else if( id == R.id.action_balance )
-        {
-            final double currentBalance = -db.getBalanceForDay(new Date());
-
-            View dialogView = getLayoutInflater().inflate(R.layout.dialog_adjust_balance, null);
-            final EditText amountEditText = (EditText) dialogView.findViewById(R.id.balance_amount);
-            amountEditText.setText(currentBalance == 0 ? "0" : CurrencyHelper.getFormattedAmountValue(currentBalance));
-            UIHelper.preventUnsupportedInputForDecimals(amountEditText);
-            amountEditText.setSelection(amountEditText.getText().length()); // Put focus at the end of the text
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(R.string.adjust_balance_title);
-            builder.setMessage(R.string.adjust_balance_message);
-            builder.setView(dialogView);
-            builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener()
-            {
-                @Override
-                public void onClick(DialogInterface dialog, int which)
-                {
-                    dialog.dismiss();
-                }
-            });
-            builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener()
-            {
-                @Override
-                public void onClick(DialogInterface dialog, int which)
-                {
-                    try
-                    {
-                        // Ajust balance
-                        double newBalance = Double.valueOf(amountEditText.getText().toString());
-
-                        if( newBalance == currentBalance )
-                        {
-                            // Nothing to do, balance hasn't change
-                            return;
-                        }
-
-                        final double diff = newBalance - currentBalance;
-
-                        String balanceExpenseTitle = getResources().getString(R.string.adjust_balance_expense_title);
-
-                        // Look for an existing balance for the day
-                        Expense expense = null;
-                        List<Expense> expensesForDay = db.getExpensesForDay(new Date());
-                        for(Expense expenseOfDay : expensesForDay)
-                        {
-                            if( expenseOfDay.getTitle().equals(balanceExpenseTitle) )
-                            {
-                                expense = expenseOfDay;
-                                break;
-                            }
-                        }
-
-                        View.OnClickListener listener;
-
-                        // If the adjust balance exists, just add the diff and persist it
-                        if( expense != null )
-                        {
-                            final Expense persistedExpense = expense;
-
-                            persistedExpense.setAmount(persistedExpense.getAmount() - diff);
-                            db.persistExpense(persistedExpense);
-
-                            // On cancel, remove the diff and persist
-                            listener = new View.OnClickListener()
-                            {
-                                @Override
-                                public void onClick(View v)
-                                {
-                                    persistedExpense.setAmount(persistedExpense.getAmount() + diff);
-                                    db.persistExpense(persistedExpense);
-
-                                    refreshAllForDate(expensesViewAdapter.getDate());
-                                }
-                            };
-                        }
-                        else // If no adjust balance yet, create a new one
-                        {
-                            final Expense persistedExpense = new Expense(getResources().getString(R.string.adjust_balance_expense_title), -diff, new Date());
-                            db.persistExpense(persistedExpense);
-
-                            // On cancel, just delete the inserted balance
-                            listener = new View.OnClickListener()
-                            {
-                                @Override
-                                public void onClick(View v)
-                                {
-                                    db.deleteExpense(persistedExpense);
-
-                                    refreshAllForDate(expensesViewAdapter.getDate());
-                                }
-                            };
-                        }
-
-                        refreshAllForDate(expensesViewAdapter.getDate());
-                        dialog.dismiss();
-
-                        //Show snackbar
-                        Snackbar snackbar = Snackbar.make(coordinatorLayout, getResources().getString(R.string.adjust_balance_snackbar_text, CurrencyHelper.getFormattedCurrencyString(MainActivity.this, newBalance)), Snackbar.LENGTH_LONG);
-                        snackbar.setAction(R.string.undo, listener);
-                        snackbar.setActionTextColor(ContextCompat.getColor(MainActivity.this, R.color.snackbar_action_undo));
-                        //noinspection ResourceType
-                        snackbar.setDuration(ACTION_SNACKBAR_LENGTH);
-                        snackbar.show();
-                    }
-                    catch (Exception e)
-                    {
-                        new AlertDialog.Builder(MainActivity.this)
-                            .setTitle(R.string.adjust_balance_error_title)
-                            .setMessage(R.string.adjust_balance_error_message)
-                            .setNegativeButton(R.string.ok, new DialogInterface.OnClickListener()
-                            {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which)
-                                {
-                                    dialog.dismiss();
-                                }
-                            })
-                            .show();
-
-                        Logger.warning("An error occurred during balance", e);
-                        dialog.dismiss();
-                    }
-                }
-            });
-
-            final Dialog dialog = builder.show();
-
-            // Directly show keyboard when the dialog pops
-            amountEditText.setOnFocusChangeListener(new View.OnFocusChangeListener()
-            {
-                @Override
-                public void onFocusChange(View v, boolean hasFocus)
-                {
-                    if (hasFocus && getResources().getConfiguration().keyboard == Configuration.KEYBOARD_NOKEYS ) // Check if the device doesn't have a physical keyboard
-                    {
-                        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-                    }
-                }
-            });
-
-            return true;
-        }*/ else if (id == R.id.action_monthly_report) {
+        } else if (id == R.id.action_monthly_report) {
             Intent startIntent = new Intent(this, MonthlyReportActivity.class);
             ActivityCompat.startActivity(MainActivity.this, startIntent, null);
 
@@ -667,21 +505,6 @@ public class MainActivity extends DBActivity {
             }
         } catch (Exception e) {
             Logger.error("Error while opening report activity", e);
-        }
-    }
-
-    /**
-     * Open the premium screen if the given intent contains the {@link #INTENT_REDIRECT_TO_PREMIUM_EXTRA}
-     * extra.
-     *
-     * @param intent
-     */
-    private void openPremiumIfNeeded(Intent intent) {
-        if (intent.getBooleanExtra(INTENT_REDIRECT_TO_PREMIUM_EXTRA, false)) {
-            Intent startIntent = new Intent(this, SettingsActivity.class);
-            startIntent.putExtra(SettingsActivity.SHOW_PREMIUM_INTENT_KEY, true);
-
-            ActivityCompat.startActivity(this, startIntent, null);
         }
     }
 

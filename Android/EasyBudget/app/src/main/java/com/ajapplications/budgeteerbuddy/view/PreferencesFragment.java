@@ -35,8 +35,8 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.ajapplications.budgeteerbuddy.BuildConfig;
 import com.ajapplications.budgeteerbuddy.BudgeteerBuddy;
+import com.ajapplications.budgeteerbuddy.BuildConfig;
 import com.ajapplications.budgeteerbuddy.R;
 import com.ajapplications.budgeteerbuddy.helper.CurrencyHelper;
 import com.ajapplications.budgeteerbuddy.helper.Logger;
@@ -46,8 +46,6 @@ import com.ajapplications.budgeteerbuddy.helper.UIHelper;
 import com.ajapplications.budgeteerbuddy.notif.DailyNotifOptinService;
 import com.ajapplications.budgeteerbuddy.notif.MonthlyReportNotifService;
 import com.google.android.gms.appinvite.AppInviteInvitation;
-
-import java.util.Currency;
 
 /**
  * Fragment to display preferences
@@ -210,11 +208,9 @@ public class PreferencesFragment extends PreferenceFragment {
         updateNotifPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-//                UserHelper.setUserAllowUpdatePushes(getActivity(), updateNotifPref.isChecked());
                 return true;
             }
         });
-//        updateNotifPref.setChecked(UserHelper.isUserAllowingUpdatePushes(getActivity()));
 
         /*
          * Hide dev preferences if needed
@@ -282,15 +278,6 @@ public class PreferencesFragment extends PreferenceFragment {
             });
             animationsPref.setChecked(UIHelper.areAnimationsEnabled(getActivity()));
         }
-    }
-
-    /**
-     * Set the currency preference title according to selected currency
-     *
-     * @param currencyPreference
-     */
-    private void setCurrencyPreferenceTitle(Preference currencyPreference) {
-        currencyPreference.setTitle(getResources().getString(R.string.setting_category_currency_change_button_title, Currency.getInstance("USD").getSymbol()));
     }
 
     /**

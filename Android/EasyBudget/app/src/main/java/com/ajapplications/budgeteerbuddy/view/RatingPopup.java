@@ -228,17 +228,6 @@ public class RatingPopup
 // -------------------------------------------->
 
     /**
-     * Get the current user rating step
-     *
-     * @param context
-     * @return
-     */
-    public static RatingPopupStep getUserStep(@NonNull Context context)
-    {
-        return RatingPopupStep.fromValue(Parameters.getInstance(context).getInt(ParameterKeys.RATING_STEP, RatingPopupStep.STEP_NOT_SHOWN.value));
-    }
-
-    /**
      * Set the current user rating step
      *
      * @param context
@@ -304,26 +293,6 @@ public class RatingPopup
         RatingPopupStep(int value)
         {
             this.value = value;
-        }
-
-        /**
-         * Retrive the enum for the given value
-         *
-         * @param value value to find
-         * @return the enum if found, null otherwise
-         */
-        @Nullable
-        public static RatingPopupStep fromValue(int value)
-        {
-            for(RatingPopupStep step : values())
-            {
-                if( step.value == value )
-                {
-                    return step;
-                }
-            }
-
-            return null;
         }
     }
 }

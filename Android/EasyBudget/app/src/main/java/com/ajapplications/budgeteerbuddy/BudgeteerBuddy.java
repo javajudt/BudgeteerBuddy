@@ -18,9 +18,7 @@ package com.ajapplications.budgeteerbuddy;
 
 import android.app.Activity;
 import android.app.Application;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 
 import com.ajapplications.budgeteerbuddy.helper.Logger;
 import com.ajapplications.budgeteerbuddy.helper.ParameterKeys;
@@ -54,24 +52,15 @@ public class BudgeteerBuddy extends Application
     }
 
     /**
-     * Track that user comes from the given invitation id
-     *
-     * @param invitationId
-     */
-    public void trackInvitationId(String invitationId)
-    {
-    }
-
-    /**
      * Track the number of invites sent by the user
      *
      * @param invitationsSent
      */
-    public void trackNumberOfInvitsSent(int invitationsSent)
+    public void trackNumberOfInvitesSent(int invitationsSent)
     {
-        int invitSent = Parameters.getInstance(getApplicationContext()).getInt(ParameterKeys.NUMBER_OF_INVITATIONS, 0);
-        invitSent += invitationsSent;
-        Parameters.getInstance(getApplicationContext()).putInt(ParameterKeys.NUMBER_OF_INVITATIONS, invitSent);
+        int inviteSent = Parameters.getInstance(getApplicationContext()).getInt(ParameterKeys.NUMBER_OF_INVITATIONS, 0);
+        inviteSent += invitationsSent;
+        Parameters.getInstance(getApplicationContext()).putInt(ParameterKeys.NUMBER_OF_INVITATIONS, inviteSent);
     }
 
     /**
@@ -121,7 +110,7 @@ public class BudgeteerBuddy extends Application
             {
                 if (activityCounter == 0)
                 {
-                    onAppForeground(activity);
+                    onAppForeground();
                 }
 
                 activityCounter++;
@@ -169,9 +158,8 @@ public class BudgeteerBuddy extends Application
     /**
      * Called when the app goes foreground
      *
-     * @param activity The activity that gone foreground
      */
-    private void onAppForeground(@NonNull Activity activity)
+    private void onAppForeground()
     {
         Logger.debug("onAppForeground");
 
@@ -226,20 +214,5 @@ public class BudgeteerBuddy extends Application
         Logger.debug("onAppBackground");
     }
 
-    /**
-     * Should be called by the activity calling {@link #launchPremiumPurchaseFlow(Activity, PremiumPurchaseListener)}
-     * when receiving the {@link Activity#onActivityResult(int, int, Intent)} call. If this methods
-     * returns true, the activity shouldn't do anything, not even calling super.
-     *
-     * @param requestCode
-     * @param resultCode
-     * @param data
-     * @return true if the event has been handled by iab, false if the activity should handle it
-     */
-    public boolean handleActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        //return iabHelper.handleActivityResult(requestCode, resultCode, data);
-        return false;
-    }
     //endregion
 }
