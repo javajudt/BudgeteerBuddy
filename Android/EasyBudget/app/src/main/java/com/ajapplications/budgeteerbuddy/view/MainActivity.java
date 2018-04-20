@@ -629,7 +629,7 @@ public class MainActivity extends DBActivity {
             formatted = formatted.substring(0, formatted.length() - 3) + " :"; // Remove . at the end of the month (ex: nov. : -> nov :)
 
         budgetLine.setText(formatted);
-        budgetLineAmount.setText(CurrencyHelper.getFormattedCurrencyString(this, balance));
+        budgetLineAmount.setText(CurrencyHelper.getFormattedCurrencyString(balance));
 
         if (balance <= 0)
             budgetLineContainer.setBackgroundResource(R.color.budget_red);

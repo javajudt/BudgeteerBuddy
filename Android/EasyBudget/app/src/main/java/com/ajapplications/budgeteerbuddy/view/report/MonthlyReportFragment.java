@@ -189,11 +189,11 @@ public class MonthlyReportFragment extends Fragment
      */
     private void configureTotalView(@NonNull TextView revenuesAmountTextView, @NonNull TextView expensesAmountTextView, @NonNull TextView balanceTextView)
     {
-        revenuesAmountTextView.setText(CurrencyHelper.getFormattedCurrencyString(revenuesAmountTextView.getContext(), revenuesAmount));
-        expensesAmountTextView.setText(CurrencyHelper.getFormattedCurrencyString(expensesAmountTextView.getContext(), expensesAmount));
+        revenuesAmountTextView.setText(CurrencyHelper.getFormattedCurrencyString(revenuesAmount));
+        expensesAmountTextView.setText(CurrencyHelper.getFormattedCurrencyString(expensesAmount));
 
         double balance = revenuesAmount - expensesAmount;
-        balanceTextView.setText(CurrencyHelper.getFormattedCurrencyString(balanceTextView.getContext(), balance));
+        balanceTextView.setText(CurrencyHelper.getFormattedCurrencyString(balance));
         balanceTextView.setTextColor(ContextCompat.getColor(balanceTextView.getContext(), balance >= 0 ? R.color.budget_green : R.color.budget_red));
     }
 }

@@ -47,6 +47,8 @@ import com.ajapplications.budgeteerbuddy.notif.DailyNotifOptinService;
 import com.ajapplications.budgeteerbuddy.notif.MonthlyReportNotifService;
 import com.google.android.gms.appinvite.AppInviteInvitation;
 
+import java.util.Currency;
+
 /**
  * Fragment to display preferences
  *
@@ -288,7 +290,7 @@ public class PreferencesFragment extends PreferenceFragment {
      * @param currencyPreference
      */
     private void setCurrencyPreferenceTitle(Preference currencyPreference) {
-        currencyPreference.setTitle(getResources().getString(R.string.setting_category_currency_change_button_title, CurrencyHelper.getUserCurrency(getActivity()).getSymbol()));
+        currencyPreference.setTitle(getResources().getString(R.string.setting_category_currency_change_button_title, Currency.getInstance("USD").getSymbol()));
     }
 
     /**
@@ -297,7 +299,7 @@ public class PreferencesFragment extends PreferenceFragment {
      * @param limitWarningPreferenceTitle
      */
     private void setLimitWarningPreferenceTitle(Preference limitWarningPreferenceTitle) {
-        limitWarningPreferenceTitle.setTitle(getResources().getString(R.string.setting_category_limit_set_button_title, CurrencyHelper.getFormattedCurrencyString(getActivity(), Parameters.getInstance(getActivity()).getInt(ParameterKeys.LOW_MONEY_WARNING_AMOUNT, BudgeteerBuddy.DEFAULT_LOW_MONEY_WARNING_AMOUNT))));
+        limitWarningPreferenceTitle.setTitle(getResources().getString(R.string.setting_category_limit_set_button_title, CurrencyHelper.getFormattedCurrencyString(Parameters.getInstance(getActivity()).getInt(ParameterKeys.LOW_MONEY_WARNING_AMOUNT, BudgeteerBuddy.DEFAULT_LOW_MONEY_WARNING_AMOUNT))));
     }
 
     @Override
