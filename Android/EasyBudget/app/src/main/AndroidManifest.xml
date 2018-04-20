@@ -99,27 +99,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoActionBar"/>
 
-        <!-- Batch SDK -->
-        <service android:name="com.batch.android.BatchPushService"/>
-
-        <receiver
-            android:name="com.batch.android.BatchPushReceiver"
-            android:permission="com.google.android.c2dm.permission.SEND">
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
-
-                <category android:name="com.ajapplications.budgeteerbuddy"/>
-            </intent-filter>
-        </receiver>
-
-        <service
-            android:name="com.batch.android.BatchPushInstanceIDService"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="com.google.android.gms.iid.InstanceID"/>
-            </intent-filter>
-        </service>
-
         <!-- Notif services -->
         <service android:name="com.ajapplications.budgeteerbuddy.notif.DailyNotifOptinService"/>
         <service android:name="com.ajapplications.budgeteerbuddy.notif.MonthlyReportNotifService"/>
