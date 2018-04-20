@@ -31,7 +31,7 @@ public final class Logger
 	/**
 	 * Default logger tag.
 	 */
-	public static final String DEFAULT_TAG	= "EasyBudget";
+	public static final String DEFAULT_TAG	= "BudgeteerBuddy";
 	
 // ----------------------------------------->
 	

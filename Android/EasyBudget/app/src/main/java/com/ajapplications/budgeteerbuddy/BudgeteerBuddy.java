@@ -31,11 +31,11 @@ import java.util.Date;
 import java.util.UUID;
 
 /**
- * EasyBudget application. Implements GA tracking, Batch set-up, Crashlytics set-up && iab.
+ * BudgeteerBuddy application. Implements GA tracking, Batch set-up, Crashlytics set-up && iab.
  *
  * @author Benoit LETONDOR
  */
-public class EasyBudget extends Application
+public class BudgeteerBuddy extends Application
 {
     /**
      * Default amount use for low money warning (can be changed in settings)

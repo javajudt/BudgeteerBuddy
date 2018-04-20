@@ -36,7 +36,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.ajapplications.budgeteerbuddy.BuildConfig;
-import com.ajapplications.budgeteerbuddy.EasyBudget;
+import com.ajapplications.budgeteerbuddy.BudgeteerBuddy;
 import com.ajapplications.budgeteerbuddy.R;
 import com.ajapplications.budgeteerbuddy.helper.CurrencyHelper;
 import com.ajapplications.budgeteerbuddy.helper.Logger;
@@ -140,7 +140,7 @@ public class PreferencesFragment extends PreferenceFragment {
             public boolean onPreferenceClick(Preference preference) {
                 View dialogView = getActivity().getLayoutInflater().inflate(R.layout.dialog_set_warning_limit, null);
                 final EditText limitEditText = (EditText) dialogView.findViewById(R.id.warning_limit);
-                limitEditText.setText(String.valueOf(Parameters.getInstance(getActivity()).getInt(ParameterKeys.LOW_MONEY_WARNING_AMOUNT, EasyBudget.DEFAULT_LOW_MONEY_WARNING_AMOUNT)));
+                limitEditText.setText(String.valueOf(Parameters.getInstance(getActivity()).getInt(ParameterKeys.LOW_MONEY_WARNING_AMOUNT, BudgeteerBuddy.DEFAULT_LOW_MONEY_WARNING_AMOUNT)));
                 limitEditText.setSelection(limitEditText.getText().length()); // Put focus at the end of the text
 
                 final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -297,7 +297,7 @@ public class PreferencesFragment extends PreferenceFragment {
      * @param limitWarningPreferenceTitle
      */
     private void setLimitWarningPreferenceTitle(Preference limitWarningPreferenceTitle) {
-        limitWarningPreferenceTitle.setTitle(getResources().getString(R.string.setting_category_limit_set_button_title, CurrencyHelper.getFormattedCurrencyString(getActivity(), Parameters.getInstance(getActivity()).getInt(ParameterKeys.LOW_MONEY_WARNING_AMOUNT, EasyBudget.DEFAULT_LOW_MONEY_WARNING_AMOUNT))));
+        limitWarningPreferenceTitle.setTitle(getResources().getString(R.string.setting_category_limit_set_button_title, CurrencyHelper.getFormattedCurrencyString(getActivity(), Parameters.getInstance(getActivity()).getInt(ParameterKeys.LOW_MONEY_WARNING_AMOUNT, BudgeteerBuddy.DEFAULT_LOW_MONEY_WARNING_AMOUNT))));
     }
 
     @Override

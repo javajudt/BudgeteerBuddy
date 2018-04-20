@@ -23,7 +23,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
-import com.ajapplications.budgeteerbuddy.EasyBudget;
+import com.ajapplications.budgeteerbuddy.BudgeteerBuddy;
 import com.ajapplications.budgeteerbuddy.R;
 import com.google.android.gms.appinvite.AppInviteInvitation;
 
@@ -82,7 +82,7 @@ public class SettingsActivity extends AppCompatActivity
         super.onActivityResult(requestCode, resultCode, data);
 
         // iab management
-        if( ((EasyBudget) getApplication()).handleActivityResult(requestCode, resultCode, data) )
+        if( ((BudgeteerBuddy) getApplication()).handleActivityResult(requestCode, resultCode, data) )
         {
             return;
         }
@@ -97,7 +97,7 @@ public class SettingsActivity extends AppCompatActivity
                 // as the ID will be consistent on the sending and receiving devices.
                 String[] ids = AppInviteInvitation.getInvitationIds(resultCode, data);
 
-                ((EasyBudget) getApplication()).trackNumberOfInvitsSent(ids.length);
+                ((BudgeteerBuddy) getApplication()).trackNumberOfInvitsSent(ids.length);
             }
         }
         else if( requestCode == PREMIUM_ACTIVITY )
