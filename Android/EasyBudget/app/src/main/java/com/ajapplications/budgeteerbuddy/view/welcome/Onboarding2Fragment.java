@@ -39,6 +39,7 @@ import com.ajapplications.budgeteerbuddy.model.Expense;
 import com.ajapplications.budgeteerbuddy.model.db.DB;
 import com.ajapplications.budgeteerbuddy.R;
 
+import java.util.Currency;
 import java.util.Date;
 
 /**
@@ -168,7 +169,7 @@ public class Onboarding2Fragment extends OnboardingFragment
     {
         if( moneyTextView != null ) // Will be null if view is not yet created
         {
-            moneyTextView.setText(CurrencyHelper.getUserCurrency(getActivity()).getSymbol());
+            moneyTextView.setText(CurrencyHelper.CurrencySymbol);
         }
     }
 
@@ -206,7 +207,7 @@ public class Onboarding2Fragment extends OnboardingFragment
         {
             double value = getAmountValue();
 
-            nextButton.setText(getActivity().getString(R.string.onboarding_screen_2_cta, CurrencyHelper.getFormattedCurrencyString(getActivity(), value)));
+            nextButton.setText(getActivity().getString(R.string.onboarding_screen_2_cta, CurrencyHelper.getFormattedCurrencyString(value)));
         }
     }
 }

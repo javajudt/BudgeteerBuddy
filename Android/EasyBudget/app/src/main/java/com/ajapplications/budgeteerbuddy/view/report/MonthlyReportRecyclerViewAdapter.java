@@ -115,7 +115,7 @@ public class MonthlyReportRecyclerViewAdapter extends RecyclerView.Adapter<Recyc
 
             viewHolder.expenseTitleTextView.setText(category);
             viewHolder.expenseMemoTextView.setText(memo);
-            viewHolder.expenseAmountTextView.setText(CurrencyHelper.getFormattedCurrencyString(viewHolder.view.getContext(), -expense.getAmount()));
+            viewHolder.expenseAmountTextView.setText(CurrencyHelper.getFormattedCurrencyString(-expense.getAmount()));
             viewHolder.expenseAmountTextView.setTextColor(ContextCompat.getColor(viewHolder.view.getContext(), expense.isRevenue() ? R.color.budget_green : R.color.budget_red));
             viewHolder.monthlyIndicator.setVisibility(expense.isRecurring() ? View.VISIBLE : View.GONE);
             viewHolder.dateTextView.setText(dayFormatter.format(expense.getDate()));

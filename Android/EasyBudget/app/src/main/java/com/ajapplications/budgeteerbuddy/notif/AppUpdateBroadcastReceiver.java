@@ -20,12 +20,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.ajapplications.budgeteerbuddy.EasyBudget;
+import com.ajapplications.budgeteerbuddy.BudgeteerBuddy;
 
 /**
  * Simple Broadcast receiver that is just here to receive events when a package is updated. This is
- * made to awake our application on an update (especially EasyBudget ones) to perform action. Those
- * actions are made on {@link EasyBudget#onUpdate(int, int)}.
+ * made to awake our application on an update (especially BudgeteerBuddy ones) to perform action. Those
+ * actions are made on {@link BudgeteerBuddy#onUpdate(int, int)}.
  *
  * @author Benoit LETONDOR
  */

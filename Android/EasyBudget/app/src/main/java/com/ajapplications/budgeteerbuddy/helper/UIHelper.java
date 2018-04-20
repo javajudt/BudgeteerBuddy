@@ -36,7 +36,6 @@ import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -156,19 +155,6 @@ public class UIHelper
                 }
             });
         }
-    }
-
-    /**
-     * Set the focus on the given text view
-     *
-     * @param editText
-     */
-    public static void setFocus(@NonNull EditText editText)
-    {
-        editText.requestFocus();
-
-        InputMethodManager imm = (InputMethodManager) editText.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
     }
 
     /**

@@ -47,7 +47,7 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.ajapplications.budgeteerbuddy.EasyBudget;
+import com.ajapplications.budgeteerbuddy.BudgeteerBuddy;
 import com.ajapplications.budgeteerbuddy.R;
 import com.ajapplications.budgeteerbuddy.helper.CurrencyHelper;
 import com.ajapplications.budgeteerbuddy.helper.Logger;
@@ -154,7 +154,7 @@ public class MainActivity extends DBActivity {
         //filter.addAction(SelectCurrencyFragment.CURRENCY_SELECTED_INTENT);
         filter.addAction(INTENT_SHOW_WELCOME_SCREEN);
         filter.addAction(Intent.ACTION_VIEW);
-//        filter.addAction(EasyBudget.INTENT_IAB_STATUS_CHANGED);
+//        filter.addAction(BudgeteerBuddy.INTENT_IAB_STATUS_CHANGED);
 
         receiver = new BroadcastReceiver() {
             @Override
@@ -244,7 +244,7 @@ public class MainActivity extends DBActivity {
                         updateInvitationStatus(intent);
                     }
                 }
-//                else if( EasyBudget.INTENT_IAB_STATUS_CHANGED.equals(intent.getAction()) )
+//                else if( BudgeteerBuddy.INTENT_IAB_STATUS_CHANGED.equals(intent.getAction()) )
 //                {
 //                    invalidateOptionsMenu();
 //                }
@@ -381,7 +381,7 @@ public class MainActivity extends DBActivity {
                 }
 
                 Parameters.getInstance(getApplicationContext()).putString(ParameterKeys.INVITATION_ID, invitationId);
-                ((EasyBudget) getApplication()).trackInvitationId(invitationId);
+                ((BudgeteerBuddy) getApplication()).trackInvitationId(invitationId);
             }
 
             Uri data = intent.getData();
@@ -629,11 +629,11 @@ public class MainActivity extends DBActivity {
             formatted = formatted.substring(0, formatted.length() - 3) + " :"; // Remove . at the end of the month (ex: nov. : -> nov :)
 
         budgetLine.setText(formatted);
-        budgetLineAmount.setText(CurrencyHelper.getFormattedCurrencyString(this, balance));
+        budgetLineAmount.setText(CurrencyHelper.getFormattedCurrencyString(balance));
 
         if (balance <= 0)
             budgetLineContainer.setBackgroundResource(R.color.budget_red);
-        else if (balance < Parameters.getInstance(getApplicationContext()).getInt(ParameterKeys.LOW_MONEY_WARNING_AMOUNT, EasyBudget.DEFAULT_LOW_MONEY_WARNING_AMOUNT))
+        else if (balance < Parameters.getInstance(getApplicationContext()).getInt(ParameterKeys.LOW_MONEY_WARNING_AMOUNT, BudgeteerBuddy.DEFAULT_LOW_MONEY_WARNING_AMOUNT))
             budgetLineContainer.setBackgroundResource(R.color.budget_orange);
         else
             budgetLineContainer.setBackgroundResource(R.color.budget_green);

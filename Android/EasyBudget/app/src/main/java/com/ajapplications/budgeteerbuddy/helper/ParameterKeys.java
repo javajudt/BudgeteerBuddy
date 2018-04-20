@@ -36,10 +36,6 @@ public class ParameterKeys
      */
     public static final String LOCAL_ID        = "local_id";
     /**
-     * The chosen ISO code of the currency (string)
-     */
-    public static final String CURRENCY_ISO    = "currency_iso";
-    /**
      * Warning limit for low money on account (int)
      */
     public static final String LOW_MONEY_WARNING_AMOUNT = "low_money_warning_amount";
@@ -71,10 +67,6 @@ public class ParameterKeys
      * Store the user step in the rating process (int)
      */
     public static final String RATING_STEP = "rating_step";
-    /**
-     * Has the user redeemed a Batch offer (bool)
-     */
-    //public static final String BATCH_OFFER_REDEEMED = "batch_offer_redeemed";
     /**
      * Number of time the app has been opened (int)
      */
@@ -116,23 +108,7 @@ public class ParameterKeys
      */
     public static final String MONTHLY_PUSH_NOTIF_SHOWN = "user_saw_monthly_push_notif";
     /**
-     * Timestamp that indicates the last time user was presented the become premium popup (long)
-     */
-    //public static final String PREMIUM_POPUP_LAST_AUTO_SHOW = "premium_popup_last_auto_show";
-    /**
-     * Has the user complete the premium popup = should we show it again or not (bool)
-     */
-    //public static final String PREMIUM_POPUP_COMPLETE = "premium_popup_complete";
-    /**
      * Has the user saw the monthly report hint (bool)
      */
     public static final String USER_SAW_MONTHLY_REPORT_HINT = "user_saw_monthly_report_hint";
-    /**
-     * Is the user premium from AppTurbo (bool)
-     */
-    //public static final String APP_TURBO_PREMIUM = "appturbo_offer";
-    /**
-     * Cache storage of the IAB status
-     */
-    //public static final String PREMIUM = "premium";
 }
