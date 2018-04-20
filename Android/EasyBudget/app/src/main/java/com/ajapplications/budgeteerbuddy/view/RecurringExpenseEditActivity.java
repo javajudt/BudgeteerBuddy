@@ -258,15 +258,15 @@ public class RecurringExpenseEditActivity extends DBActivity {
 
             setTitle(isEdit() ? R.string.title_activity_recurring_income_edit : R.string.title_activity_recurring_income_add);
 
-            category = new Category("Income");
-            categoryEditText.setText(category.getLabel());
+            category = Category.Income;
+            categoryEditText.setText(category.toString());
         } else {
             expenseType.setText(R.string.payment);
             expenseType.setTextColor(ContextCompat.getColor(this, R.color.budget_red));
 
             setTitle(isEdit() ? R.string.title_activity_recurring_expense_add : R.string.title_activity_recurring_expense_add);
 
-            if (category.getLabel().equals("Income")) {
+            if (category.toString().equals("Income")) {
                 category = null;
                 categoryEditText.setText("");
             }
@@ -285,14 +285,14 @@ public class RecurringExpenseEditActivity extends DBActivity {
         UIHelper.preventUnsupportedInputForDecimals(amountEditText);
 
         categoryEditText = (ClickToSelectEditText) findViewById(R.id.category_selectedittext);
-        categoryEditText.setItems(Category.generateCategories());
+        categoryEditText.setItems(Category.values());
         categoryEditText.setOnItemSelectedListener(new ClickToSelectEditText.OnItemSelectedListener() {
             @Override
             public void onItemSelectedListener(Category item, int selectedIndex) {
                 category = item;
-                categoryEditText.setText(category.getLabel());
+                categoryEditText.setText(category.toString());
 
-                expenseTypeSwitch.setChecked(category.getLabel().equals("Income"));
+                expenseTypeSwitch.setChecked(category.toString().equals("Income"));
             }
         });
 
@@ -309,7 +309,7 @@ public class RecurringExpenseEditActivity extends DBActivity {
         recurringTypeSpinner.setAdapter(adapter);
 
         if (expense != null) {
-            categoryEditText.setText(category.getLabel());
+            categoryEditText.setText(category.toString());
 
             memoEditText.setText(expense.getTitle());
             memoEditText.setSelection(memoEditText.getText().length()); // Put focus at the end of the text
