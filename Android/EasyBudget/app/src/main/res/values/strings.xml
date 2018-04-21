@@ -34,6 +34,7 @@
     <string name="title_activity_welcome">Budgeteer Buddy</string>
     <string name="title_activity_premium">Premium</string>
     <string name="title_activity_monthly_report">Monthly report</string>
+    <string name="title_activity_expense_analysis">Expense Analysis</string>
     <string name="cancel">Cancel</string>
     <string name="undo">UNDO</string>
     <string name="ok">OK</string>

@@ -30,7 +30,6 @@
         android:supportsRtl="false"
         android:theme="@style/AppTheme"
         tools:ignore="UnusedAttribute">
-
         <activity
             android:name=".view.MainActivity"
             android:configChanges="locale|keyboardHidden|orientation|screenSize"
@@ -55,6 +54,11 @@
                 android:name="android.app.shortcuts"
                 android:resource="@xml/shortcuts" />
         </activity>
+        <activity
+            android:name=".view.GraphActivity"
+            android:configChanges="locale|keyboardHidden|orientation|screenSize"
+            android:label="@string/title_activity_expense_analysis"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".view.MonthlyReportActivity"
             android:configChanges="locale|keyboardHidden|orientation|screenSize"
@@ -110,6 +114,7 @@
                 <action android:name="com.android.vending.INSTALL_REFERRER" />
             </intent-filter>
         </receiver>
+
     </application>
 
 </manifest>
