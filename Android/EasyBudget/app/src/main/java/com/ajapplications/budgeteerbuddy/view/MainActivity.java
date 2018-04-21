@@ -94,8 +94,6 @@ public class MainActivity extends DBActivity {
     public static final String INTENT_SHOW_ADD_EXPENSE = "intent.addexpense.show";
     public final static String INTENT_SHOW_ADD_RECURRING_EXPENSE = "intent.addrecurringexpense.show";
 
-    public static final String INTENT_REDIRECT_TO_SETTINGS_EXTRA = "intent.extra.redirecttosettings";
-
     public final static String ANIMATE_TRANSITION_KEY = "animate";
     public final static String CENTER_X_KEY = "centerX";
     public final static String CENTER_Y_KEY = "centerY";
@@ -245,7 +243,6 @@ public class MainActivity extends DBActivity {
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(receiver, filter);
 
         if (getIntent() != null) {
-            openSettingsIfNeeded(getIntent());
             openMonthlyReportIfNeeded(getIntent());
             openAddExpenseIfNeeded(getIntent());
             openAddRecurringExpenseIfNeeded(getIntent());
@@ -338,7 +335,6 @@ public class MainActivity extends DBActivity {
             updateInvitationStatus(intent);
         }
 
-        openSettingsIfNeeded(intent);
         openMonthlyReportIfNeeded(intent);
         openAddExpenseIfNeeded(intent);
         openAddRecurringExpenseIfNeeded(intent);
@@ -428,22 +424,23 @@ public class MainActivity extends DBActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            Intent startIntent = new Intent(this, SettingsActivity.class);
-            ActivityCompat.startActivity(MainActivity.this, startIntent, null);
-
-            return true;
-        } else if (id == R.id.action_monthly_report) {
-            Intent startIntent = new Intent(this, MonthlyReportActivity.class);
-            ActivityCompat.startActivity(MainActivity.this, startIntent, null);
-
-            return true;
+        Class activity;
+        switch(item.getItemId()){
+            case R.id.action_monthly_report:
+                activity = MonthlyReportActivity.class;
+                break;
+            case R.id.action_expense_analysis:
+                activity = GraphActivity.class;
+                break;
+            case R.id.action_settings:
+                activity = SettingsActivity.class;
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
         }
 
-        return super.onOptionsItemSelected(item);
+        ActivityCompat.startActivity(this, new Intent(this, activity), null);
+        return true;
     }
 
 // ------------------------------------------>
@@ -475,19 +472,6 @@ public class MainActivity extends DBActivity {
             budgetLineContainer.setBackgroundResource(R.color.budget_orange);
         else
             budgetLineContainer.setBackgroundResource(R.color.budget_green);
-    }
-
-    /**
-     * Open the settings activity if the given intent contains the {@link #INTENT_REDIRECT_TO_SETTINGS_EXTRA}
-     * extra.
-     *
-     * @param intent
-     */
-    private void openSettingsIfNeeded(Intent intent) {
-        if (intent.getBooleanExtra(INTENT_REDIRECT_TO_SETTINGS_EXTRA, false)) {
-            Intent startIntent = new Intent(this, SettingsActivity.class);
-            ActivityCompat.startActivity(MainActivity.this, startIntent, null);
-        }
     }
 
     /**
