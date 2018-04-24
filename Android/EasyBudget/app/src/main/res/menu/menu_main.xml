@@ -24,7 +24,7 @@
           app:showAsAction="ifRoom" />
 
     <item android:id="@+id/action_expense_analysis"
-        android:title="@string/monthly_report_button_title"
+        android:title="@string/title_activity_expense_analysis"
         android:icon="@drawable/ic_insert_chart_white_24dp"
         app:showAsAction="ifRoom" />
 

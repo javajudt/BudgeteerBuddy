@@ -183,7 +183,7 @@ public class Expense implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(id);
-        dest.writeString(category.toString());
+        dest.writeString(category.name());
         dest.writeString(title);
         dest.writeDouble(amount);
         dest.writeLong(date.getTime());

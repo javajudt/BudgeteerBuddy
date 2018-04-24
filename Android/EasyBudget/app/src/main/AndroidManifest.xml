@@ -55,7 +55,7 @@
                 android:resource="@xml/shortcuts" />
         </activity>
         <activity
-            android:name=".view.GraphActivity"
+            android:name=".view.ExpenseAnalysisActivity"
             android:configChanges="locale|keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_expense_analysis"
             android:screenOrientation="portrait"/>

@@ -128,6 +128,7 @@
     <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-appinvite-10.2.4" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:animated-vector-drawable-25.3.1" level="project" />
     <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-gcm-10.2.4" level="project" />
+    <orderEntry type="library" name="Gradle: com.github.PhilJay:MPAndroidChart:v2.1.6@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:support-compat-25.3.1" level="project" />
     <orderEntry type="library" name="Gradle: me.relex:circleindicator-1.2.2" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:transition-25.3.1" level="project" />

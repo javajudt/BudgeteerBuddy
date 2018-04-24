@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/action_analysis_weekly"
+        android:title="@string/title_analysis_weekly" />
+    <item
+        android:id="@+id/action_analysis_monthly"
+        android:title="@string/title_analysis_monthly" />
+    <item
+        android:id="@+id/action_analysis_yearly"
+        android:title="@string/title_analysis_yearly" />
+</menu>

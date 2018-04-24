@@ -430,7 +430,7 @@ public class MainActivity extends DBActivity {
                 activity = MonthlyReportActivity.class;
                 break;
             case R.id.action_expense_analysis:
-                activity = GraphActivity.class;
+                activity = ExpenseAnalysisActivity.class;
                 break;
             case R.id.action_settings:
                 activity = SettingsActivity.class;

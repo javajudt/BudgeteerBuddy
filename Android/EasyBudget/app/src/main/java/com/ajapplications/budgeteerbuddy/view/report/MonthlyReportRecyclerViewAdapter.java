@@ -108,7 +108,7 @@ public class MonthlyReportRecyclerViewAdapter extends RecyclerView.Adapter<Recyc
             ExpenseViewHolder viewHolder = (ExpenseViewHolder) holder;
             Expense expense = getExpense(position);
 
-            String category = expense.getCategory().toString();
+            String category = expense.getCategory().toString(viewHolder.view.getContext());
             String memo = expense.getTitle();
             if (!memo.trim().isEmpty())
                 category += "  ";
