@@ -6,14 +6,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ajapplications.budgeteerbuddy.R;
+import com.ajapplications.budgeteerbuddy.model.Expense;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 
 public class LineChartFragment extends ChartFragment {
@@ -42,28 +44,29 @@ public class LineChartFragment extends ChartFragment {
         return view;
     }
 
-    private ArrayList<BarEntry> getEntries(){
-        //TODO pull from db
-
+    private ArrayList<BarEntry> getEntries() {
         ArrayList entries = new ArrayList();
 
-        entries.add(new Entry(4f, 0));
-        entries.add(new Entry(5f,1));
-        entries.add(new Entry(6f,2));
-        entries.add(new Entry(2f,3));
-        entries.add(new Entry(18f,4));
-        entries.add(new Entry(9f,5));
-        entries.add(new Entry(4f, 6));
-        entries.add(new Entry(5f,7));
-        entries.add(new Entry(6f,8));
-        entries.add(new Entry(2f,9));
-        entries.add(new Entry(18f,10));
-        entries.add(new Entry(9f, 11));
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.MONTH, Calendar.JANUARY);
+        cal.set(Calendar.DAY_OF_MONTH, 1);
+
+        for (int i = 0; i < 11; i++) {
+            List<Expense> expenses = getDB().getExpensesForMonth(cal.getTime());
+
+            double totalForMonth = 0;
+            for (Expense expense : expenses) {
+                totalForMonth += expense.getAmount();
+            }
+            entries.add(new BarEntry((float) totalForMonth, i));
+
+            cal.add(Calendar.MONTH, 1);
+        }
 
         return entries;
     }
 
-    private ArrayList<String> getEntryLabels(){
+    private ArrayList<String> getEntryLabels() {
         ArrayList labels = new ArrayList();
 
         labels.add(getResources().getString(R.string.graph_label_january));
@@ -78,6 +81,7 @@ public class LineChartFragment extends ChartFragment {
         labels.add(getResources().getString(R.string.graph_label_october));
         labels.add(getResources().getString(R.string.graph_label_november));
         labels.add(getResources().getString(R.string.graph_label_december));
+
         return labels;
     }
 }
