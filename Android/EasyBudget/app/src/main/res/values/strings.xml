@@ -144,7 +144,9 @@
     <string name="graph_label_monthly_expenses">Monthly Expenses</string>
     <string name="graph_label_yearly_expenses">Yearly Expenses</string>
 
-    <string name="graph_label_no_expenses">There aren\'t any expenses for today!</string>
+    <string name="graph_label_no_expenses_day">There aren\'t any expenses for today!</string>
+    <string name="graph_label_no_expenses_week">There aren\'t any expenses or incomes for the last 7 days!</string>
+    <string name="graph_label_no_expenses_year">There aren\'t any expenses or incomes for this year!</string>
 
     <string name="graph_label_sunday">Sunday</string>
     <string name="graph_label_monday">Monday</string>

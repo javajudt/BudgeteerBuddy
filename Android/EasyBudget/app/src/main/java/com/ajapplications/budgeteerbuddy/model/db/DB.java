@@ -148,6 +148,96 @@ public final class DB
     }
 
     /**
+     * Check if an expense is set for the current year
+     *
+     * @param date current date
+     * @return
+     */
+    public boolean hasExpensesForYear(@NonNull Date date)
+    {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.set(Calendar.DAY_OF_YEAR, 1);
+        Pair<Long, Long> firstDateRange = DateHelper.getTimestampRangeForDay(cal.getTime());
+
+        cal.add(Calendar.YEAR, 1);
+        cal.add(Calendar.DAY_OF_YEAR, -1);
+
+        Pair<Long, Long> lastDateRange = DateHelper.getTimestampRangeForDay(cal.getTime());
+
+        Cursor cursor = null;
+        try
+        {
+            cursor = database.rawQuery("SELECT COUNT(*) FROM " + SQLiteDBHelper.TABLE_EXPENSE + " WHERE " + SQLiteDBHelper.COLUMN_EXPENSE_DATE + " >= " + firstDateRange.first + " AND "+SQLiteDBHelper.COLUMN_EXPENSE_DATE + " <= "+ lastDateRange.second + " LIMIT 1", null);
+            return cursor.moveToFirst() && cursor.getInt(0) > 0;
+        }
+        finally
+        {
+            if( cursor != null )
+                cursor.close();
+        }
+    }
+
+    /**
+     * Check if an expense is set to the given month
+     *
+     * @param firstDate first day of the month at 00:00:000
+     * @return
+     */
+    public boolean hasExpensesForMonth(@NonNull Date firstDate)
+    {
+        Pair<Long, Long> firstDateRange = DateHelper.getTimestampRangeForDay(firstDate);
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(firstDate);
+        cal.add(Calendar.MONTH, 1);
+        cal.add(Calendar.DAY_OF_MONTH, -1);
+
+        Pair<Long, Long> lastDateRange = DateHelper.getTimestampRangeForDay(cal.getTime());
+
+        Cursor cursor = null;
+        try
+        {
+            cursor = database.rawQuery("SELECT COUNT(*) FROM " + SQLiteDBHelper.TABLE_EXPENSE + " WHERE " + SQLiteDBHelper.COLUMN_EXPENSE_DATE + " >= " + firstDateRange.first + " AND "+SQLiteDBHelper.COLUMN_EXPENSE_DATE + " <= "+ lastDateRange.second + " LIMIT 1", null);
+            return cursor.moveToFirst() && cursor.getInt(0) > 0;
+        }
+        finally
+        {
+            if( cursor != null )
+                cursor.close();
+        }
+    }
+
+    /**
+     * Check if an expense is set to the last 7 days
+     *
+     * @param date today's date
+     * @return
+     */
+    public boolean hasExpensesForLastSevenDays(@NonNull Date date)
+    {
+        Pair<Long, Long> lastDateRange = DateHelper.getTimestampRangeForDay(date);
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.DAY_OF_MONTH, -6);
+
+        Pair<Long, Long> firstDateRange = DateHelper.getTimestampRangeForDay(cal.getTime());
+
+        Cursor cursor = null;
+        try
+        {
+            cursor = database.rawQuery("SELECT COUNT(*) FROM " + SQLiteDBHelper.TABLE_EXPENSE + " WHERE " + SQLiteDBHelper.COLUMN_EXPENSE_DATE + " >= " + firstDateRange.first + " AND "+SQLiteDBHelper.COLUMN_EXPENSE_DATE + " <= "+ lastDateRange.second + " LIMIT 1", null);
+            return cursor.moveToFirst() && cursor.getInt(0) > 0;
+        }
+        finally
+        {
+            if( cursor != null )
+                cursor.close();
+        }
+    }
+
+    /**
      * Check if an expense is set to the given day
      *
      * @param day
@@ -168,16 +258,13 @@ public final class DB
         Cursor cursor = null;
         try
         {
-            cursor = database.rawQuery("SELECT COUNT(*) FROM " + SQLiteDBHelper.TABLE_EXPENSE + " WHERE " + SQLiteDBHelper.COLUMN_EXPENSE_DATE + " >= " + range.first + " AND "+SQLiteDBHelper.COLUMN_EXPENSE_DATE + " <= "+ range.second, null);
-
+            cursor = database.rawQuery("SELECT COUNT(*) FROM " + SQLiteDBHelper.TABLE_EXPENSE + " WHERE " + SQLiteDBHelper.COLUMN_EXPENSE_DATE + " >= " + range.first + " AND "+SQLiteDBHelper.COLUMN_EXPENSE_DATE + " <= "+ range.second + " LIMIT 1", null);
             return cursor.moveToFirst() && cursor.getInt(0) > 0;
         }
         finally
         {
             if( cursor != null )
-            {
                 cursor.close();
-            }
         }
     }
 
