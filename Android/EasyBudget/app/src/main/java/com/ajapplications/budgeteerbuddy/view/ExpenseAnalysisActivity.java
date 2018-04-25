@@ -135,27 +135,27 @@ public class ExpenseAnalysisActivity extends DBActivity {
         LocalBroadcastManager.getInstance(this).registerReceiver(receiver, filter);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_analysis, menu);
-        return true;
-    }
-
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.menu_analysis, menu);
+//        return true;
+//    }
+//
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
         int id = item.getItemId();
 
-        if (id == R.id.action_analysis_weekly){
-            //TODO weekly analysis
-        }
-        else if (id == R.id.action_analysis_monthly){
-            //TODO monthly analysis
-        }
-        else if (id == R.id.action_analysis_yearly){
-            //TODO yearly analysis
-        }
-        else if( id == android.R.id.home ) // Back button of the actionbar
+//        if (id == R.id.action_analysis_weekly){
+//            //TODO weekly analysis
+//        }
+//        else if (id == R.id.action_analysis_monthly){
+//            //TODO monthly analysis
+//        }
+//        else if (id == R.id.action_analysis_yearly){
+//            //TODO yearly analysis
+//        }
+        /*else */if( id == android.R.id.home ) // Back button of the actionbar
         {
             finish();
             return true;

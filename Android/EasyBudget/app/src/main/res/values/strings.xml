@@ -144,6 +144,8 @@
     <string name="graph_label_monthly_expenses">Monthly Expenses</string>
     <string name="graph_label_yearly_expenses">Yearly Expenses</string>
 
+    <string name="graph_label_no_expenses">There aren\'t any expenses for today!</string>
+
     <string name="graph_label_sunday">Sunday</string>
     <string name="graph_label_monday">Monday</string>
     <string name="graph_label_tuesday">Tuesday</string>

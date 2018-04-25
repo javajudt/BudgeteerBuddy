@@ -37,7 +37,7 @@ public class BarChartFragment extends ChartFragment {
         ArrayList entries = getEntries();
         ArrayList labels = getEntryLabels();
 
-        BarDataSet dataSet = new BarDataSet(entries, getResources().getString(R.string.graph_label_weekly_expenses));
+        BarDataSet dataSet = new BarDataSet(entries, "");
         dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
 
         BarData data = new BarData(labels, dataSet);
@@ -56,7 +56,7 @@ public class BarChartFragment extends ChartFragment {
         ArrayList entries = new ArrayList();
 
         // Get expenses for each day in the last week.
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 7; i++) {
             List<Expense> expenses = getDB().getExpensesForDay(cal.getTime());
 
             double totalForDay = 0;

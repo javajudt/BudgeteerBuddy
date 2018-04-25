@@ -60,6 +60,7 @@ dependencies {
     implementation 'com.getbase:floatingactionbutton:1.10.1'
     implementation 'me.relex:circleindicator:1.2.2@aar'
     implementation 'com.github.PhilJay:MPAndroidChart:v2.1.6'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
 }
 
 repositories {

@@ -32,7 +32,7 @@ public class LineChartFragment extends ChartFragment {
         ArrayList entries = getEntries();
         ArrayList labels = getEntryLabels();
 
-        LineDataSet dataSet = new LineDataSet(entries, getResources().getString(R.string.graph_label_yearly_expenses));
+        LineDataSet dataSet = new LineDataSet(entries, "");
         dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
 
         LineData data = new LineData(labels, dataSet);
@@ -51,7 +51,7 @@ public class LineChartFragment extends ChartFragment {
         cal.set(Calendar.MONTH, Calendar.JANUARY);
         cal.set(Calendar.DAY_OF_MONTH, 1);
 
-        for (int i = 0; i < 11; i++) {
+        for (int i = 0; i < 12; i++) {
             List<Expense> expenses = getDB().getExpensesForMonth(cal.getTime());
 
             double totalForMonth = 0;
