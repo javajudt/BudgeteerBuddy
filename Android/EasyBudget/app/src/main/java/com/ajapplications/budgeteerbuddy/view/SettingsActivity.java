@@ -16,10 +16,8 @@
 
 package com.ajapplications.budgeteerbuddy.view;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
@@ -35,21 +33,9 @@ import com.google.android.gms.appinvite.AppInviteInvitation;
 public class SettingsActivity extends AppCompatActivity
 {
     /**
-     * Key to specify that the premium popup should be shown to the user
-     */
-    public static final String SHOW_PREMIUM_INTENT_KEY = "showPremium";
-    /**
-     * Intent action broadcast when the user has successfully completed the {@link PremiumActivity}
-     */
-    public static final String USER_GONE_PREMIUM_INTENT = "user.ispremium";
-    /**
      * Request code used by app invite
      */
     protected static final int APP_INVITE_REQUEST = 1001;
-    /**
-     * Request code used by premium activity
-     */
-    protected static final int PREMIUM_ACTIVITY = 20020;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -81,12 +67,6 @@ public class SettingsActivity extends AppCompatActivity
     {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // iab management
-        if( ((BudgeteerBuddy) getApplication()).handleActivityResult(requestCode, resultCode, data) )
-        {
-            return;
-        }
-
         if (requestCode == APP_INVITE_REQUEST)
         {
             if (resultCode == RESULT_OK)
@@ -97,14 +77,7 @@ public class SettingsActivity extends AppCompatActivity
                 // as the ID will be consistent on the sending and receiving devices.
                 String[] ids = AppInviteInvitation.getInvitationIds(resultCode, data);
 
-                ((BudgeteerBuddy) getApplication()).trackNumberOfInvitsSent(ids.length);
-            }
-        }
-        else if( requestCode == PREMIUM_ACTIVITY )
-        {
-            if( resultCode == Activity.RESULT_OK )
-            {
-                LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(USER_GONE_PREMIUM_INTENT));
+                ((BudgeteerBuddy) getApplication()).trackNumberOfInvitesSent(ids.length);
             }
         }
     }

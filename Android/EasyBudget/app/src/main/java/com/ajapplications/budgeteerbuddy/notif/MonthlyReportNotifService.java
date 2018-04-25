@@ -72,7 +72,6 @@ public class MonthlyReportNotifService extends IntentService
             {
                 Intent notificationIntent = new Intent(this, MainActivity.class);
                 notificationIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                notificationIntent.putExtra(MainActivity.INTENT_REDIRECT_TO_PREMIUM_EXTRA, true);
 
                 startActivity(notificationIntent);
             }

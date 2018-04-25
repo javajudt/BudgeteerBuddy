@@ -259,7 +259,7 @@ public class ExpenseEditActivity extends DBActivity {
 
             category = Category.Income;
             if (categoryEditText != null)
-                categoryEditText.setText(category.toString());
+                categoryEditText.setText(category.toString(this));
         } else {
             expenseType.setText(R.string.payment);
             expenseType.setTextColor(ContextCompat.getColor(this, R.color.budget_red));
@@ -290,14 +290,14 @@ public class ExpenseEditActivity extends DBActivity {
             @Override
             public void onItemSelectedListener(Category item, int selectedIndex) {
                 category = item;
-                categoryEditText.setText(category.toString());
+                categoryEditText.setText(category.toString(getBaseContext()));
 
-                expenseTypeSwitch.setChecked(category.toString().equals("Income"));
+                expenseTypeSwitch.setChecked(category.equals(Category.Income));
             }
         });
 
         if (expense != null) {
-            categoryEditText.setText(category.toString());
+            categoryEditText.setText(category.toString(this));
 
             memoEditText.setText(expense.getTitle());
             memoEditText.setSelection(memoEditText.getText().length()); // Put focus at the end of the text

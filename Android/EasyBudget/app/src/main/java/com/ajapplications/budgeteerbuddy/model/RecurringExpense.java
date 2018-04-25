@@ -154,7 +154,7 @@ public class RecurringExpense implements Parcelable
     public void writeToParcel(Parcel dest, int flags)
     {
         dest.writeValue(id);
-        dest.writeString(category.toString());
+        dest.writeString(category.name());
         dest.writeString(title);
         dest.writeLong(recurringDate.getTime());
         dest.writeDouble(amount);

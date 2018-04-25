@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
    Copyright 2015 Benoit LETONDOR
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,56 +13,41 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
-<manifest package="com.ajapplications.budgeteerbuddy"
-          xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools">
-
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="com.android.vending.BILLING"/>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.ajapplications.budgeteerbuddy">
 
     <!-- Push -->
     <permission
-        android:name="com.ajapplications.budgeteerbuddy.permission.C2D_MESSAGE"
-        android:protectionLevel="signature"/>
-
-    <uses-permission android:name="com.ajapplications.budgeteerbuddy.permission.C2D_MESSAGE"/>
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
-    <uses-permission android:name="android.permission.VIBRATE"/>
-    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
+        android:name=".permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
 
     <application
-        android:name="com.ajapplications.budgeteerbuddy.BudgeteerBuddy"
+        android:name=".BudgeteerBuddy"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme"
         android:supportsRtl="false"
+        android:theme="@style/AppTheme"
         tools:ignore="UnusedAttribute">
-
-        <!-- Fabric.io -->
-        <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="4f073b46e47c18a4636da5e93128e7c7d9f1600c"/>
-
         <activity
-            android:name="com.ajapplications.budgeteerbuddy.view.MainActivity"
+            android:name=".view.MainActivity"
             android:configChanges="locale|keyboardHidden|orientation|screenSize"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
+                <action android:name="android.intent.action.VIEW" />
 
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="easybudget"/>
+                <data android:scheme="budgeteerbuddy" />
             </intent-filter>
 
             <meta-data
@@ -71,84 +55,66 @@
                 android:resource="@xml/shortcuts" />
         </activity>
         <activity
-            android:name="com.ajapplications.budgeteerbuddy.view.MonthlyReportActivity"
-            android:label="@string/title_activity_monthly_report"
+            android:name=".view.ExpenseAnalysisActivity"
             android:configChanges="locale|keyboardHidden|orientation|screenSize"
+            android:label="@string/title_activity_expense_analysis"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".view.MonthlyReportActivity"
+            android:configChanges="locale|keyboardHidden|orientation|screenSize"
+            android:label="@string/title_activity_monthly_report"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.ajapplications.budgeteerbuddy.view.ExpenseEditActivity"
+            android:name=".view.ExpenseEditActivity"
             android:configChanges="locale|keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_add_expense"
             android:screenOrientation="portrait"
-            android:theme="@style/AppThemeNoActionBar"/>
+            android:theme="@style/AppThemeNoActionBar" />
         <activity
-            android:name="com.ajapplications.budgeteerbuddy.view.RecurringExpenseEditActivity"
+            android:name=".view.RecurringExpenseEditActivity"
             android:configChanges="locale|keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_recurring_expense_add"
             android:screenOrientation="portrait"
-            android:theme="@style/AppThemeNoActionBar"/>
+            android:theme="@style/AppThemeNoActionBar" />
         <activity
-            android:name="com.ajapplications.budgeteerbuddy.view.SettingsActivity"
+            android:name=".view.SettingsActivity"
             android:configChanges="locale|keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_settings"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
-            android:name="com.ajapplications.budgeteerbuddy.view.WelcomeActivity"
+            android:name=".view.WelcomeActivity"
             android:configChanges="locale|keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_welcome"
             android:screenOrientation="portrait"
-            android:theme="@style/AppThemeNoActionBar"/>
+            android:theme="@style/AppThemeNoActionBar" />
 
         <!-- Notif services -->
-        <service android:name="com.ajapplications.budgeteerbuddy.notif.DailyNotifOptinService"/>
-        <service android:name="com.ajapplications.budgeteerbuddy.notif.MonthlyReportNotifService"/>
-
-        <receiver android:name="com.ajapplications.budgeteerbuddy.notif.AppUpdateBroadcastReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_REPLACED"/>
-
-                <data android:scheme="package"/>
-            </intent-filter>
-        </receiver>
+        <service android:name=".notif.DailyNotifOptinService" />
+        <service android:name=".notif.MonthlyReportNotifService" />
 
         <!-- Custom Push receiver -->
-        <service android:name="com.ajapplications.budgeteerbuddy.push.PushService"/>
+        <service android:name=".push.PushService" />
 
         <receiver
-            android:name="com.ajapplications.budgeteerbuddy.push.PushReceiver"
+            android:name=".push.PushReceiver"
             android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
 
-                <category android:name="com.ajapplications.budgeteerbuddy"/>
-            </intent-filter>
-        </receiver>
-
-        <!-- Analytics -->
-        <service android:name="com.google.android.gms.analytics.CampaignTrackingService"/>
-        <service
-            android:name="com.google.android.gms.analytics.AnalyticsService"
-            android:enabled="true"
-            android:exported="false"/>
-
-        <receiver
-            android:name="com.google.android.gms.analytics.AnalyticsReceiver"
-            android:enabled="true"
-            tools:ignore="ExportedReceiver">
-            <intent-filter>
-                <action android:name="com.google.android.gms.analytics.ANALYTICS_DISPATCH"/>
+                <category android:name="com.ajapplications.budgeteerbuddy" />
             </intent-filter>
         </receiver>
 
         <!-- Referrer -->
         <receiver
-            android:name="com.ajapplications.budgeteerbuddy.ReferrerReceiver"
+            android:name=".ReferrerReceiver"
             android:exported="true"
             tools:ignore="ExportedReceiver">
             <intent-filter>
-                <action android:name="com.android.vending.INSTALL_REFERRER"/>
+                <action android:name="com.android.vending.INSTALL_REFERRER" />
             </intent-filter>
         </receiver>
+
     </application>
 
 </manifest>

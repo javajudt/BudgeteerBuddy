@@ -259,14 +259,14 @@ public class RecurringExpenseEditActivity extends DBActivity {
             setTitle(isEdit() ? R.string.title_activity_recurring_income_edit : R.string.title_activity_recurring_income_add);
 
             category = Category.Income;
-            categoryEditText.setText(category.toString());
+            categoryEditText.setText(category.toString(this));
         } else {
             expenseType.setText(R.string.payment);
             expenseType.setTextColor(ContextCompat.getColor(this, R.color.budget_red));
 
             setTitle(isEdit() ? R.string.title_activity_recurring_expense_add : R.string.title_activity_recurring_expense_add);
 
-            if (category.toString().equals("Income")) {
+            if (category.equals(Category.Income)) {
                 category = null;
                 categoryEditText.setText("");
             }
@@ -290,9 +290,9 @@ public class RecurringExpenseEditActivity extends DBActivity {
             @Override
             public void onItemSelectedListener(Category item, int selectedIndex) {
                 category = item;
-                categoryEditText.setText(category.toString());
+                categoryEditText.setText(category.toString(getBaseContext()));
 
-                expenseTypeSwitch.setChecked(category.toString().equals("Income"));
+                expenseTypeSwitch.setChecked(category.equals(Category.Income));
             }
         });
 
@@ -309,7 +309,7 @@ public class RecurringExpenseEditActivity extends DBActivity {
         recurringTypeSpinner.setAdapter(adapter);
 
         if (expense != null) {
-            categoryEditText.setText(category.toString());
+            categoryEditText.setText(category.toString(this));
 
             memoEditText.setText(expense.getTitle());
             memoEditText.setSelection(memoEditText.getText().length()); // Put focus at the end of the text

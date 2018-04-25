@@ -13,7 +13,6 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-
 package com.ajapplications.budgeteerbuddy.view;
 
 import android.animation.Animator;
@@ -23,14 +22,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
 import android.view.ViewAnimationUtils;
 
+import com.ajapplications.budgeteerbuddy.R;
 import com.ajapplications.budgeteerbuddy.helper.ParameterKeys;
 import com.ajapplications.budgeteerbuddy.helper.Parameters;
 import com.ajapplications.budgeteerbuddy.helper.UIHelper;
@@ -39,7 +39,6 @@ import com.ajapplications.budgeteerbuddy.view.welcome.Onboarding1Fragment;
 import com.ajapplications.budgeteerbuddy.view.welcome.Onboarding2Fragment;
 import com.ajapplications.budgeteerbuddy.view.welcome.Onboarding3Fragment;
 import com.ajapplications.budgeteerbuddy.view.welcome.OnboardingFragment;
-import com.ajapplications.budgeteerbuddy.R;
 
 import me.relex.circleindicator.CircleIndicator;
 
