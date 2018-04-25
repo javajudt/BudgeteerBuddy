@@ -6,13 +6,18 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ajapplications.budgeteerbuddy.R;
+import com.ajapplications.budgeteerbuddy.model.Expense;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
 
 
 /**
@@ -44,33 +49,59 @@ public class BarChartFragment extends ChartFragment {
 
         return view;
     }
-    
-    private ArrayList<BarEntry> getEntries(){
-        //TODO pull from db
 
+    private ArrayList<BarEntry> getEntries() {
         ArrayList entries = new ArrayList();
 
-        entries.add(new BarEntry(2f,0));
-        entries.add(new BarEntry(4f,1));
-        entries.add(new BarEntry(6f,2));
-        entries.add(new BarEntry(8f,3));
-        entries.add(new BarEntry(7f,4));
-        entries.add(new BarEntry(3f,5));
-        entries.add(new BarEntry(8f,6));
+        // Get expenses for each day in the last week.
+        int j = 0;
+        for (int i = 6; i >= 0; i--) {
+            Calendar cal = Calendar.getInstance();
+            cal.add(Calendar.DATE, -i);
+            List<Expense> expenses = getDB().getExpensesForDay(cal.getTime());
+
+            double totalForDay = 0;
+            for (Expense expense : expenses) {
+                totalForDay += expense.getAmount();
+            }
+            entries.add(new BarEntry((float) totalForDay, j++));
+        }
 
         return entries;
     }
-    
-    private ArrayList<String> getEntryLabels(){
-        ArrayList labels = new ArrayList();
-        
-        labels.add(getResources().getString(R.string.graph_label_sunday));
-        labels.add(getResources().getString(R.string.graph_label_monday));
-        labels.add(getResources().getString(R.string.graph_label_tuesday));
-        labels.add(getResources().getString(R.string.graph_label_wednesday));
-        labels.add(getResources().getString(R.string.graph_label_thursday));
-        labels.add(getResources().getString(R.string.graph_label_friday));
-        labels.add(getResources().getString(R.string.graph_label_saturday));
+
+    private ArrayList<String> getEntryLabels() {
+        ArrayList<String> labels = new ArrayList();
+
+        for (int i = 6; i >= 0; i--) {
+            Calendar cal = Calendar.getInstance();
+            cal.add(Calendar.DATE, -i);
+            String day = new SimpleDateFormat("EEEE", Locale.ENGLISH).format(cal.getTime());
+
+            switch (day) {
+                case "Sunday":
+                    labels.add(getResources().getString(R.string.graph_label_sunday));
+                    break;
+                case "Monday":
+                    labels.add(getResources().getString(R.string.graph_label_monday));
+                    break;
+                case "Tuesday":
+                    labels.add(getResources().getString(R.string.graph_label_tuesday));
+                    break;
+                case "Wednesday":
+                    labels.add(getResources().getString(R.string.graph_label_wednesday));
+                    break;
+                case "Thursday":
+                    labels.add(getResources().getString(R.string.graph_label_thursday));
+                    break;
+                case "Friday":
+                    labels.add(getResources().getString(R.string.graph_label_friday));
+                    break;
+                case "Saturday":
+                    labels.add(getResources().getString(R.string.graph_label_saturday));
+                    break;
+            }
+        }
 
         return labels;
     }
