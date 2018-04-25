@@ -51,20 +51,21 @@ public class BarChartFragment extends ChartFragment {
     }
 
     private ArrayList<BarEntry> getEntries() {
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, -6);
         ArrayList entries = new ArrayList();
 
         // Get expenses for each day in the last week.
-        int j = 0;
-        for (int i = 6; i >= 0; i--) {
-            Calendar cal = Calendar.getInstance();
-            cal.add(Calendar.DATE, -i);
+        for (int i = 0; i < 6; i++) {
             List<Expense> expenses = getDB().getExpensesForDay(cal.getTime());
 
             double totalForDay = 0;
             for (Expense expense : expenses) {
                 totalForDay += expense.getAmount();
             }
-            entries.add(new BarEntry((float) totalForDay, j++));
+            entries.add(new BarEntry((float) totalForDay, i));
+
+            cal.add(Calendar.DATE, 1);
         }
 
         return entries;
