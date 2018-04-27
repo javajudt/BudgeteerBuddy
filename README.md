@@ -1,47 +1,19 @@
-# EasyBudget
+# BudgeteerBuddy
 
-EasyBudget is a **simple** budget management Android application.
+BudgeteerBuddy is a project by Jordan Judt and Alexis Layne for the Software Engineering course at the University of South Dakota. The professor is Dr. Ahyoung Lee.
 
-![EasyBudget](http://i.imgur.com/hiQrR38.png)
-
-### Project idea
-
-I got the idea of this app by trying to find one really easy to use budget management app on my phone, the conclusion was simple: I cannot find an app on the PlayStore that fits my needs.
-
-I want a simpler app to manage budget on Android. Only 1 account, no export-import features, no stats/graph, simple interface, quick and efficient.
-
-I simply decided to create my own app in my free time, with the hope that I'm not the only one looking for an easiest way to manage my budget.
-
-### Available on PlayStore
-
-You can download EasyBudget on the PlayStore: [https://play.google.com/store/apps/details?id=com.benoitletondor.easybudgetapp](https://play.google.com/store/apps/details?id=com.benoitletondor.easybudgetapp)
-
-### Technical details
-
-EasyBudget is a simple Android app build with Android Studio that supports Android 4+. 
-
-The app adopt material design as much as possible using appcompat and some imagination/magic.
-
-The project is made possible by some external libraries made by awesome guys that I want to thanks here:
-
-- Caldroid: a library to display a customizable Calendar [https://github.com/roomorama/Caldroid](https://github.com/roomorama/Caldroid)
-- FloatingActionButton: library to display a FAB with actions [https://github.com/futuresimple/android-floating-action-button](https://github.com/futuresimple/android-floating-action-button)
-- CircleIndicator: library to display a circle indicator on the onboarding view pager [https://github.com/ongakuer/CircleIndicator](https://github.com/ongakuer/CircleIndicator)
-
-### Contact
-
-You can contact me regarding EasyBudget using this email: [easybudget@benoitletondor.com](mailto:easybudget@benoitletondor.com)
-
-### Contributors
-
-- [Christine Hauser](https://fr.linkedin.com/in/christine-hauser-23627578): wording & german translations
-- [Eleonora Acerra](https://fr.linkedin.com/in/eleonora-acerra-7aa14a77/fr): italian translations
-- [Baptiste Guerre](https://fr.linkedin.com/in/baptiste-guerre-65547484): spanish translations
-- [Aline Tissot](https://fr.linkedin.com/in/alinetissot): portuguese translations
-- [Julie Goaziou](https://fr.linkedin.com/in/julie-goaziou-163a6b76): spanish translations
+### Sources
+- [EasyBudget](https://github.com/benoitletondor/EasyBudget): Our project is based on EasyBudget by Benoit LETONDOR.
+- [Caldroid](https://github.com/roomorama/Caldroid): A library to display a customizable Calendar.
+- [FloatingActionButton](https://github.com/futuresimple/android-floating-action-button): Library to display a FAB with actions.
+- [CircleIndicator](https://github.com/ongakuer/CircleIndicator): Library to display a circle indicator on the onboarding view pager.
+- [ClickToSelectEditText](https://gist.github.com/rodrigohenriques/77398a81b5d01ac71c3b): This Gist by rodrigohenriques essentially turns a TextView into a Spinner.
+- [MPAndroidChart](https://github.com/PhilJay/MPAndroidChart): Library to display various graphs and charts for expense analysis.
 
 ### Copyright
 
-    Copyright (C) 2016 Benoit LETONDOR. The name "EasyBudget", the app idea and assets (images, names, wordings etc...) are all under copyright.
+	Copyright (C) 2018 Jordan Judt and Alexis Layne.
 
-    Sources are availables under the Apache 2 licence (See LICENSE for details) and contributions will be warmely welcomed! Feel free to contribute :)
+    EasyBudget Copyright (C) 2016 Benoit LETONDOR.
+
+    Sources are availables under the Apache 2 licence (See LICENSE for details).
