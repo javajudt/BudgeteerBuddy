@@ -1,17 +1,19 @@
 /*
- *   Copyright 2015 Benoit LETONDOR
- *
- *   Licensed under the Apache License, Version 2.0 (the "License");
- *   you may not use this file except in compliance with the License.
- *   You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *   Unless required by applicable law or agreed to in writing, software
- *   distributed under the License is distributed on an "AS IS" BASIS,
- *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *   See the License for the specific language governing permissions and
- *   limitations under the License.
+   Copyright (c) 2018 Jordan Judt and Alexis Layne.
+
+   Original project "EasyBudget" Copyright (c) Benoit LETONDOR
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+         http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
  */
 
 package com.ajapplications.budgeteerbuddy.view;
@@ -23,16 +25,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.widget.Toast;
 
+import com.ajapplications.budgeteerbuddy.R;
 import com.ajapplications.budgeteerbuddy.helper.Logger;
 import com.ajapplications.budgeteerbuddy.helper.ParameterKeys;
 import com.ajapplications.budgeteerbuddy.helper.Parameters;
 import com.ajapplications.budgeteerbuddy.helper.UIHelper;
 import com.ajapplications.budgeteerbuddy.helper.UserHelper;
-import com.ajapplications.budgeteerbuddy.R;
 
 /**
  * Rating popup that ask user for feedback and redirect them to the PlayStore
@@ -40,16 +41,14 @@ import com.ajapplications.budgeteerbuddy.R;
  *
  * @author Benoit LETONDOR
  */
-public class RatingPopup
-{
+public class RatingPopup {
     /**
      * Stored activity (beware of leaks !)
      */
     @NonNull
     private Context activity;
 
-    public RatingPopup(@NonNull Activity activity)
-    {
+    public RatingPopup(@NonNull Activity activity) {
         this.activity = activity;
     }
 
@@ -62,10 +61,8 @@ public class RatingPopup
      *                  will have a button to asked not to be asked again
      * @return true if the popup has been shown, false otherwise
      */
-    public boolean show(boolean forceShow)
-    {
-        if( !forceShow && UserHelper.hasUserCompleteRating(activity) )
-        {
+    public boolean show(boolean forceShow) {
+        if (!forceShow && UserHelper.hasUserCompleteRating(activity)) {
             Logger.debug("Not showing rating cause user already completed it");
             return false;
         }
@@ -75,8 +72,7 @@ public class RatingPopup
         AlertDialog dialog = buildStep1(!forceShow);
         dialog.show();
 
-        if( !forceShow )
-        {
+        if (!forceShow) {
             // Center buttons
             UIHelper.centerDialogButtons(dialog);
         }
@@ -91,37 +87,29 @@ public class RatingPopup
      *                                    should be included
      * @return A ready to be shown {@link AlertDialog}
      */
-    private AlertDialog buildStep1(boolean includeDontAskMeAgainButton)
-    {
+    private AlertDialog buildStep1(boolean includeDontAskMeAgainButton) {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity)
-            .setTitle(R.string.rating_popup_question_title)
-            .setMessage(R.string.rating_popup_question_message)
-            .setNegativeButton(R.string.rating_popup_question_cta_negative, new DialogInterface.OnClickListener()
-            {
-                @Override
-                public void onClick(DialogInterface dialog, int which)
-                {
-                    setRatingPopupStep(activity, RatingPopupStep.STEP_DISLIKE);
-                    buildNegativeStep().show();
-                }
-            })
-            .setPositiveButton(R.string.rating_popup_question_cta_positive, new DialogInterface.OnClickListener()
-            {
-                @Override
-                public void onClick(DialogInterface dialog, int which)
-                {
-                    setRatingPopupStep(activity, RatingPopupStep.STEP_LIKE);
-                    buildPositiveStep().show();
-                }
-            });
+                .setTitle(R.string.rating_popup_question_title)
+                .setMessage(R.string.rating_popup_question_message)
+                .setNegativeButton(R.string.rating_popup_question_cta_negative, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        setRatingPopupStep(activity, RatingPopupStep.STEP_DISLIKE);
+                        buildNegativeStep().show();
+                    }
+                })
+                .setPositiveButton(R.string.rating_popup_question_cta_positive, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        setRatingPopupStep(activity, RatingPopupStep.STEP_LIKE);
+                        buildPositiveStep().show();
+                    }
+                });
 
-        if( includeDontAskMeAgainButton )
-        {
-            builder.setNeutralButton(R.string.rating_popup_question_cta_dont_ask_again, new DialogInterface.OnClickListener()
-            {
+        if (includeDontAskMeAgainButton) {
+            builder.setNeutralButton(R.string.rating_popup_question_cta_dont_ask_again, new DialogInterface.OnClickListener() {
                 @Override
-                public void onClick(DialogInterface dialog, int which)
-                {
+                public void onClick(DialogInterface dialog, int which) {
                     setRatingPopupStep(activity, RatingPopupStep.STEP_NOT_ASK_ME_AGAIN);
                     UserHelper.setUserHasCompleteRating(activity);
                     dialog.dismiss();
@@ -137,46 +125,38 @@ public class RatingPopup
      *
      * @return A ready to be shown {@link AlertDialog}
      */
-    private AlertDialog buildNegativeStep()
-    {
+    private AlertDialog buildNegativeStep() {
         return new AlertDialog.Builder(activity)
-            .setTitle(R.string.rating_popup_negative_title)
-            .setMessage(R.string.rating_popup_negative_message)
-            .setNegativeButton(R.string.rating_popup_negative_cta_negative, new DialogInterface.OnClickListener()
-            {
-                @Override
-                public void onClick(DialogInterface dialog, int which)
-                {
-                    setRatingPopupStep(activity, RatingPopupStep.STEP_DISLIKE_NO_FEEDBACK);
-                    UserHelper.setUserHasCompleteRating(activity);
-                }
-            })
-            .setPositiveButton(R.string.rating_popup_negative_cta_positive, new DialogInterface.OnClickListener()
-            {
-                @Override
-                public void onClick(DialogInterface dialog, int which)
-                {
-                    setRatingPopupStep(activity, RatingPopupStep.STEP_DISLIKE_FEEDBACK);
-                    UserHelper.setUserHasCompleteRating(activity);
-
-                    Intent sendIntent = new Intent();
-                    sendIntent.setAction(Intent.ACTION_SENDTO);
-                    sendIntent.setData(Uri.parse("mailto:")); // only email apps should handle this
-                    sendIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{activity.getResources().getString(R.string.rating_feedback_email)});
-                    sendIntent.putExtra(Intent.EXTRA_TEXT, activity.getResources().getString(R.string.rating_feedback_send_text));
-                    sendIntent.putExtra(Intent.EXTRA_SUBJECT, activity.getResources().getString(R.string.rating_feedback_send_subject));
-
-                    if (sendIntent.resolveActivity(activity.getPackageManager()) != null)
-                    {
-                        activity.startActivity(sendIntent);
+                .setTitle(R.string.rating_popup_negative_title)
+                .setMessage(R.string.rating_popup_negative_message)
+                .setNegativeButton(R.string.rating_popup_negative_cta_negative, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        setRatingPopupStep(activity, RatingPopupStep.STEP_DISLIKE_NO_FEEDBACK);
+                        UserHelper.setUserHasCompleteRating(activity);
                     }
-                    else
-                    {
-                        Toast.makeText(activity, activity.getResources().getString(R.string.rating_feedback_send_error), Toast.LENGTH_SHORT).show();
+                })
+                .setPositiveButton(R.string.rating_popup_negative_cta_positive, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        setRatingPopupStep(activity, RatingPopupStep.STEP_DISLIKE_FEEDBACK);
+                        UserHelper.setUserHasCompleteRating(activity);
+
+                        Intent sendIntent = new Intent();
+                        sendIntent.setAction(Intent.ACTION_SENDTO);
+                        sendIntent.setData(Uri.parse("mailto:")); // only email apps should handle this
+                        sendIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{activity.getResources().getString(R.string.rating_feedback_email)});
+                        sendIntent.putExtra(Intent.EXTRA_TEXT, activity.getResources().getString(R.string.rating_feedback_send_text));
+                        sendIntent.putExtra(Intent.EXTRA_SUBJECT, activity.getResources().getString(R.string.rating_feedback_send_subject));
+
+                        if (sendIntent.resolveActivity(activity.getPackageManager()) != null) {
+                            activity.startActivity(sendIntent);
+                        } else {
+                            Toast.makeText(activity, activity.getResources().getString(R.string.rating_feedback_send_error), Toast.LENGTH_SHORT).show();
+                        }
                     }
-                }
-            })
-            .create();
+                })
+                .create();
     }
 
     /**
@@ -184,45 +164,37 @@ public class RatingPopup
      *
      * @return A ready to be shown {@link AlertDialog}
      */
-    private AlertDialog buildPositiveStep()
-    {
+    private AlertDialog buildPositiveStep() {
         return new AlertDialog.Builder(activity)
-            .setTitle(R.string.rating_popup_positive_title)
-            .setMessage(R.string.rating_popup_positive_message)
-            .setNegativeButton(R.string.rating_popup_positive_cta_negative, new DialogInterface.OnClickListener()
-            {
-                @Override
-                public void onClick(DialogInterface dialog, int which)
-                {
-                    setRatingPopupStep(activity, RatingPopupStep.STEP_LIKE_NOT_RATED);
-                    UserHelper.setUserHasCompleteRating(activity);
-                }
-            })
-            .setPositiveButton(R.string.rating_popup_positive_cta_positive, new DialogInterface.OnClickListener()
-            {
-                @Override
-                public void onClick(DialogInterface dialog, int which)
-                {
-                    setRatingPopupStep(activity, RatingPopupStep.STEP_LIKE_RATED);
-                    UserHelper.setUserHasCompleteRating(activity);
-
-                    final String appPackageName = activity.getPackageName();
-
-                    try
-                    {
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName));
-
-                        activity.startActivity(intent);
+                .setTitle(R.string.rating_popup_positive_title)
+                .setMessage(R.string.rating_popup_positive_message)
+                .setNegativeButton(R.string.rating_popup_positive_cta_negative, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        setRatingPopupStep(activity, RatingPopupStep.STEP_LIKE_NOT_RATED);
+                        UserHelper.setUserHasCompleteRating(activity);
                     }
-                    catch (ActivityNotFoundException e)
-                    {
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName));
+                })
+                .setPositiveButton(R.string.rating_popup_positive_cta_positive, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        setRatingPopupStep(activity, RatingPopupStep.STEP_LIKE_RATED);
+                        UserHelper.setUserHasCompleteRating(activity);
 
-                        activity.startActivity(intent);
+                        final String appPackageName = activity.getPackageName();
+
+                        try {
+                            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName));
+
+                            activity.startActivity(intent);
+                        } catch (ActivityNotFoundException e) {
+                            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName));
+
+                            activity.startActivity(intent);
+                        }
                     }
-                }
-            })
-            .create();
+                })
+                .create();
     }
 
 // -------------------------------------------->
@@ -233,16 +205,14 @@ public class RatingPopup
      * @param context
      * @param step
      */
-    public static void setRatingPopupStep(@NonNull Context context, @NonNull RatingPopupStep step)
-    {
+    public static void setRatingPopupStep(@NonNull Context context, @NonNull RatingPopupStep step) {
         Parameters.getInstance(context).putInt(ParameterKeys.RATING_STEP, step.value);
     }
 
     /**
      * An enum that define the user step in the rating process
      */
-    public enum RatingPopupStep
-    {
+    public enum RatingPopupStep {
         /**
          * Rating popup not shown
          */
@@ -290,8 +260,7 @@ public class RatingPopup
 
         public int value;
 
-        RatingPopupStep(int value)
-        {
+        RatingPopupStep(int value) {
             this.value = value;
         }
     }

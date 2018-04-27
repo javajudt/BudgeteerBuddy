@@ -1,17 +1,19 @@
 /*
- *   Copyright 2015 Benoit LETONDOR
- *
- *   Licensed under the Apache License, Version 2.0 (the "License");
- *   you may not use this file except in compliance with the License.
- *   You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *   Unless required by applicable law or agreed to in writing, software
- *   distributed under the License is distributed on an "AS IS" BASIS,
- *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *   See the License for the specific language governing permissions and
- *   limitations under the License.
+   Copyright (c) 2018 Jordan Judt and Alexis Layne.
+
+   Original project "EasyBudget" Copyright (c) Benoit LETONDOR
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+         http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
  */
 
 package com.ajapplications.budgeteerbuddy.view;
@@ -32,21 +34,18 @@ import java.util.Date;
 /**
  * @author Benoit LETONDOR
  */
-public class DatePickerDialogFragment extends DialogFragment
-{
+public class DatePickerDialogFragment extends DialogFragment {
     private Date originalDate;
     private DatePickerDialog.OnDateSetListener listener;
 
 // ------------------------------------------>
 
-    public DatePickerDialogFragment()
-    {
+    public DatePickerDialogFragment() {
         throw new RuntimeException("DatePickerDialogFragment is supposed to be instanciated with the date+listener constructor");
     }
 
     @SuppressLint("ValidFragment")
-    public DatePickerDialogFragment(@NonNull Date originalDate, @NonNull DatePickerDialog.OnDateSetListener listener)
-    {
+    public DatePickerDialogFragment(@NonNull Date originalDate, @NonNull DatePickerDialog.OnDateSetListener listener) {
         this.originalDate = originalDate;
         this.listener = listener;
     }
@@ -55,8 +54,7 @@ public class DatePickerDialogFragment extends DialogFragment
 
     @Override
     @NonNull
-    public Dialog onCreateDialog(Bundle savedInstanceState)
-    {
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the current date as the default date in the picker
         final Calendar c = Calendar.getInstance();
         c.setTime(originalDate);
@@ -72,8 +70,7 @@ public class DatePickerDialogFragment extends DialogFragment
     }
 
     @Override
-    public void onDestroyView()
-    {
+    public void onDestroyView() {
         listener = null;
 
         super.onDestroyView();

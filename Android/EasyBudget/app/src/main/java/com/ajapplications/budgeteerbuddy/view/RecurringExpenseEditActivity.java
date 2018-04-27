@@ -1,17 +1,19 @@
 /*
- *   Copyright 2015 Benoit LETONDOR
- *
- *   Licensed under the Apache License, Version 2.0 (the "License");
- *   you may not use this file except in compliance with the License.
- *   You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *   Unless required by applicable law or agreed to in writing, software
- *   distributed under the License is distributed on an "AS IS" BASIS,
- *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *   See the License for the specific language governing permissions and
- *   limitations under the License.
+   Copyright (c) 2018 Jordan Judt and Alexis Layne.
+
+   Original project "EasyBudget" Copyright (c) Benoit LETONDOR
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+         http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
  */
 
 package com.ajapplications.budgeteerbuddy.view;
@@ -40,6 +42,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.ajapplications.budgeteerbuddy.R;
 import com.ajapplications.budgeteerbuddy.helper.CurrencyHelper;
 import com.ajapplications.budgeteerbuddy.helper.Logger;
 import com.ajapplications.budgeteerbuddy.helper.UIHelper;
@@ -48,7 +51,6 @@ import com.ajapplications.budgeteerbuddy.model.Category;
 import com.ajapplications.budgeteerbuddy.model.Expense;
 import com.ajapplications.budgeteerbuddy.model.RecurringExpense;
 import com.ajapplications.budgeteerbuddy.model.RecurringExpenseType;
-import com.ajapplications.budgeteerbuddy.R;
 import com.ajapplications.budgeteerbuddy.view.main.ClickToSelectEditText;
 
 import java.text.SimpleDateFormat;
@@ -188,7 +190,7 @@ public class RecurringExpenseEditActivity extends DBActivity {
         boolean ok = true;
 
         String category = categoryEditText.getText().toString();
-        if (category.trim().isEmpty()){
+        if (category.trim().isEmpty()) {
             categoryEditText.setError(getResources().getString(R.string.no_category_error));
             ok = false;
         }
@@ -203,7 +205,7 @@ public class RecurringExpenseEditActivity extends DBActivity {
                 if (value <= 0) {
                     amountEditText.setError(getResources().getString(R.string.negative_amount_error));
                     ok = false;
-                } else if (!this.category.equals(Category.Income) && (-db.getBalanceForDay(dateStart)) - value < 0){
+                } else if (!this.category.equals(Category.Income) && (-db.getBalanceForDay(dateStart)) - value < 0) {
                     amountEditText.setError(getResources().getString(R.string.negative_balance_error));
                     ok = false;
                 }
@@ -529,39 +531,32 @@ public class RecurringExpenseEditActivity extends DBActivity {
         }
     }
 
-    private void setMessage(){
-        TextView messageTextView = (TextView)findViewById(R.id.message_textview);
+    private void setMessage() {
+        TextView messageTextView = (TextView) findViewById(R.id.message_textview);
         int goal = UserHelper.getSavingsGoal(getBaseContext());
         double savingsTotal = db.getTotalForCategory(Category.Savings);
 
-        if (category == null && savingsTotal < goal){
+        if (category == null && savingsTotal < goal) {
             messageTextView.setText("");
-        }
-        else if (savingsTotal >= goal) {
+        } else if (savingsTotal >= goal) {
             messageTextView.setText(R.string.add_expense_message_goal_met);
             messageTextView.setTextColor(getResources().getColor(R.color.budget_green));
-        }
-        else if (category.getPriority() == 0){
+        } else if (category.getPriority() == 0) {
             messageTextView.setText(R.string.add_expense_message_0);
             messageTextView.setTextColor(getResources().getColor(R.color.budget_green));
-        }
-        else if (category.getPriority() == 1){
+        } else if (category.getPriority() == 1) {
             messageTextView.setText(R.string.add_expense_message_1);
             messageTextView.setTextColor(getResources().getColor(R.color.budget_orange));
-        }
-        else if (category.getPriority() == 2){
+        } else if (category.getPriority() == 2) {
             messageTextView.setText(R.string.add_expense_message_2);
             messageTextView.setTextColor(getResources().getColor(R.color.budget_red));
-        }
-        else if (category.getPriority() == 3){
+        } else if (category.getPriority() == 3) {
             messageTextView.setText(R.string.add_expense_message_3);
             messageTextView.setTextColor(getResources().getColor(R.color.budget_red));
-        }
-        else if (category.getPriority() == 4){
+        } else if (category.getPriority() == 4) {
             messageTextView.setText(R.string.add_expense_message_4);
             messageTextView.setTextColor(getResources().getColor(R.color.budget_red));
-        }
-        else {
+        } else {
             messageTextView.setText(R.string.add_expense_message_other);
             messageTextView.setTextColor(getResources().getColor(R.color.budget_red));
         }

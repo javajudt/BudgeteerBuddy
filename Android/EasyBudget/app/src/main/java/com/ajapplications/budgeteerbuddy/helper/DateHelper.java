@@ -1,17 +1,19 @@
 /*
- *   Copyright 2015 Benoit LETONDOR
- *
- *   Licensed under the Apache License, Version 2.0 (the "License");
- *   you may not use this file except in compliance with the License.
- *   You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *   Unless required by applicable law or agreed to in writing, software
- *   distributed under the License is distributed on an "AS IS" BASIS,
- *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *   See the License for the specific language governing permissions and
- *   limitations under the License.
+   Copyright (c) 2018 Jordan Judt and Alexis Layne.
+
+   Original project "EasyBudget" Copyright (c) Benoit LETONDOR
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+         http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
  */
 
 package com.ajapplications.budgeteerbuddy.helper;
@@ -35,16 +37,14 @@ import java.util.TimeZone;
  *
  * @author Benoit LETONDOR
  */
-public class DateHelper
-{
+public class DateHelper {
     /**
      * Remove hour, minutes, seconds and ms data from a date.
      *
      * @param date
      * @return a new cleaned date
      */
-    public static Date cleanDate(@NonNull Date date)
-    {
+    public static Date cleanDate(@NonNull Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
 
@@ -62,8 +62,7 @@ public class DateHelper
      * @param date the day
      * @return a range of timestamps
      */
-    public static Pair<Long, Long> getTimestampRangeForDay(@NonNull Date date)
-    {
+    public static Pair<Long, Long> getTimestampRangeForDay(@NonNull Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         cal.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -87,8 +86,7 @@ public class DateHelper
      * @param date
      * @return a cleaned value of this date at GMT
      */
-    public static Date cleanGMTDate(@NonNull Date date)
-    {
+    public static Date cleanGMTDate(@NonNull Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         cal.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -107,8 +105,7 @@ public class DateHelper
      * @param context non null context
      * @return a list of Date object set at the 1st day of the month 00:00:00:000
      */
-    public static List<Date> getListOfMonthsAvailableForUser(@NonNull Context context)
-    {
+    public static List<Date> getListOfMonthsAvailableForUser(@NonNull Context context) {
         long initDate = Parameters.getInstance(context).getLong(ParameterKeys.INIT_DATE, System.currentTimeMillis());
 
         Calendar cal = Calendar.getInstance();
@@ -124,8 +121,7 @@ public class DateHelper
 
         List<Date> months = new ArrayList<>();
 
-        while( cal.getTime().before(today) )
-        {
+        while (cal.getTime().before(today)) {
             months.add(cal.getTime());
             cal.add(Calendar.MONTH, 1);
         }
@@ -137,11 +133,10 @@ public class DateHelper
      * Get the title of the month to display in the report view
      *
      * @param context non null context
-     * @param date date of the month
+     * @param date    date of the month
      * @return a formatted string like "January 2016"
      */
-    public static String getMonthTitle(@NonNull Context context, @NonNull Date date)
-    {
+    public static String getMonthTitle(@NonNull Context context, @NonNull Date date) {
         SimpleDateFormat format = new SimpleDateFormat(context.getResources().getString(R.string.monthly_report_month_title_format), Locale.getDefault());
         return format.format(date);
     }

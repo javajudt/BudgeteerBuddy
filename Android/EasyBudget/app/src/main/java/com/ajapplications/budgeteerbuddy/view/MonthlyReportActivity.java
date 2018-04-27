@@ -1,17 +1,19 @@
 /*
- *   Copyright 2016 Benoit LETONDOR
- *
- *   Licensed under the Apache License, Version 2.0 (the "License");
- *   you may not use this file except in compliance with the License.
- *   You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *   Unless required by applicable law or agreed to in writing, software
- *   distributed under the License is distributed on an "AS IS" BASIS,
- *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *   See the License for the specific language governing permissions and
- *   limitations under the License.
+   Copyright (c) 2018 Jordan Judt and Alexis Layne.
+
+   Original project "EasyBudget" Copyright (c) Benoit LETONDOR
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+         http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
  */
 
 package com.ajapplications.budgeteerbuddy.view;
@@ -29,10 +31,10 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.ajapplications.budgeteerbuddy.R;
 import com.ajapplications.budgeteerbuddy.helper.DateHelper;
 import com.ajapplications.budgeteerbuddy.helper.UIHelper;
 import com.ajapplications.budgeteerbuddy.view.report.MonthlyReportFragment;
-import com.ajapplications.budgeteerbuddy.R;
 
 import java.util.Date;
 import java.util.List;
@@ -42,8 +44,7 @@ import java.util.List;
  *
  * @author Benoit LETONDOR
  */
-public class MonthlyReportActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener
-{
+public class MonthlyReportActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener {
     /**
      * Extra to add the the launch intent to specify that user comes from the notification (used to
      * show not the current month but the last one)
@@ -76,8 +77,7 @@ public class MonthlyReportActivity extends AppCompatActivity implements ViewPage
     private int selectedPosition;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_monthly_report);
 
@@ -94,25 +94,19 @@ public class MonthlyReportActivity extends AppCompatActivity implements ViewPage
         previousMonthButton.setText("<");
         nextMonthButton.setText(">");
 
-        previousMonthButton.setOnClickListener(new View.OnClickListener()
-        {
+        previousMonthButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
-                if( selectedPosition > 0 )
-                {
+            public void onClick(View v) {
+                if (selectedPosition > 0) {
                     selectPagerItem(selectedPosition - 1, true);
                 }
             }
         });
 
-        nextMonthButton.setOnClickListener(new View.OnClickListener()
-        {
+        nextMonthButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
-                if( selectedPosition < dates.size() - 1 )
-                {
+            public void onClick(View v) {
+                if (selectedPosition < dates.size() - 1) {
                     selectPagerItem(selectedPosition + 1, true);
                 }
             }
@@ -122,19 +116,15 @@ public class MonthlyReportActivity extends AppCompatActivity implements ViewPage
         UIHelper.removeButtonBorder(nextMonthButton);
 
         // Load list of months asynchronously since it can take time
-        new AsyncTask<Void, Void, List<Date>>()
-        {
+        new AsyncTask<Void, Void, List<Date>>() {
             @Override
-            protected List<Date> doInBackground(Void... params)
-            {
+            protected List<Date> doInBackground(Void... params) {
                 return DateHelper.getListOfMonthsAvailableForUser(MonthlyReportActivity.this);
             }
 
             @Override
-            protected void onPostExecute(List<Date> dates)
-            {
-                if( isFinishing() )
-                {
+            protected void onPostExecute(List<Date> dates) {
+                if (isFinishing()) {
                     return;
                 }
 
@@ -149,11 +139,10 @@ public class MonthlyReportActivity extends AppCompatActivity implements ViewPage
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
+    public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if( id == android.R.id.home ) // Back button of the actionbar
+        if (id == android.R.id.home) // Back button of the actionbar
         {
             finish();
             return true;
@@ -165,32 +154,25 @@ public class MonthlyReportActivity extends AppCompatActivity implements ViewPage
     /**
      * Configure the {@link #pager} adapter and listener.
      */
-    private void configureViewPager()
-    {
+    private void configureViewPager() {
         pager.setOffscreenPageLimit(0);
-        pager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager())
-        {
+        pager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
-            public Fragment getItem(int position)
-            {
+            public Fragment getItem(int position) {
                 return new MonthlyReportFragment(dates.get(position));
             }
 
             @Override
-            public int getCount()
-            {
+            public int getCount() {
                 return dates.size();
             }
         });
         pager.addOnPageChangeListener(this);
 
         // Show previous month if user comes from the notification
-        if( getIntent().getBooleanExtra(FROM_NOTIFICATION_EXTRA, false) && dates.size() > 1 )
-        {
+        if (getIntent().getBooleanExtra(FROM_NOTIFICATION_EXTRA, false) && dates.size() > 1) {
             selectPagerItem(dates.size() - 2, false);
-        }
-        else
-        {
+        } else {
             selectPagerItem(dates.size() - 1, false);
         }
     }
@@ -200,10 +182,9 @@ public class MonthlyReportActivity extends AppCompatActivity implements ViewPage
      * callback.
      *
      * @param position item of the pager
-     * @param animate should the pager animate the transition
+     * @param animate  should the pager animate the transition
      */
-    private void selectPagerItem(int position, boolean animate)
-    {
+    private void selectPagerItem(int position, boolean animate) {
         pager.setCurrentItem(position, animate);
         onPageSelected(position);
     }
@@ -211,14 +192,12 @@ public class MonthlyReportActivity extends AppCompatActivity implements ViewPage
 // ------------------------------------------>
 
     @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels)
-    {
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
     }
 
     @Override
-    public void onPageSelected(int position)
-    {
+    public void onPageSelected(int position) {
         selectedPosition = position;
 
         Date date = dates.get(position);
@@ -236,8 +215,7 @@ public class MonthlyReportActivity extends AppCompatActivity implements ViewPage
     }
 
     @Override
-    public void onPageScrollStateChanged(int state)
-    {
+    public void onPageScrollStateChanged(int state) {
 
     }
 }

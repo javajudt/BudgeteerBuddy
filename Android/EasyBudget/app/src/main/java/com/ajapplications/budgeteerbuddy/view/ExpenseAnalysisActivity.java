@@ -1,17 +1,19 @@
 /*
- *   Copyright 2015 Benoit LETONDOR
- *
- *   Licensed under the Apache License, Version 2.0 (the "License");
- *   you may not use this file except in compliance with the License.
- *   You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *   Unless required by applicable law or agreed to in writing, software
- *   distributed under the License is distributed on an "AS IS" BASIS,
- *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *   See the License for the specific language governing permissions and
- *   limitations under the License.
+   Copyright (c) 2018 Jordan Judt and Alexis Layne.
+
+   Original project "EasyBudget" Copyright (c) Benoit LETONDOR
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+         http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
  */
 
 package com.ajapplications.budgeteerbuddy.view;
@@ -26,11 +28,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
-import android.view.Menu;
 import android.view.MenuItem;
 
 import com.ajapplications.budgeteerbuddy.R;
-import com.ajapplications.budgeteerbuddy.model.AnalysisChartDateRange;
 import com.ajapplications.budgeteerbuddy.model.db.DB;
 import com.ajapplications.budgeteerbuddy.view.analysis.BarChartFragment;
 import com.ajapplications.budgeteerbuddy.view.analysis.LineChartFragment;
@@ -92,7 +92,7 @@ public class ExpenseAnalysisActivity extends DBActivity {
 
             @Override
             public int getCount() {
-                return AnalysisChartDateRange.values().length;
+                return 3;
             }
         });
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -119,7 +119,6 @@ public class ExpenseAnalysisActivity extends DBActivity {
         IntentFilter filter = new IntentFilter();
         filter.addAction(PAGER_NEXT_INTENT);
         filter.addAction(PAGER_PREVIOUS_INTENT);
-//        filter.addAction(PAGER_DONE_INTENT);
 
         receiver = new BroadcastReceiver() {
             @Override
@@ -135,27 +134,11 @@ public class ExpenseAnalysisActivity extends DBActivity {
         LocalBroadcastManager.getInstance(this).registerReceiver(receiver, filter);
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.menu_analysis, menu);
-//        return true;
-//    }
-//
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
+    public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-//        if (id == R.id.action_analysis_weekly){
-//            //TODO weekly analysis
-//        }
-//        else if (id == R.id.action_analysis_monthly){
-//            //TODO monthly analysis
-//        }
-//        else if (id == R.id.action_analysis_yearly){
-//            //TODO yearly analysis
-//        }
-        /*else */if( id == android.R.id.home ) // Back button of the actionbar
+        if (id == android.R.id.home) // Back button of the actionbar
         {
             finish();
             return true;
@@ -171,25 +154,13 @@ public class ExpenseAnalysisActivity extends DBActivity {
         super.onDestroy();
     }
 
-//    @Override
-//    public void onBackPressed() {
-//        if (pager.getCurrentItem() > 0) {
-//            pager.setCurrentItem(pager.getCurrentItem() - 1, true);
-//            return;
-//        }
-//
-//        setResult(Activity.RESULT_CANCELED);
-//        finish();
-//    }
-
     /**
      * Method that a child (fragment) can call to get the DB connection
      *
      * @return the db connection
      */
     @NonNull
-    public DB getDB()
-    {
+    public DB getDB() {
         return db;
     }
 }

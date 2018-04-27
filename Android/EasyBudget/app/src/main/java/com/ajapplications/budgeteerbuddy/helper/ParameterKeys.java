@@ -1,17 +1,19 @@
 /*
- *   Copyright 2015 Benoit LETONDOR
- *
- *   Licensed under the Apache License, Version 2.0 (the "License");
- *   you may not use this file except in compliance with the License.
- *   You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *   Unless required by applicable law or agreed to in writing, software
- *   distributed under the License is distributed on an "AS IS" BASIS,
- *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *   See the License for the specific language governing permissions and
- *   limitations under the License.
+   Copyright (c) 2018 Jordan Judt and Alexis Layne.
+
+   Original project "EasyBudget" Copyright (c) Benoit LETONDOR
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+         http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
  */
 
 package com.ajapplications.budgeteerbuddy.helper;
@@ -21,20 +23,15 @@ package com.ajapplications.budgeteerbuddy.helper;
  *
  * @author Benoit LETONDOR
  */
-public class ParameterKeys
-{
-    /**
-     * App version stored to detect updates (int)
-     */
-    public static final String APP_VERSION = "appversion";
+public class ParameterKeys {
     /**
      * Date of the base balance set-up (long)
      */
-    public static final String INIT_DATE       = "init_date";
+    public static final String INIT_DATE = "init_date";
     /**
      * Local identifier of the device (generated on first launch) (string)
      */
-    public static final String LOCAL_ID        = "local_id";
+    public static final String LOCAL_ID = "local_id";
     /**
      * Warning limit for low money on account (int)
      */
@@ -88,21 +85,9 @@ public class ParameterKeys
      */
     public static final String RATING_COMPLETED = "rating_completed";
     /**
-     * Timestamp that indicates the last time user was presented the rating popup (long)
-     */
-    public static final String RATING_POPUP_LAST_AUTO_SHOW = "rating_popup_last_auto_show";
-    /**
-     * The user wants to receive notifications for updates (bool)
-     */
-    public static final String USER_ALLOW_UPDATE_PUSH = "user_allow_update_push";
-    /**
      * The user wants to receive a daily reminder notification (bool)
      */
     public static final String USER_ALLOW_DAILY_PUSH = "user_allow_daily_push";
-    /**
-     * The user wants to receive a monthly reminder notification when report is available (bool)
-     */
-    public static final String USER_ALLOW_MONTHLY_PUSH = "user_allow_monthly_push";
     /**
      * Has the daily push opt-in been shown to the user yet (bool)
      */

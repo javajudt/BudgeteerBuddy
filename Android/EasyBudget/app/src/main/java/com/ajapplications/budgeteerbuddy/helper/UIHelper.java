@@ -1,17 +1,19 @@
 /*
- *   Copyright 2015 Benoit LETONDOR
- *
- *   Licensed under the Apache License, Version 2.0 (the "License");
- *   you may not use this file except in compliance with the License.
- *   You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *   Unless required by applicable law or agreed to in writing, software
- *   distributed under the License is distributed on an "AS IS" BASIS,
- *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *   See the License for the specific language governing permissions and
- *   limitations under the License.
+   Copyright (c) 2018 Jordan Judt and Alexis Layne.
+
+   Original project "EasyBudget" Copyright (c) Benoit LETONDOR
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+         http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
  */
 
 package com.ajapplications.budgeteerbuddy.helper;
@@ -47,17 +49,14 @@ import com.ajapplications.budgeteerbuddy.view.MainActivity;
  *
  * @author Benoit LETONDOR
  */
-public class UIHelper
-{
+public class UIHelper {
     /**
      * Remove border of the button for Android 5+
      *
      * @param button
      */
-    public static void removeButtonBorder(@NonNull Button button)
-    {
-        if( Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP )
-        {
+    public static void removeButtonBorder(@NonNull Button button) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             button.setOutlineProvider(null);
         }
     }
@@ -68,14 +67,11 @@ public class UIHelper
      * @param activity
      * @param colorRes
      */
-    public static void setStatusBarColor(@NonNull Activity activity, @ColorRes int colorRes)
-    {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-        {
+    public static void setStatusBarColor(@NonNull Activity activity, @ColorRes int colorRes) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = activity.getWindow();
 
-            if( (window.getAttributes().flags & WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS) == 0 )
-            {
+            if ((window.getAttributes().flags & WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS) == 0) {
                 window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             }
 
@@ -88,8 +84,7 @@ public class UIHelper
      *
      * @return
      */
-    public static boolean isCompatibleWithActivityEnterAnimation()
-    {
+    public static boolean isCompatibleWithActivityEnterAnimation() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
     }
 
@@ -99,8 +94,7 @@ public class UIHelper
      *
      * @return
      */
-    public static boolean willAnimateActivityEnter(Activity activity)
-    {
+    public static boolean willAnimateActivityEnter(Activity activity) {
         return isCompatibleWithActivityEnterAnimation() && activity.getIntent().getBooleanExtra(MainActivity.ANIMATE_TRANSITION_KEY, false);
     }
 
@@ -110,10 +104,8 @@ public class UIHelper
      * @param activity
      * @param listener
      */
-    public static void animateActivityEnter(@NonNull final Activity activity, @NonNull final Animator.AnimatorListener listener)
-    {
-        if( !willAnimateActivityEnter(activity) )
-        {
+    public static void animateActivityEnter(@NonNull final Activity activity, @NonNull final Animator.AnimatorListener listener) {
+        if (!willAnimateActivityEnter(activity)) {
             return;
         }
 
@@ -123,14 +115,11 @@ public class UIHelper
         activity.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
         final ViewTreeObserver viewTreeObserver = rootView.getViewTreeObserver();
-        if ( viewTreeObserver.isAlive() )
-        {
-            viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener()
-            {
+        if (viewTreeObserver.isAlive()) {
+            viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
                 @Override
-                public void onGlobalLayout()
-                {
+                public void onGlobalLayout() {
                     rootView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 
                     // get the center for the clipping circle
@@ -143,11 +132,9 @@ public class UIHelper
                     // create the animator for this view (the start radius is zero)
                     Animator anim = ViewAnimationUtils.createCircularReveal(rootView, cx, cy, 0, finalRadius);
                     anim.addListener(listener);
-                    anim.addListener(new AnimatorListenerAdapter()
-                    {
+                    anim.addListener(new AnimatorListenerAdapter() {
                         @Override
-                        public void onAnimationStart(Animator animation)
-                        {
+                        public void onAnimationStart(Animator animation) {
                             rootView.setAlpha(1.0f);
                         }
                     });
@@ -162,20 +149,16 @@ public class UIHelper
      *
      * @param fab
      */
-    public static void showFAB(@NonNull final View fab)
-    {
-        if( UIHelper.areAnimationsEnabled(fab.getContext()) )
-        {
+    public static void showFAB(@NonNull final View fab) {
+        if (UIHelper.areAnimationsEnabled(fab.getContext())) {
             ViewCompat.animate(fab)
-                .scaleX(1.0f)
-                .scaleY(1.0f)
-                .alpha(1.0f)
-                .setInterpolator(new AccelerateInterpolator())
-                .withLayer()
-                .start();
-        }
-        else
-        {
+                    .scaleX(1.0f)
+                    .scaleY(1.0f)
+                    .alpha(1.0f)
+                    .setInterpolator(new AccelerateInterpolator())
+                    .withLayer()
+                    .start();
+        } else {
             fab.setScaleX(1.0f);
             fab.setScaleY(1.0f);
             fab.setAlpha(1.0f);
@@ -188,8 +171,7 @@ public class UIHelper
      * @param context
      * @return
      */
-    public static boolean areAnimationsEnabled(@NonNull Context context)
-    {
+    public static boolean areAnimationsEnabled(@NonNull Context context) {
         return Parameters.getInstance(context).getBoolean(ParameterKeys.ANIMATIONS_ENABLED, true);
     }
 
@@ -199,8 +181,7 @@ public class UIHelper
      * @param context
      * @param enabled
      */
-    public static void setAnimationsEnabled(@NonNull Context context, boolean enabled)
-    {
+    public static void setAnimationsEnabled(@NonNull Context context, boolean enabled) {
         Parameters.getInstance(context).putBoolean(ParameterKeys.ANIMATIONS_ENABLED, enabled);
     }
 
@@ -209,41 +190,31 @@ public class UIHelper
      *
      * @param editText
      */
-    public static void preventUnsupportedInputForDecimals(final @NonNull EditText editText)
-    {
-        editText.addTextChangedListener(new TextWatcher()
-        {
+    public static void preventUnsupportedInputForDecimals(final @NonNull EditText editText) {
+        editText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after)
-            {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count)
-            {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
 
             }
 
             @Override
-            public void afterTextChanged(Editable s)
-            {
+            public void afterTextChanged(Editable s) {
                 String value = editText.getText().toString();
 
-                try
-                {
+                try {
                     // Remove - that is not at first char
                     int minusIndex = value.lastIndexOf("-");
-                    if (minusIndex > 0)
-                    {
+                    if (minusIndex > 0) {
                         s.delete(minusIndex, minusIndex + 1);
 
-                        if (value.startsWith("-"))
-                        {
+                        if (value.startsWith("-")) {
                             s.delete(0, 1);
-                        }
-                        else
-                        {
+                        } else {
                             s.insert(0, "-");
                         }
 
@@ -255,14 +226,10 @@ public class UIHelper
                     int lastDotIndex = value.lastIndexOf(".");
 
                     // Remove ,
-                    if (comaIndex >= 0)
-                    {
-                        if (dotIndex >= 0)
-                        {
+                    if (comaIndex >= 0) {
+                        if (dotIndex >= 0) {
                             s.delete(comaIndex, comaIndex + 1);
-                        }
-                        else
-                        {
+                        } else {
                             s.replace(comaIndex, comaIndex + 1, ".");
                         }
 
@@ -270,22 +237,17 @@ public class UIHelper
                     }
 
                     // Disallow double .
-                    if (dotIndex >= 0 && dotIndex != lastDotIndex)
-                    {
+                    if (dotIndex >= 0 && dotIndex != lastDotIndex) {
                         s.delete(lastDotIndex, lastDotIndex + 1);
                     }
                     // No more than 2 decimals
-                    else if (dotIndex > 0)
-                    {
+                    else if (dotIndex > 0) {
                         String decimals = value.substring(dotIndex + 1);
-                        if (decimals.length() > 2)
-                        {
+                        if (decimals.length() > 2) {
                             s.delete(dotIndex + 3, value.length());
                         }
                     }
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                     Logger.error("An error occurred during text changing watcher. Value: " + value, e);
                 }
             }
@@ -297,10 +259,8 @@ public class UIHelper
      *
      * @param dialog the dialog
      */
-    public static void centerDialogButtons(@NonNull AlertDialog dialog)
-    {
-        try
-        {
+    public static void centerDialogButtons(@NonNull AlertDialog dialog) {
+        try {
             final Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
             LinearLayout.LayoutParams positiveButtonLL = (LinearLayout.LayoutParams) positiveButton.getLayoutParams();
             positiveButtonLL.gravity = Gravity.CENTER;
@@ -315,9 +275,7 @@ public class UIHelper
             LinearLayout.LayoutParams neutralButtonL = (LinearLayout.LayoutParams) neutralButton.getLayoutParams();
             neutralButtonL.gravity = Gravity.CENTER;
             neutralButton.setLayoutParams(neutralButtonL);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             Logger.error("Error while centering dialog buttons", e);
         }
     }

@@ -1,17 +1,19 @@
 /*
- *   Copyright 2015 Benoit LETONDOR
- *
- *   Licensed under the Apache License, Version 2.0 (the "License");
- *   you may not use this file except in compliance with the License.
- *   You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *   Unless required by applicable law or agreed to in writing, software
- *   distributed under the License is distributed on an "AS IS" BASIS,
- *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *   See the License for the specific language governing permissions and
- *   limitations under the License.
+   Copyright (c) 2018 Jordan Judt and Alexis Layne.
+
+   Original project "EasyBudget" Copyright (c) Benoit LETONDOR
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+         http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
  */
 
 package com.ajapplications.budgeteerbuddy.view;
@@ -30,16 +32,14 @@ import com.google.android.gms.appinvite.AppInviteInvitation;
  *
  * @author Benoit LETONDOR
  */
-public class SettingsActivity extends AppCompatActivity
-{
+public class SettingsActivity extends AppCompatActivity {
     /**
      * Request code used by app invite
      */
     protected static final int APP_INVITE_REQUEST = 1001;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
@@ -48,12 +48,11 @@ public class SettingsActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
+    public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if( id == android.R.id.home ) // Back button of the actionbar
+        if (id == android.R.id.home) // Back button of the actionbar
         {
             finish();
             return true;
@@ -63,14 +62,11 @@ public class SettingsActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == APP_INVITE_REQUEST)
-        {
-            if (resultCode == RESULT_OK)
-            {
+        if (requestCode == APP_INVITE_REQUEST) {
+            if (resultCode == RESULT_OK) {
                 // Check how many invitations were sent and log a message
                 // The ids array contains the unique invitation ids for each invitation sent
                 // (one for each contact select by the user). You can use these for analytics

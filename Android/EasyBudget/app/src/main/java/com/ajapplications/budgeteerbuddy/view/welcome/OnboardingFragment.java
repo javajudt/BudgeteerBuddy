@@ -1,17 +1,19 @@
 /*
- *   Copyright 2015 Benoit LETONDOR
- *
- *   Licensed under the Apache License, Version 2.0 (the "License");
- *   you may not use this file except in compliance with the License.
- *   You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *   Unless required by applicable law or agreed to in writing, software
- *   distributed under the License is distributed on an "AS IS" BASIS,
- *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *   See the License for the specific language governing permissions and
- *   limitations under the License.
+   Copyright (c) 2018 Jordan Judt and Alexis Layne.
+
+   Original project "EasyBudget" Copyright (c) Benoit LETONDOR
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+         http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
  */
 
 package com.ajapplications.budgeteerbuddy.view.welcome;
@@ -33,19 +35,16 @@ import com.ajapplications.budgeteerbuddy.view.WelcomeActivity;
  *
  * @author Benoit LETONDOR
  */
-public abstract class OnboardingFragment extends Fragment
-{
+public abstract class OnboardingFragment extends Fragment {
     /**
      * Get a DB connexion if available
      *
      * @return a db connexion if available, which will always be the case if we are in the Welcome Activity
      */
     @Nullable
-    protected DB getDB()
-    {
+    protected DB getDB() {
         FragmentActivity activity = getActivity();
-        if( activity instanceof WelcomeActivity )
-        {
+        if (activity instanceof WelcomeActivity) {
             return ((WelcomeActivity) activity).getDB();
         }
 
@@ -53,21 +52,11 @@ public abstract class OnboardingFragment extends Fragment
     }
 
     /**
-     * Go to the next onboarding step without animation
-     */
-    protected void next()
-    {
-        Intent intent = new Intent(WelcomeActivity.PAGER_NEXT_INTENT);
-        LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
-    }
-
-    /**
      * Go to the next onboarding step with a reveal animation starting from the given center
      *
      * @param animationCenter center of the reveal animation
      */
-    protected void next(@NonNull View animationCenter)
-    {
+    protected void next(@NonNull View animationCenter) {
         Intent intent = new Intent(WelcomeActivity.PAGER_NEXT_INTENT);
         intent.putExtra(WelcomeActivity.ANIMATE_TRANSITION_KEY, true);
         intent.putExtra(WelcomeActivity.CENTER_X_KEY, (int) animationCenter.getX() + animationCenter.getWidth() / 2);
@@ -78,8 +67,7 @@ public abstract class OnboardingFragment extends Fragment
     /**
      * Finish the onboarding flow
      */
-    protected void done()
-    {
+    protected void done() {
         Intent intent = new Intent(WelcomeActivity.PAGER_DONE_INTENT);
         LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
     }

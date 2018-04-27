@@ -1,17 +1,19 @@
 /*
- *   Copyright 2016 Benoit LETONDOR
- *
- *   Licensed under the Apache License, Version 2.0 (the "License");
- *   you may not use this file except in compliance with the License.
- *   You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *   Unless required by applicable law or agreed to in writing, software
- *   distributed under the License is distributed on an "AS IS" BASIS,
- *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *   See the License for the specific language governing permissions and
- *   limitations under the License.
+   Copyright (c) 2018 Jordan Judt and Alexis Layne.
+
+   Original project "EasyBudget" Copyright (c) Benoit LETONDOR
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+         http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
  */
 
 package com.ajapplications.budgeteerbuddy.view.report;
@@ -30,10 +32,10 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.ajapplications.budgeteerbuddy.R;
 import com.ajapplications.budgeteerbuddy.helper.CurrencyHelper;
 import com.ajapplications.budgeteerbuddy.model.Expense;
 import com.ajapplications.budgeteerbuddy.model.db.DB;
-import com.ajapplications.budgeteerbuddy.R;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -45,8 +47,7 @@ import java.util.List;
  *
  * @author Benoit LETONDOR
  */
-public class MonthlyReportFragment extends Fragment
-{
+public class MonthlyReportFragment extends Fragment {
     /**
      * The first date of the month at 00:00:00
      */
@@ -64,14 +65,12 @@ public class MonthlyReportFragment extends Fragment
 // ---------------------------------->
 
     @SuppressLint("ValidFragment")
-    public MonthlyReportFragment(@NonNull Date date)
-    {
+    public MonthlyReportFragment(@NonNull Date date) {
         this.date = date;
     }
 
-    public MonthlyReportFragment()
-    {
-        // This is just in case the fragment get instanciated by the OS after activity got killed...
+    public MonthlyReportFragment() {
+        // This is just in case the fragment get instantiated by the OS after activity got killed...
         // This will probably lead to a badly configured fragment but it's better than a crash...
         // I guess :/
         // FIXME find a better solution!
@@ -89,8 +88,7 @@ public class MonthlyReportFragment extends Fragment
 // ---------------------------------->
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Reset totals
         expensesAmount = 0.0d;
         revenuesAmount = 0.0d;
@@ -106,57 +104,43 @@ public class MonthlyReportFragment extends Fragment
         final TextView expensesAmountTextView = (TextView) v.findViewById(R.id.monthly_report_fragment_expenses_total_tv);
         final TextView balanceTextView = (TextView) v.findViewById(R.id.monthly_report_fragment_balance_tv);
 
-        new AsyncTask<Void, Void, MonthlyReportRecyclerViewAdapter>()
-        {
+        new AsyncTask<Void, Void, MonthlyReportRecyclerViewAdapter>() {
             @Override
-            protected MonthlyReportRecyclerViewAdapter doInBackground(Void... params)
-            {
+            protected MonthlyReportRecyclerViewAdapter doInBackground(Void... params) {
                 final DB db = new DB(getActivity());
-                try
-                {
+                try {
                     List<Expense> expensesForMonth = db.getExpensesForMonth(date);
-                    if( expensesForMonth.isEmpty() )
-                    {
+                    if (expensesForMonth.isEmpty()) {
                         return null;
                     }
 
                     final List<Expense> expenses = new ArrayList<>();
                     final List<Expense> revenues = new ArrayList<>();
 
-                    for(Expense expense : expensesForMonth)
-                    {
-                        if( expense.isRevenue() )
-                        {
+                    for (Expense expense : expensesForMonth) {
+                        if (expense.isRevenue()) {
                             revenues.add(expense);
                             revenuesAmount -= expense.getAmount();
-                        }
-                        else
-                        {
+                        } else {
                             expenses.add(expense);
                             expensesAmount += expense.getAmount();
                         }
                     }
 
                     return new MonthlyReportRecyclerViewAdapter(expenses, revenues);
-                }
-                finally
-                {
+                } finally {
                     db.close();
                 }
             }
 
             @Override
-            protected void onPostExecute(MonthlyReportRecyclerViewAdapter adapter)
-            {
+            protected void onPostExecute(MonthlyReportRecyclerViewAdapter adapter) {
                 progressBar.setVisibility(View.GONE);
                 content.setVisibility(View.VISIBLE);
 
-                if( adapter != null )
-                {
+                if (adapter != null) {
                     configureRecyclerView(recyclerView, adapter);
-                }
-                else
-                {
+                } else {
                     recyclerView.setVisibility(View.GONE);
                     emptyState.setVisibility(View.VISIBLE);
                 }
@@ -174,8 +158,7 @@ public class MonthlyReportFragment extends Fragment
      * @param recyclerView
      * @param adapter
      */
-    private void configureRecyclerView(@NonNull RecyclerView recyclerView, @NonNull MonthlyReportRecyclerViewAdapter adapter)
-    {
+    private void configureRecyclerView(@NonNull RecyclerView recyclerView, @NonNull MonthlyReportRecyclerViewAdapter adapter) {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
     }
@@ -187,8 +170,7 @@ public class MonthlyReportFragment extends Fragment
      * @param expensesAmountTextView
      * @param balanceTextView
      */
-    private void configureTotalView(@NonNull TextView revenuesAmountTextView, @NonNull TextView expensesAmountTextView, @NonNull TextView balanceTextView)
-    {
+    private void configureTotalView(@NonNull TextView revenuesAmountTextView, @NonNull TextView expensesAmountTextView, @NonNull TextView balanceTextView) {
         revenuesAmountTextView.setText(CurrencyHelper.getFormattedCurrencyString(revenuesAmount));
         expensesAmountTextView.setText(CurrencyHelper.getFormattedCurrencyString(expensesAmount));
 
