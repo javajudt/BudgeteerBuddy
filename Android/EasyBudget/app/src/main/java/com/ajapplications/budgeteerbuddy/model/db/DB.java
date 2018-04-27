@@ -268,6 +268,30 @@ public final class DB
         }
     }
 
+    @NonNull
+    public double getTotalForCategory(Category category){
+        Cursor cursor = null;
+        try
+        {
+            cursor = database.rawQuery("SELECT SUM(" + SQLiteDBHelper.COLUMN_EXPENSE_AMOUNT + ") FROM " + SQLiteDBHelper.TABLE_EXPENSE + " WHERE " + SQLiteDBHelper.COLUMN_EXPENSE_CATEGORY + " = '" + category.name() + "'", null);
+
+            if(cursor.moveToFirst())
+            {
+                int value = cursor.getInt(0);
+                return (double) value / 100.d;
+            }
+
+            return 0;
+        }
+        finally
+        {
+            if( cursor != null )
+            {
+                cursor.close();
+            }
+        }
+    }
+
     /**
      * Get all one time expense for a day
      *

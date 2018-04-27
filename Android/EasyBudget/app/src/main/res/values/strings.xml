@@ -113,6 +113,14 @@
     <string name="adjust_balance_error_title">Oops</string>
     <string name="adjust_balance_error_message">The value you entered is invalid.</string>
 
+    <string name="add_expense_message_other">Save. Save. Save.</string>
+    <string name="add_expense_message_4">Be careful spending money on your fun.</string>
+    <string name="add_expense_message_3">Try walking to work to save money.</string>
+    <string name="add_expense_message_2">Don\'t forget to pay the bills.</string>
+    <string name="add_expense_message_1">Keep on saving.</string>
+    <string name="add_expense_message_0">Don\'t forget to save some of that income!</string>
+    <string name="add_expense_message_goal_met">Your goal has been met. Keep saving!</string>
+
     <string name="monthly">MONTHLY</string>
     <string name="weekly">WEEKLY</string>
     <string name="bi_weekly">BI-WEEKLY</string>

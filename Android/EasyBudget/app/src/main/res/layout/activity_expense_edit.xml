@@ -204,6 +204,16 @@
 
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/message_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:gravity="center"
+                android:textColor="@color/budget_green"
+                android:textSize="30sp" />
+
         </LinearLayout>
 
     </ScrollView>
