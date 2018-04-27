@@ -64,6 +64,7 @@
     <string name="no_description_error">Enter a description</string>
     <string name="no_amount_error">Enter an amount</string>
     <string name="negative_amount_error">Amount should be greater than 0</string>
+    <string name="negative_balance_error">Balance cannot go below 0</string>
     <string name="invalid_amount">Not a valid amount</string>
 
     <string name="dialog_edit_expense_title">What do you want to do?</string>

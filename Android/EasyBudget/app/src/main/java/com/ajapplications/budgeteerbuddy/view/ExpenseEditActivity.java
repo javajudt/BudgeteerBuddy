@@ -25,6 +25,7 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -175,7 +176,7 @@ public class ExpenseEditActivity extends DBActivity {
         boolean ok = true;
 
         String category = categoryEditText.getText().toString();
-        if (category.trim().isEmpty()){
+        if (category.trim().isEmpty()) {
             categoryEditText.setError(getResources().getString(R.string.no_category_error));
             ok = false;
         }
@@ -189,6 +190,9 @@ public class ExpenseEditActivity extends DBActivity {
                 double value = Double.parseDouble(amount);
                 if (value <= 0) {
                     amountEditText.setError(getResources().getString(R.string.negative_amount_error));
+                    ok = false;
+                } else if (!this.category.equals(Category.Income) && (-db.getBalanceForDay(date)) - value < 0) {
+                    amountEditText.setError(getResources().getString(R.string.negative_balance_error));
                     ok = false;
                 }
             } catch (Exception e) {
@@ -347,39 +351,32 @@ public class ExpenseEditActivity extends DBActivity {
         dateButton.setText(formatter.format(date));
     }
 
-    private void setMessage(){
-        TextView messageTextView = (TextView)findViewById(R.id.message_textview);
+    private void setMessage() {
+        TextView messageTextView = (TextView) findViewById(R.id.message_textview);
         int goal = UserHelper.getSavingsGoal(getBaseContext());
         double savingsTotal = db.getTotalForCategory(Category.Savings);
 
-        if (category == null && savingsTotal < goal){
+        if (category == null && savingsTotal < goal) {
             messageTextView.setText("");
-        }
-        else if (savingsTotal >= goal) {
+        } else if (savingsTotal >= goal) {
             messageTextView.setText(R.string.add_expense_message_goal_met);
             messageTextView.setTextColor(getResources().getColor(R.color.budget_green));
-        }
-        else if (category.getPriority() == 0){
+        } else if (category.getPriority() == 0) {
             messageTextView.setText(R.string.add_expense_message_0);
             messageTextView.setTextColor(getResources().getColor(R.color.budget_green));
-        }
-        else if (category.getPriority() == 1){
+        } else if (category.getPriority() == 1) {
             messageTextView.setText(R.string.add_expense_message_1);
             messageTextView.setTextColor(getResources().getColor(R.color.budget_orange));
-        }
-        else if (category.getPriority() == 2){
+        } else if (category.getPriority() == 2) {
             messageTextView.setText(R.string.add_expense_message_2);
             messageTextView.setTextColor(getResources().getColor(R.color.budget_red));
-        }
-        else if (category.getPriority() == 3){
+        } else if (category.getPriority() == 3) {
             messageTextView.setText(R.string.add_expense_message_3);
             messageTextView.setTextColor(getResources().getColor(R.color.budget_red));
-        }
-        else if (category.getPriority() == 4){
+        } else if (category.getPriority() == 4) {
             messageTextView.setText(R.string.add_expense_message_4);
             messageTextView.setTextColor(getResources().getColor(R.color.budget_red));
-        }
-        else {
+        } else {
             messageTextView.setText(R.string.add_expense_message_other);
             messageTextView.setTextColor(getResources().getColor(R.color.budget_red));
         }

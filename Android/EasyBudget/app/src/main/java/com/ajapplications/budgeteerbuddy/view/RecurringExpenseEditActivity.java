@@ -203,6 +203,9 @@ public class RecurringExpenseEditActivity extends DBActivity {
                 if (value <= 0) {
                     amountEditText.setError(getResources().getString(R.string.negative_amount_error));
                     ok = false;
+                } else if (!this.category.equals(Category.Income) && (-db.getBalanceForDay(dateStart)) - value < 0){
+                    amountEditText.setError(getResources().getString(R.string.negative_balance_error));
+                    ok = false;
                 }
             } catch (Exception e) {
                 amountEditText.setError(getResources().getString(R.string.invalid_amount));
