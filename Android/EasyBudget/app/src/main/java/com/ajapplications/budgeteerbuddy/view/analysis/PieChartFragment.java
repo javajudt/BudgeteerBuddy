@@ -37,7 +37,7 @@ public class PieChartFragment extends ChartFragment {
 
         if (!tryGetEntriesAndLabels(entries, labels)) {
             // Display "no expenses" message if there are no expenses for the day
-            view.findViewById(R.id.no_expense_layout).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.no_expense_pie_layout).setVisibility(View.VISIBLE);
             view.findViewById(R.id.chart_pie).setVisibility(View.GONE);
         } else {
             PieDataSet dataSet = new PieDataSet(entries, "");

@@ -19,6 +19,8 @@ package com.ajapplications.budgeteerbuddy.helper;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.ajapplications.budgeteerbuddy.BudgeteerBuddy;
+
 /**
  * Helper to get user status / preferences
  *
@@ -88,5 +90,9 @@ public class UserHelper
     public static void setUserSawMonthlyReportHint(@NonNull Context context)
     {
         Parameters.getInstance(context).putBoolean(ParameterKeys.USER_SAW_MONTHLY_REPORT_HINT, true);
+    }
+
+    public static int getSavingsGoal(@NonNull Context context){
+        return Parameters.getInstance(context).getInt(ParameterKeys.SAVINGS_GOAL_AMOUNT, BudgeteerBuddy.DEFAULT_SAVINGS_GOAL_AMOUNT);
     }
 }

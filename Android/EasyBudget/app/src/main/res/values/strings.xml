@@ -64,6 +64,7 @@
     <string name="no_description_error">Enter a description</string>
     <string name="no_amount_error">Enter an amount</string>
     <string name="negative_amount_error">Amount should be greater than 0</string>
+    <string name="negative_balance_error">Balance cannot go below 0</string>
     <string name="invalid_amount">Not a valid amount</string>
 
     <string name="dialog_edit_expense_title">What do you want to do?</string>
@@ -106,8 +107,20 @@
     <string name="adjust_limit_warning_message">Set the threshold value (must be > 0)</string>
     <string name="adjust_limit_warning_error_title">Oops</string>
     <string name="adjust_limit_warning_error_message">The value you entered is invalid. It must be a positive number, superior to 0</string>
+    <string name="adjust_savings_goal_title">Change savings goal</string>
+    <string name="adjust_savings_goal_message">Set the goal value (must be > 0)</string>
+    <string name="adjust_savings_goal_error_title">Oops</string>
+    <string name="adjust_savings_goal_error_message">The value you entered is invalid. It must be a positive number, superior to 0</string>
     <string name="adjust_balance_error_title">Oops</string>
     <string name="adjust_balance_error_message">The value you entered is invalid.</string>
+
+    <string name="add_expense_message_other">Save. Save. Save.</string>
+    <string name="add_expense_message_4">Be careful spending money on your fun.</string>
+    <string name="add_expense_message_3">Try walking to work to save money.</string>
+    <string name="add_expense_message_2">Don\'t forget to pay the bills.</string>
+    <string name="add_expense_message_1">Keep on saving.</string>
+    <string name="add_expense_message_0">Don\'t forget to save some of that income!</string>
+    <string name="add_expense_message_goal_met">Your goal has been met. Keep saving!</string>
 
     <string name="monthly">MONTHLY</string>
     <string name="weekly">WEEKLY</string>
@@ -144,7 +157,9 @@
     <string name="graph_label_monthly_expenses">Monthly Expenses</string>
     <string name="graph_label_yearly_expenses">Yearly Expenses</string>
 
-    <string name="graph_label_no_expenses">There aren\'t any expenses for today!</string>
+    <string name="graph_label_no_expenses_day">There aren\'t any expenses for today!</string>
+    <string name="graph_label_no_expenses_week">There aren\'t any expenses or incomes for the last 7 days!</string>
+    <string name="graph_label_no_expenses_year">There aren\'t any expenses or incomes for this year!</string>
 
     <string name="graph_label_sunday">Sunday</string>
     <string name="graph_label_monday">Monday</string>
@@ -181,6 +196,8 @@
     <string name="setting_category_currency_change_dialog_title">Select your currency</string>
     <string name="setting_category_limit_set_button_title">Set low balance warning threshold (%s)</string>
     <string name="setting_category_limit_set_button_message">Change the threshold at which you want to be warned about a low balance</string>
+    <string name="setting_category_goal_set_button_title">Set savings goal (%s)</string>
+    <string name="setting_category_goal_set_button_message">Set a dollar amount as a savings goal</string>
     <string name="setting_category_app_version_title" translatable="false">Budgeteer Buddy %s</string>
     <string name="setting_category_app_version_message">Made by the *Wildcards*</string>
     <string name="setting_category_share_app_title">Tell your friends</string>
@@ -301,6 +318,7 @@
     <string name="setting_category_bug_report_send_button_key" translatable="false">send_bug_report</string>
     <string name="setting_category_show_welcome_screen_button_key" translatable="false">show_welcome_screen</string>
     <string name="setting_category_limit_set_button_key" translatable="false">limit_set</string>
+    <string name="setting_category_goal_set_button_key" translatable="false">goal_set</string>
     <string name="setting_category_currency_change_button_key" translatable="false">change_currency</string>
     <string name="setting_category_disable_animation_key" translatable="false">disable_animation</string>
     <string name="setting_category_dev_key" translatable="false">dev_category</string>

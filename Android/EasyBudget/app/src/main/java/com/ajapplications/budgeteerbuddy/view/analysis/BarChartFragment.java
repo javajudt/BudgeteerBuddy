@@ -1,6 +1,7 @@
 package com.ajapplications.budgeteerbuddy.view.analysis;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -34,26 +36,35 @@ public class BarChartFragment extends ChartFragment {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_bar_chart, container, false);
 
-        ArrayList entries = getEntries();
-        ArrayList labels = getEntryLabels();
+        ArrayList entries = new ArrayList<BarEntry>();
+        ArrayList labels = new ArrayList<String>();
 
-        BarDataSet dataSet = new BarDataSet(entries, "");
-        dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+        if (!tryGetEntriesAndLabels(entries, labels)) {
+            // Display "no expenses" message if there are no expenses for the week
+            view.findViewById(R.id.no_expense_bar_layout).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.chart_bar).setVisibility(View.GONE);
+        } else {
 
-        BarData data = new BarData(labels, dataSet);
-        BarChart chart = (BarChart) view.findViewById(R.id.chart_bar);
-        chart.setData(data);
+            BarDataSet dataSet = new BarDataSet(entries, "");
+            dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
 
-        chart.animateY(1500);
-        chart.setDescription("");
+            BarData data = new BarData(labels, dataSet);
+            BarChart chart = (BarChart) view.findViewById(R.id.chart_bar);
+            chart.setData(data);
+
+            chart.animateY(1500);
+            chart.setDescription("");
+        }
 
         return view;
     }
 
-    private ArrayList<BarEntry> getEntries() {
+    private boolean tryGetEntriesAndLabels(@NonNull ArrayList<BarEntry> entries, @NonNull ArrayList<String> labels) {
+        if (!getDB().hasExpensesForLastSevenDays(new Date()))
+            return false;
+
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, -6);
-        ArrayList entries = new ArrayList();
 
         // Get expenses for each day in the last week.
         for (int i = 0; i < 7; i++) {
@@ -65,20 +76,7 @@ public class BarChartFragment extends ChartFragment {
             }
             entries.add(new BarEntry((float) totalForDay, i));
 
-            cal.add(Calendar.DATE, 1);
-        }
-
-        return entries;
-    }
-
-    private ArrayList<String> getEntryLabels() {
-        ArrayList<String> labels = new ArrayList();
-
-        for (int i = 6; i >= 0; i--) {
-            Calendar cal = Calendar.getInstance();
-            cal.add(Calendar.DATE, -i);
             String day = new SimpleDateFormat("EEEE", Locale.ENGLISH).format(cal.getTime());
-
             switch (day) {
                 case "Sunday":
                     labels.add(getResources().getString(R.string.graph_label_sunday));
@@ -102,8 +100,22 @@ public class BarChartFragment extends ChartFragment {
                     labels.add(getResources().getString(R.string.graph_label_saturday));
                     break;
             }
+
+            cal.add(Calendar.DATE, 1);
         }
 
-        return labels;
+        return true;
     }
+
+//    private ArrayList<String> getEntryLabels() {
+//        ArrayList<String> labels = new ArrayList();
+//
+//        for (int i = 6; i >= 0; i--) {
+//            Calendar cal = Calendar.getInstance();
+//            cal.add(Calendar.DATE, -i);
+//
+//        }
+//
+//        return labels;
+//    }
 }

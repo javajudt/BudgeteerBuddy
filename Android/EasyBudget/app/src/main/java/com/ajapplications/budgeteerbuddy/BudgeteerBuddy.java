@@ -40,6 +40,11 @@ public class BudgeteerBuddy extends Application
      */
     public static final int DEFAULT_LOW_MONEY_WARNING_AMOUNT = 100;
 
+    /**
+     * Default amount use for savings goal (can be changed in settings)
+     */
+    public static final int DEFAULT_SAVINGS_GOAL_AMOUNT = 1000;
+
 // ------------------------------------------>
 
     @Override

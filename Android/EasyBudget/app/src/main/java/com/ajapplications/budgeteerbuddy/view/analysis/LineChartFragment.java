@@ -1,6 +1,7 @@
 package com.ajapplications.budgeteerbuddy.view.analysis;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 
@@ -29,23 +31,30 @@ public class LineChartFragment extends ChartFragment {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_line_chart, container, false);
 
-        ArrayList entries = getEntries();
-        ArrayList labels = getEntryLabels();
+        ArrayList entries = new ArrayList<BarEntry>();
+        if (!tryGetEntries(entries)) {
+            // Display "no expenses" message if there are no expenses for the year
+            view.findViewById(R.id.no_expense_line_layout).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.chart_line).setVisibility(View.GONE);
+        } else {
+            ArrayList labels = getEntryLabels();
 
-        LineDataSet dataSet = new LineDataSet(entries, "");
-        dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+            LineDataSet dataSet = new LineDataSet(entries, "");
+            dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
 
-        LineData data = new LineData(labels, dataSet);
-        LineChart chart = (LineChart) view.findViewById(R.id.chart_line);
-        chart.setData(data);
+            LineData data = new LineData(labels, dataSet);
+            LineChart chart = (LineChart) view.findViewById(R.id.chart_line);
+            chart.setData(data);
 
-        chart.setDescription("");
+            chart.setDescription("");
+        }
 
         return view;
     }
 
-    private ArrayList<BarEntry> getEntries() {
-        ArrayList entries = new ArrayList();
+    private boolean tryGetEntries(@NonNull ArrayList<BarEntry> entries) {
+        if (!getDB().hasExpensesForYear(new Date()))
+            return false;
 
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.MONTH, Calendar.JANUARY);
@@ -63,7 +72,7 @@ public class LineChartFragment extends ChartFragment {
             cal.add(Calendar.MONTH, 1);
         }
 
-        return entries;
+        return true;
     }
 
     private ArrayList<String> getEntryLabels() {

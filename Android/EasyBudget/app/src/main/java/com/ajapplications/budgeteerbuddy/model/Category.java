@@ -7,6 +7,26 @@ import com.ajapplications.budgeteerbuddy.R;
 public enum Category {
     Income, Savings, Rent_Mortgage, Transportation, Food_Household, Medical, Entertainment, Other;
 
+    public int getPriority(){
+        switch(this){
+            case Income:
+                return 0;
+            case Savings:
+                return 1;
+            case Rent_Mortgage:
+            case Food_Household:
+                return 2;
+            case Transportation:
+            case Medical:
+                return 3;
+            case Entertainment:
+            case Other:
+                return 4;
+            default:
+                return 100;
+        }
+    }
+
     public String toString(Context context) {
         switch (this) {
             case Income:

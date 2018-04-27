@@ -38,7 +38,7 @@
     <color name="budget_green">#4caf50</color>
     <color name="budget_green_out">#7ed281</color>
     <color name="budget_orange">#FF9800</color>
-    <color name="budget_red">#F44336</color>
+    <color name="budget_red">#f44336</color>
     <color name="budget_red_out">#f17970</color>
 
     <color name="snackbar_action_undo">#4caf50</color>

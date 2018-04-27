@@ -43,6 +43,7 @@ import android.widget.TextView;
 import com.ajapplications.budgeteerbuddy.helper.CurrencyHelper;
 import com.ajapplications.budgeteerbuddy.helper.Logger;
 import com.ajapplications.budgeteerbuddy.helper.UIHelper;
+import com.ajapplications.budgeteerbuddy.helper.UserHelper;
 import com.ajapplications.budgeteerbuddy.model.Category;
 import com.ajapplications.budgeteerbuddy.model.Expense;
 import com.ajapplications.budgeteerbuddy.model.RecurringExpense;
@@ -202,6 +203,9 @@ public class RecurringExpenseEditActivity extends DBActivity {
                 if (value <= 0) {
                     amountEditText.setError(getResources().getString(R.string.negative_amount_error));
                     ok = false;
+                } else if (!this.category.equals(Category.Income) && (-db.getBalanceForDay(dateStart)) - value < 0){
+                    amountEditText.setError(getResources().getString(R.string.negative_balance_error));
+                    ok = false;
                 }
             } catch (Exception e) {
                 amountEditText.setError(getResources().getString(R.string.invalid_amount));
@@ -224,6 +228,7 @@ public class RecurringExpenseEditActivity extends DBActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 isRevenue = isChecked;
                 setExpenseTypeTextViewLayout();
+                setMessage();
             }
         });
 
@@ -293,8 +298,11 @@ public class RecurringExpenseEditActivity extends DBActivity {
                 categoryEditText.setText(category.toString(getBaseContext()));
 
                 expenseTypeSwitch.setChecked(category.equals(Category.Income));
+
+                setMessage();
             }
         });
+        setMessage();
 
         recurringTypeSpinner = (Spinner) findViewById(R.id.expense_type_spinner);
 
@@ -518,6 +526,44 @@ public class RecurringExpenseEditActivity extends DBActivity {
                         })
                         .show();
             }
+        }
+    }
+
+    private void setMessage(){
+        TextView messageTextView = (TextView)findViewById(R.id.message_textview);
+        int goal = UserHelper.getSavingsGoal(getBaseContext());
+        double savingsTotal = db.getTotalForCategory(Category.Savings);
+
+        if (category == null && savingsTotal < goal){
+            messageTextView.setText("");
+        }
+        else if (savingsTotal >= goal) {
+            messageTextView.setText(R.string.add_expense_message_goal_met);
+            messageTextView.setTextColor(getResources().getColor(R.color.budget_green));
+        }
+        else if (category.getPriority() == 0){
+            messageTextView.setText(R.string.add_expense_message_0);
+            messageTextView.setTextColor(getResources().getColor(R.color.budget_green));
+        }
+        else if (category.getPriority() == 1){
+            messageTextView.setText(R.string.add_expense_message_1);
+            messageTextView.setTextColor(getResources().getColor(R.color.budget_orange));
+        }
+        else if (category.getPriority() == 2){
+            messageTextView.setText(R.string.add_expense_message_2);
+            messageTextView.setTextColor(getResources().getColor(R.color.budget_red));
+        }
+        else if (category.getPriority() == 3){
+            messageTextView.setText(R.string.add_expense_message_3);
+            messageTextView.setTextColor(getResources().getColor(R.color.budget_red));
+        }
+        else if (category.getPriority() == 4){
+            messageTextView.setText(R.string.add_expense_message_4);
+            messageTextView.setTextColor(getResources().getColor(R.color.budget_red));
+        }
+        else {
+            messageTextView.setText(R.string.add_expense_message_other);
+            messageTextView.setTextColor(getResources().getColor(R.color.budget_red));
         }
     }
 }
