@@ -1,17 +1,19 @@
 /*
- *   Copyright 2016 Benoit LETONDOR
- *
- *   Licensed under the Apache License, Version 2.0 (the "License");
- *   you may not use this file except in compliance with the License.
- *   You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *   Unless required by applicable law or agreed to in writing, software
- *   distributed under the License is distributed on an "AS IS" BASIS,
- *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *   See the License for the specific language governing permissions and
- *   limitations under the License.
+   Copyright (c) 2018 Jordan Judt and Alexis Layne.
+
+   Original project "EasyBudget" Copyright (c) Benoit LETONDOR
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+         http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
  */
 
 package com.ajapplications.budgeteerbuddy.view.report;
@@ -24,9 +26,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.ajapplications.budgeteerbuddy.R;
 import com.ajapplications.budgeteerbuddy.helper.CurrencyHelper;
 import com.ajapplications.budgeteerbuddy.model.Expense;
-import com.ajapplications.budgeteerbuddy.R;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -37,8 +39,7 @@ import java.util.Locale;
  *
  * @author Benoit LETONDOR
  */
-public class MonthlyReportRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
-{
+public class MonthlyReportRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     /**
      * Type of cell for an {@link Expense}
      */
@@ -67,12 +68,10 @@ public class MonthlyReportRecyclerViewAdapter extends RecyclerView.Adapter<Recyc
 // --------------------------------------->
 
     /**
-     *
      * @param expenses
      * @param revenues
      */
-    public MonthlyReportRecyclerViewAdapter(@NonNull List<Expense> expenses, @NonNull List<Expense> revenues)
-    {
+    public MonthlyReportRecyclerViewAdapter(@NonNull List<Expense> expenses, @NonNull List<Expense> revenues) {
         this.expenses = expenses;
         this.revenues = revenues;
     }
@@ -80,10 +79,8 @@ public class MonthlyReportRecyclerViewAdapter extends RecyclerView.Adapter<Recyc
 // --------------------------------------->
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
-    {
-        if( HEADER_VIEW_TYPE == viewType )
-        {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if (HEADER_VIEW_TYPE == viewType) {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_monthly_report_header_cell, parent, false);
             return new HeaderViewHolder(v);
         }
@@ -93,18 +90,14 @@ public class MonthlyReportRecyclerViewAdapter extends RecyclerView.Adapter<Recyc
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position)
-    {
-        if( holder instanceof HeaderViewHolder )
-        {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        if (holder instanceof HeaderViewHolder) {
             boolean isRevenuesHeader = isRevenuesHeader(position);
 
             HeaderViewHolder headerHolder = (HeaderViewHolder) holder;
             headerHolder.headerTitle.setText(isRevenuesHeader ? R.string.revenues : R.string.expenses);
             headerHolder.view.setBackgroundColor(ContextCompat.getColor(headerHolder.view.getContext(), isRevenuesHeader ? R.color.budget_green : R.color.budget_red));
-        }
-        else
-        {
+        } else {
             ExpenseViewHolder viewHolder = (ExpenseViewHolder) holder;
             Expense expense = getExpense(position);
 
@@ -123,14 +116,12 @@ public class MonthlyReportRecyclerViewAdapter extends RecyclerView.Adapter<Recyc
     }
 
     @Override
-    public int getItemCount()
-    {
+    public int getItemCount() {
         return (expenses.isEmpty() ? 0 : expenses.size() + 1) + (revenues.isEmpty() ? 0 : revenues.size() + 1);
     }
 
     @Override
-    public int getItemViewType(int position)
-    {
+    public int getItemViewType(int position) {
         return isHeader(position) ? HEADER_VIEW_TYPE : EXPENSE_VIEW_TYPE;
     }
 
@@ -140,10 +131,8 @@ public class MonthlyReportRecyclerViewAdapter extends RecyclerView.Adapter<Recyc
      * @param position the position
      * @return the expense for that position
      */
-    private Expense getExpense(int position)
-    {
-        if( !revenues.isEmpty() && position - 1 < revenues.size() )
-        {
+    private Expense getExpense(int position) {
+        if (!revenues.isEmpty() && position - 1 < revenues.size()) {
             return revenues.get(position - 1);
         }
 
@@ -157,8 +146,7 @@ public class MonthlyReportRecyclerViewAdapter extends RecyclerView.Adapter<Recyc
      * @param position the position
      * @return true if it's an header, false otherwise
      */
-    private boolean isHeader(int position)
-    {
+    private boolean isHeader(int position) {
         return isExpensesHeader(position) || isRevenuesHeader(position);
     }
 
@@ -168,8 +156,7 @@ public class MonthlyReportRecyclerViewAdapter extends RecyclerView.Adapter<Recyc
      * @param position the position
      * @return true if it's the expense header, false otherwise
      */
-    private boolean isExpensesHeader(int position)
-    {
+    private boolean isExpensesHeader(int position) {
         return !expenses.isEmpty() && position == revenues.size() + (revenues.isEmpty() ? 0 : 1);
     }
 
@@ -179,15 +166,13 @@ public class MonthlyReportRecyclerViewAdapter extends RecyclerView.Adapter<Recyc
      * @param position the position
      * @return true if it's the revenue header, false otherwise
      */
-    private boolean isRevenuesHeader(int position)
-    {
+    private boolean isRevenuesHeader(int position) {
         return !revenues.isEmpty() && position == 0;
     }
 
 // --------------------------------------->
 
-    public static class ExpenseViewHolder extends RecyclerView.ViewHolder
-    {
+    public static class ExpenseViewHolder extends RecyclerView.ViewHolder {
         public final TextView expenseTitleTextView;
         public final TextView expenseMemoTextView;
         public final TextView expenseAmountTextView;
@@ -195,8 +180,7 @@ public class MonthlyReportRecyclerViewAdapter extends RecyclerView.Adapter<Recyc
         public final TextView dateTextView;
         public final View view;
 
-        public ExpenseViewHolder(View v)
-        {
+        public ExpenseViewHolder(View v) {
             super(v);
 
             view = v;
@@ -208,13 +192,11 @@ public class MonthlyReportRecyclerViewAdapter extends RecyclerView.Adapter<Recyc
         }
     }
 
-    public static class HeaderViewHolder extends RecyclerView.ViewHolder
-    {
+    public static class HeaderViewHolder extends RecyclerView.ViewHolder {
         public final TextView headerTitle;
         public final View view;
 
-        public HeaderViewHolder(View v)
-        {
+        public HeaderViewHolder(View v) {
             super(v);
 
             view = v;

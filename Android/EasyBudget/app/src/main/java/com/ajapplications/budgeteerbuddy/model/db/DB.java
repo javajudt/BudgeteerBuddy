@@ -1,17 +1,19 @@
 /*
- *   Copyright 2015 Benoit LETONDOR
- *
- *   Licensed under the Apache License, Version 2.0 (the "License");
- *   you may not use this file except in compliance with the License.
- *   You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *   Unless required by applicable law or agreed to in writing, software
- *   distributed under the License is distributed on an "AS IS" BASIS,
- *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *   See the License for the specific language governing permissions and
- *   limitations under the License.
+   Copyright (c) 2018 Jordan Judt and Alexis Layne.
+
+   Original project "EasyBudget" Copyright (c) Benoit LETONDOR
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+         http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
  */
 
 package com.ajapplications.budgeteerbuddy.model.db;
@@ -23,7 +25,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.VisibleForTesting;
 import android.support.v4.util.Pair;
 
 import com.ajapplications.budgeteerbuddy.helper.CurrencyHelper;
@@ -46,8 +47,7 @@ import java.util.List;
  *
  * @author Benoit LETONDOR
  */
-public final class DB
-{
+public final class DB {
     /**
      * The SQLLite DB
      */
@@ -65,36 +65,21 @@ public final class DB
      * @param context
      * @throws SQLiteException
      */
-    public DB(@NonNull Context context) throws SQLiteException
-    {
+    public DB(@NonNull Context context) throws SQLiteException {
         this.context = context.getApplicationContext();
         SQLiteDBHelper databaseHelper = new SQLiteDBHelper(this.context);
-		database = databaseHelper.getWritableDatabase();
-	}
+        database = databaseHelper.getWritableDatabase();
+    }
 
     /**
      * Close the DB, no call to other methods should be made after this method
      */
-    public void close()
-    {
-        try
-        {
+    public void close() {
+        try {
             database.close();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             Logger.error("Error while closing SQLite DB", e);
         }
-    }
-
-    /**
-     * Clear all DB content (<b>for test purpose</b>)
-     */
-    @VisibleForTesting
-    public void clearDB()
-    {
-        database.delete(SQLiteDBHelper.TABLE_EXPENSE, null, null);
-        database.delete(SQLiteDBHelper.TABLE_RECURRING_EXPENSE, null, null);
     }
 
 // -------------------------------------------->
@@ -106,25 +91,19 @@ public final class DB
      * @param forcePersist if true, it will be an insert even if an id already exists
      * @return true on success, false on error
      */
-    public boolean persistExpense(@NonNull Expense expense, boolean forcePersist)
-    {
-        if( expense.getId() != null && !forcePersist )
-        {
-            int rowsAffected = database.update(SQLiteDBHelper.TABLE_EXPENSE, generateContentValuesForExpense(expense), SQLiteDBHelper.COLUMN_EXPENSE_DB_ID+"="+expense.getId(), null);
-            if( rowsAffected > 0 )
-            {
+    public boolean persistExpense(@NonNull Expense expense, boolean forcePersist) {
+        if (expense.getId() != null && !forcePersist) {
+            int rowsAffected = database.update(SQLiteDBHelper.TABLE_EXPENSE, generateContentValuesForExpense(expense), SQLiteDBHelper.COLUMN_EXPENSE_DB_ID + "=" + expense.getId(), null);
+            if (rowsAffected > 0) {
                 // Refresh cache for day
                 DBCache.getInstance(context).wipeAll(); // FIXME we should refresh for the new expense date & the old one
             }
 
             return rowsAffected == 1;
-        }
-        else
-        {
+        } else {
             long id = database.insert(SQLiteDBHelper.TABLE_EXPENSE, null, generateContentValuesForExpense(expense));
 
-            if( id > 0 )
-            {
+            if (id > 0) {
                 // Refresh cache for day
                 DBCache.getInstance(context).refreshForDay(this, expense.getDate());
 
@@ -142,8 +121,7 @@ public final class DB
      * @param expense
      * @return true on success, false on error
      */
-    public boolean persistExpense(@NonNull Expense expense)
-    {
+    public boolean persistExpense(@NonNull Expense expense) {
         return persistExpense(expense, false);
     }
 
@@ -153,8 +131,7 @@ public final class DB
      * @param date current date
      * @return
      */
-    public boolean hasExpensesForYear(@NonNull Date date)
-    {
+    public boolean hasExpensesForYear(@NonNull Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         cal.set(Calendar.DAY_OF_YEAR, 1);
@@ -166,44 +143,11 @@ public final class DB
         Pair<Long, Long> lastDateRange = DateHelper.getTimestampRangeForDay(cal.getTime());
 
         Cursor cursor = null;
-        try
-        {
-            cursor = database.rawQuery("SELECT COUNT(*) FROM " + SQLiteDBHelper.TABLE_EXPENSE + " WHERE " + SQLiteDBHelper.COLUMN_EXPENSE_DATE + " >= " + firstDateRange.first + " AND "+SQLiteDBHelper.COLUMN_EXPENSE_DATE + " <= "+ lastDateRange.second + " LIMIT 1", null);
+        try {
+            cursor = database.rawQuery("SELECT COUNT(*) FROM " + SQLiteDBHelper.TABLE_EXPENSE + " WHERE " + SQLiteDBHelper.COLUMN_EXPENSE_DATE + " >= " + firstDateRange.first + " AND " + SQLiteDBHelper.COLUMN_EXPENSE_DATE + " <= " + lastDateRange.second + " LIMIT 1", null);
             return cursor.moveToFirst() && cursor.getInt(0) > 0;
-        }
-        finally
-        {
-            if( cursor != null )
-                cursor.close();
-        }
-    }
-
-    /**
-     * Check if an expense is set to the given month
-     *
-     * @param firstDate first day of the month at 00:00:000
-     * @return
-     */
-    public boolean hasExpensesForMonth(@NonNull Date firstDate)
-    {
-        Pair<Long, Long> firstDateRange = DateHelper.getTimestampRangeForDay(firstDate);
-
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(firstDate);
-        cal.add(Calendar.MONTH, 1);
-        cal.add(Calendar.DAY_OF_MONTH, -1);
-
-        Pair<Long, Long> lastDateRange = DateHelper.getTimestampRangeForDay(cal.getTime());
-
-        Cursor cursor = null;
-        try
-        {
-            cursor = database.rawQuery("SELECT COUNT(*) FROM " + SQLiteDBHelper.TABLE_EXPENSE + " WHERE " + SQLiteDBHelper.COLUMN_EXPENSE_DATE + " >= " + firstDateRange.first + " AND "+SQLiteDBHelper.COLUMN_EXPENSE_DATE + " <= "+ lastDateRange.second + " LIMIT 1", null);
-            return cursor.moveToFirst() && cursor.getInt(0) > 0;
-        }
-        finally
-        {
-            if( cursor != null )
+        } finally {
+            if (cursor != null)
                 cursor.close();
         }
     }
@@ -214,8 +158,7 @@ public final class DB
      * @param date today's date
      * @return
      */
-    public boolean hasExpensesForLastSevenDays(@NonNull Date date)
-    {
+    public boolean hasExpensesForLastSevenDays(@NonNull Date date) {
         Pair<Long, Long> lastDateRange = DateHelper.getTimestampRangeForDay(date);
 
         Calendar cal = Calendar.getInstance();
@@ -225,14 +168,11 @@ public final class DB
         Pair<Long, Long> firstDateRange = DateHelper.getTimestampRangeForDay(cal.getTime());
 
         Cursor cursor = null;
-        try
-        {
-            cursor = database.rawQuery("SELECT COUNT(*) FROM " + SQLiteDBHelper.TABLE_EXPENSE + " WHERE " + SQLiteDBHelper.COLUMN_EXPENSE_DATE + " >= " + firstDateRange.first + " AND "+SQLiteDBHelper.COLUMN_EXPENSE_DATE + " <= "+ lastDateRange.second + " LIMIT 1", null);
+        try {
+            cursor = database.rawQuery("SELECT COUNT(*) FROM " + SQLiteDBHelper.TABLE_EXPENSE + " WHERE " + SQLiteDBHelper.COLUMN_EXPENSE_DATE + " >= " + firstDateRange.first + " AND " + SQLiteDBHelper.COLUMN_EXPENSE_DATE + " <= " + lastDateRange.second + " LIMIT 1", null);
             return cursor.moveToFirst() && cursor.getInt(0) > 0;
-        }
-        finally
-        {
-            if( cursor != null )
+        } finally {
+            if (cursor != null)
                 cursor.close();
         }
     }
@@ -243,50 +183,40 @@ public final class DB
      * @param day
      * @return
      */
-    public boolean hasExpensesForDay(@NonNull Date day)
-    {
+    public boolean hasExpensesForDay(@NonNull Date day) {
         Pair<Long, Long> range = DateHelper.getTimestampRangeForDay(day);
         Date gmt = DateHelper.cleanGMTDate(day);
 
         // Check cache
         Boolean hasExpensesCached = DBCache.getInstance(context).hasExpensesForDay(gmt);
-        if( hasExpensesCached != null )
-        {
+        if (hasExpensesCached != null) {
             return hasExpensesCached;
         }
 
         Cursor cursor = null;
-        try
-        {
-            cursor = database.rawQuery("SELECT COUNT(*) FROM " + SQLiteDBHelper.TABLE_EXPENSE + " WHERE " + SQLiteDBHelper.COLUMN_EXPENSE_DATE + " >= " + range.first + " AND "+SQLiteDBHelper.COLUMN_EXPENSE_DATE + " <= "+ range.second + " LIMIT 1", null);
+        try {
+            cursor = database.rawQuery("SELECT COUNT(*) FROM " + SQLiteDBHelper.TABLE_EXPENSE + " WHERE " + SQLiteDBHelper.COLUMN_EXPENSE_DATE + " >= " + range.first + " AND " + SQLiteDBHelper.COLUMN_EXPENSE_DATE + " <= " + range.second + " LIMIT 1", null);
             return cursor.moveToFirst() && cursor.getInt(0) > 0;
-        }
-        finally
-        {
-            if( cursor != null )
+        } finally {
+            if (cursor != null)
                 cursor.close();
         }
     }
 
     @NonNull
-    public double getTotalForCategory(Category category){
+    public double getTotalForCategory(Category category) {
         Cursor cursor = null;
-        try
-        {
+        try {
             cursor = database.rawQuery("SELECT SUM(" + SQLiteDBHelper.COLUMN_EXPENSE_AMOUNT + ") FROM " + SQLiteDBHelper.TABLE_EXPENSE + " WHERE " + SQLiteDBHelper.COLUMN_EXPENSE_CATEGORY + " = '" + category.name() + "'", null);
 
-            if(cursor.moveToFirst())
-            {
+            if (cursor.moveToFirst()) {
                 int value = cursor.getInt(0);
                 return (double) value / 100.d;
             }
 
             return 0;
-        }
-        finally
-        {
-            if( cursor != null )
-            {
+        } finally {
+            if (cursor != null) {
                 cursor.close();
             }
         }
@@ -300,45 +230,34 @@ public final class DB
      * @return
      */
     @NonNull
-    protected List<Expense> getExpensesForDay(@NonNull Date date, boolean fromCache)
-    {
+    protected List<Expense> getExpensesForDay(@NonNull Date date, boolean fromCache) {
         Pair<Long, Long> range = DateHelper.getTimestampRangeForDay(date);
         Date gmt = DateHelper.cleanGMTDate(date);
 
         // Check cache
-        if( fromCache )
-        {
+        if (fromCache) {
             List<Expense> cachedExpenses = DBCache.getInstance(context).getExpensesForDay(gmt);
-            if( cachedExpenses != null )
-            {
+            if (cachedExpenses != null) {
                 return cachedExpenses;
             }
         }
 
         Cursor cursor = null;
-        try
-        {
+        try {
             List<Expense> expenses = new ArrayList<>();
 
             cursor = database.query(SQLiteDBHelper.TABLE_EXPENSE, null, SQLiteDBHelper.COLUMN_EXPENSE_DATE + " >= " + range.first + " AND " + SQLiteDBHelper.COLUMN_EXPENSE_DATE + " <= " + range.second, null, null, null, null, null);
-            while( cursor.moveToNext() )
-            {
-                try
-                {
+            while (cursor.moveToNext()) {
+                try {
                     expenses.add(ExpenseFromCursor(cursor, getRecurringExpenseForExpenseCursor(cursor)));
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                     Logger.error(false, "Error occurred querying DB for expense for a day", e);
                 }
             }
 
             return expenses;
-        }
-        finally
-        {
-            if( cursor != null )
-            {
+        } finally {
+            if (cursor != null) {
                 cursor.close();
             }
         }
@@ -351,8 +270,7 @@ public final class DB
      * @return
      */
     @NonNull
-    public List<Expense> getExpensesForDay(@NonNull Date date)
-    {
+    public List<Expense> getExpensesForDay(@NonNull Date date) {
         return getExpensesForDay(date, true);
     }
 
@@ -363,8 +281,7 @@ public final class DB
      * @return expenses for the given month
      */
     @NonNull
-    public List<Expense> getExpensesForMonth(@NonNull Date firstDate)
-    {
+    public List<Expense> getExpensesForMonth(@NonNull Date firstDate) {
         Pair<Long, Long> firstDateRange = DateHelper.getTimestampRangeForDay(firstDate);
 
         Calendar cal = Calendar.getInstance();
@@ -375,29 +292,21 @@ public final class DB
         Pair<Long, Long> lastDateRange = DateHelper.getTimestampRangeForDay(cal.getTime());
 
         Cursor cursor = null;
-        try
-        {
+        try {
             List<Expense> expenses = new ArrayList<>();
 
-            cursor = database.query(SQLiteDBHelper.TABLE_EXPENSE, null, SQLiteDBHelper.COLUMN_EXPENSE_DATE + " >= " + firstDateRange.first + " AND " + SQLiteDBHelper.COLUMN_EXPENSE_DATE + " <= " + lastDateRange.second+" ORDER BY "+SQLiteDBHelper.COLUMN_EXPENSE_DATE, null, null, null, null, null);
-            while( cursor.moveToNext() )
-            {
-                try
-                {
+            cursor = database.query(SQLiteDBHelper.TABLE_EXPENSE, null, SQLiteDBHelper.COLUMN_EXPENSE_DATE + " >= " + firstDateRange.first + " AND " + SQLiteDBHelper.COLUMN_EXPENSE_DATE + " <= " + lastDateRange.second + " ORDER BY " + SQLiteDBHelper.COLUMN_EXPENSE_DATE, null, null, null, null, null);
+            while (cursor.moveToNext()) {
+                try {
                     expenses.add(ExpenseFromCursor(cursor, getRecurringExpenseForExpenseCursor(cursor)));
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                     Logger.error(false, "Error occurred querying DB for expense for a month", e);
                 }
             }
 
             return expenses;
-        }
-        finally
-        {
-            if( cursor != null )
-            {
+        } finally {
+            if (cursor != null) {
                 cursor.close();
             }
         }
@@ -410,38 +319,30 @@ public final class DB
      * @param fromCache should we use DBCache
      * @return
      */
-    protected double getBalanceForDay(@NonNull Date day, boolean fromCache)
-    {
+    protected double getBalanceForDay(@NonNull Date day, boolean fromCache) {
         Pair<Long, Long> range = DateHelper.getTimestampRangeForDay(day);
         Date gmt = DateHelper.cleanGMTDate(day);
 
         // Check cache
-        if( fromCache )
-        {
+        if (fromCache) {
             Double cachedBalance = DBCache.getInstance(context).getBalanceForDay(gmt);
-            if( cachedBalance != null )
-            {
+            if (cachedBalance != null) {
                 return cachedBalance;
             }
         }
 
         Cursor cursor = null;
-        try
-        {
+        try {
             cursor = database.rawQuery("SELECT SUM(" + SQLiteDBHelper.COLUMN_EXPENSE_AMOUNT + ") FROM " + SQLiteDBHelper.TABLE_EXPENSE + " WHERE " + SQLiteDBHelper.COLUMN_EXPENSE_DATE + " <= " + range.second, null);
 
-            if(cursor.moveToFirst())
-            {
+            if (cursor.moveToFirst()) {
                 int value = cursor.getInt(0);
                 return (double) value / 100.d;
             }
 
             return 0;
-        }
-        finally
-        {
-            if( cursor != null )
-            {
+        } finally {
+            if (cursor != null) {
                 cursor.close();
             }
         }
@@ -453,8 +354,7 @@ public final class DB
      * @param day
      * @return
      */
-    public double getBalanceForDay(@NonNull Date day)
-    {
+    public double getBalanceForDay(@NonNull Date day) {
         return getBalanceForDay(day, true);
     }
 
@@ -464,12 +364,10 @@ public final class DB
      * @param expense
      * @return true on success, false on error
      */
-    public boolean addRecurringExpense(@NonNull RecurringExpense expense)
-    {
+    public boolean addRecurringExpense(@NonNull RecurringExpense expense) {
         long id = database.insert(SQLiteDBHelper.TABLE_RECURRING_EXPENSE, null, generateContentValuesForRecurringExpense(expense));
 
-        if( id > 0 )
-        {
+        if (id > 0) {
             expense.setId(id);
             return true;
         }
@@ -478,44 +376,13 @@ public final class DB
     }
 
     /**
-     * Get all recurring expenses
-     *
-     * @return
-     */
-    @NonNull
-    public List<RecurringExpense> getAllRecurringExpenses()
-    {
-        Cursor cursor = null;
-        try
-        {
-            List<RecurringExpense> expenses = new ArrayList<>();
-
-            cursor = database.query(SQLiteDBHelper.TABLE_RECURRING_EXPENSE, null, null, null, null, null, null, null);
-            while( cursor.moveToNext() )
-            {
-                expenses.add(recurringExpenseFromCursor(cursor));
-            }
-
-            return expenses;
-        }
-        finally
-        {
-            if( cursor != null )
-            {
-                cursor.close();
-            }
-        }
-    }
-
-    /**
      * Delete this recurring expense
      *
      * @param recurringExpense
      * @return true on success, false on error
      */
-    public boolean deleteRecurringExpense(@NonNull RecurringExpense recurringExpense)
-    {
-        return database.delete(SQLiteDBHelper.TABLE_RECURRING_EXPENSE, SQLiteDBHelper.COLUMN_RECURRING_DB_ID +"="+ recurringExpense.getId(), null) > 0;
+    public boolean deleteRecurringExpense(@NonNull RecurringExpense recurringExpense) {
+        return database.delete(SQLiteDBHelper.TABLE_RECURRING_EXPENSE, SQLiteDBHelper.COLUMN_RECURRING_DB_ID + "=" + recurringExpense.getId(), null) > 0;
     }
 
     /**
@@ -524,12 +391,10 @@ public final class DB
      * @param expense
      * @return true on success, false on error
      */
-    public boolean deleteExpense(@NonNull Expense expense)
-    {
-        boolean delete = database.delete(SQLiteDBHelper.TABLE_EXPENSE, SQLiteDBHelper.COLUMN_EXPENSE_DB_ID+"="+expense.getId(), null) > 0;
+    public boolean deleteExpense(@NonNull Expense expense) {
+        boolean delete = database.delete(SQLiteDBHelper.TABLE_EXPENSE, SQLiteDBHelper.COLUMN_EXPENSE_DB_ID + "=" + expense.getId(), null) > 0;
 
-        if( delete )
-        {
+        if (delete) {
             // Refresh cache for day
             DBCache.getInstance(context).refreshForDay(this, expense.getDate());
         }
@@ -543,12 +408,10 @@ public final class DB
      * @param recurringExpense
      * @return true on success, false on error
      */
-    public boolean deleteAllExpenseForRecurringExpense(@NonNull RecurringExpense recurringExpense)
-    {
-        boolean deleted = database.delete(SQLiteDBHelper.TABLE_EXPENSE, SQLiteDBHelper.COLUMN_EXPENSE_RECURRING_ID +"="+ recurringExpense.getId(), null) > 0;
+    public boolean deleteAllExpenseForRecurringExpense(@NonNull RecurringExpense recurringExpense) {
+        boolean deleted = database.delete(SQLiteDBHelper.TABLE_EXPENSE, SQLiteDBHelper.COLUMN_EXPENSE_RECURRING_ID + "=" + recurringExpense.getId(), null) > 0;
 
-        if( deleted )
-        {
+        if (deleted) {
             DBCache.getInstance(context).wipeAll();
         }
 
@@ -561,25 +424,19 @@ public final class DB
      * @param recurringExpense
      * @return
      */
-    public List<Expense> getAllExpenseForRecurringExpense(@NonNull RecurringExpense recurringExpense)
-    {
+    public List<Expense> getAllExpenseForRecurringExpense(@NonNull RecurringExpense recurringExpense) {
         Cursor cursor = null;
-        try
-        {
+        try {
             List<Expense> expenses = new ArrayList<>();
 
-            cursor = database.query(SQLiteDBHelper.TABLE_EXPENSE, null, SQLiteDBHelper.COLUMN_EXPENSE_RECURRING_ID +"="+ recurringExpense.getId(), null, null, null, null, null);
-            while( cursor.moveToNext() )
-            {
+            cursor = database.query(SQLiteDBHelper.TABLE_EXPENSE, null, SQLiteDBHelper.COLUMN_EXPENSE_RECURRING_ID + "=" + recurringExpense.getId(), null, null, null, null, null);
+            while (cursor.moveToNext()) {
                 expenses.add(ExpenseFromCursor(cursor, recurringExpense));
             }
 
             return expenses;
-        }
-        finally
-        {
-            if( cursor != null )
-            {
+        } finally {
+            if (cursor != null) {
                 cursor.close();
             }
         }
@@ -592,16 +449,14 @@ public final class DB
      * @param fromDate
      * @return true on success, false on error
      */
-    public boolean deleteAllExpenseForRecurringExpenseFromDate(@NonNull RecurringExpense recurringExpense, @NonNull Date fromDate)
-    {
-        boolean deleted = database.delete(SQLiteDBHelper.TABLE_EXPENSE, SQLiteDBHelper.COLUMN_EXPENSE_RECURRING_ID +"="+ recurringExpense.getId()+" AND "+SQLiteDBHelper.COLUMN_EXPENSE_DATE+">"+fromDate.getTime(), null) > 0;
+    public boolean deleteAllExpenseForRecurringExpenseFromDate(@NonNull RecurringExpense recurringExpense, @NonNull Date fromDate) {
+        boolean deleted = database.delete(SQLiteDBHelper.TABLE_EXPENSE, SQLiteDBHelper.COLUMN_EXPENSE_RECURRING_ID + "=" + recurringExpense.getId() + " AND " + SQLiteDBHelper.COLUMN_EXPENSE_DATE + ">" + fromDate.getTime(), null) > 0;
 
-        if( deleted )
-        {
+        if (deleted) {
             DBCache.getInstance(context).wipeAll();
         }
 
-        return  deleted;
+        return deleted;
     }
 
     /**
@@ -611,27 +466,21 @@ public final class DB
      * @param fromDate
      * @return
      */
-    public List<Expense> getAllExpensesForRecurringExpenseFromDate(@NonNull RecurringExpense recurringExpense, @NonNull Date fromDate)
-    {
+    public List<Expense> getAllExpensesForRecurringExpenseFromDate(@NonNull RecurringExpense recurringExpense, @NonNull Date fromDate) {
         fromDate = DateHelper.cleanDate(fromDate);
 
         Cursor cursor = null;
-        try
-        {
+        try {
             List<Expense> expenses = new ArrayList<>();
 
-            cursor = database.query(SQLiteDBHelper.TABLE_EXPENSE, null, SQLiteDBHelper.COLUMN_EXPENSE_RECURRING_ID +"="+ recurringExpense.getId()+" AND "+SQLiteDBHelper.COLUMN_EXPENSE_DATE+">"+fromDate.getTime(), null, null, null, null, null);
-            while( cursor.moveToNext() )
-            {
+            cursor = database.query(SQLiteDBHelper.TABLE_EXPENSE, null, SQLiteDBHelper.COLUMN_EXPENSE_RECURRING_ID + "=" + recurringExpense.getId() + " AND " + SQLiteDBHelper.COLUMN_EXPENSE_DATE + ">" + fromDate.getTime(), null, null, null, null, null);
+            while (cursor.moveToNext()) {
                 expenses.add(ExpenseFromCursor(cursor, recurringExpense));
             }
 
             return expenses;
-        }
-        finally
-        {
-            if( cursor != null )
-            {
+        } finally {
+            if (cursor != null) {
                 cursor.close();
             }
         }
@@ -644,12 +493,10 @@ public final class DB
      * @param toDate
      * @return true on success, false on error
      */
-    public boolean deleteAllExpenseForRecurringExpenseBeforeDate(@NonNull RecurringExpense recurringExpense, @NonNull Date toDate)
-    {
-        boolean deleted = database.delete(SQLiteDBHelper.TABLE_EXPENSE, SQLiteDBHelper.COLUMN_EXPENSE_RECURRING_ID +"="+ recurringExpense.getId()+" AND "+SQLiteDBHelper.COLUMN_EXPENSE_DATE+"<"+toDate.getTime(), null) > 0;
+    public boolean deleteAllExpenseForRecurringExpenseBeforeDate(@NonNull RecurringExpense recurringExpense, @NonNull Date toDate) {
+        boolean deleted = database.delete(SQLiteDBHelper.TABLE_EXPENSE, SQLiteDBHelper.COLUMN_EXPENSE_RECURRING_ID + "=" + recurringExpense.getId() + " AND " + SQLiteDBHelper.COLUMN_EXPENSE_DATE + "<" + toDate.getTime(), null) > 0;
 
-        if( deleted )
-        {
+        if (deleted) {
             DBCache.getInstance(context).wipeAll();
         }
 
@@ -663,21 +510,16 @@ public final class DB
      * @param toDate
      * @return
      */
-    public boolean hasExpensesForRecurringExpenseBeforeDate(@NonNull RecurringExpense recurringExpense, @NonNull Date toDate)
-    {
+    public boolean hasExpensesForRecurringExpenseBeforeDate(@NonNull RecurringExpense recurringExpense, @NonNull Date toDate) {
         toDate = DateHelper.cleanDate(toDate);
 
         Cursor cursor = null;
-        try
-        {
-            cursor = database.rawQuery("SELECT COUNT(*) FROM "+SQLiteDBHelper.TABLE_EXPENSE+" WHERE "+SQLiteDBHelper.COLUMN_EXPENSE_RECURRING_ID +"="+ recurringExpense.getId()+" AND "+SQLiteDBHelper.COLUMN_EXPENSE_DATE+"<"+toDate.getTime()+" LIMIT 1", null);
+        try {
+            cursor = database.rawQuery("SELECT COUNT(*) FROM " + SQLiteDBHelper.TABLE_EXPENSE + " WHERE " + SQLiteDBHelper.COLUMN_EXPENSE_RECURRING_ID + "=" + recurringExpense.getId() + " AND " + SQLiteDBHelper.COLUMN_EXPENSE_DATE + "<" + toDate.getTime() + " LIMIT 1", null);
 
             return cursor.moveToFirst() && cursor.getInt(0) > 0;
-        }
-        finally
-        {
-            if( cursor != null )
-            {
+        } finally {
+            if (cursor != null) {
                 cursor.close();
             }
         }
@@ -690,27 +532,21 @@ public final class DB
      * @param toDate
      * @return
      */
-    public List<Expense> getAllExpensesForRecurringExpenseBeforeDate(@NonNull RecurringExpense recurringExpense, @NonNull Date toDate)
-    {
+    public List<Expense> getAllExpensesForRecurringExpenseBeforeDate(@NonNull RecurringExpense recurringExpense, @NonNull Date toDate) {
         toDate = DateHelper.cleanDate(toDate);
 
         Cursor cursor = null;
-        try
-        {
+        try {
             List<Expense> expenses = new ArrayList<>();
 
-            cursor = database.query(SQLiteDBHelper.TABLE_EXPENSE, null, SQLiteDBHelper.COLUMN_EXPENSE_RECURRING_ID +"="+ recurringExpense.getId()+" AND "+SQLiteDBHelper.COLUMN_EXPENSE_DATE+"<"+toDate.getTime(), null, null, null, null, null);
-            while( cursor.moveToNext() )
-            {
+            cursor = database.query(SQLiteDBHelper.TABLE_EXPENSE, null, SQLiteDBHelper.COLUMN_EXPENSE_RECURRING_ID + "=" + recurringExpense.getId() + " AND " + SQLiteDBHelper.COLUMN_EXPENSE_DATE + "<" + toDate.getTime(), null, null, null, null, null);
+            while (cursor.moveToNext()) {
                 expenses.add(ExpenseFromCursor(cursor, recurringExpense));
             }
 
             return expenses;
-        }
-        finally
-        {
-            if( cursor != null )
-            {
+        } finally {
+            if (cursor != null) {
                 cursor.close();
             }
         }
@@ -723,24 +559,18 @@ public final class DB
      * @return recurring expense if found, null otherwise
      */
     @Nullable
-    public RecurringExpense findRecurringExpenseForId(long id)
-    {
+    public RecurringExpense findRecurringExpenseForId(long id) {
         Cursor cursor = null;
-        try
-        {
+        try {
             cursor = database.query(SQLiteDBHelper.TABLE_RECURRING_EXPENSE, null, SQLiteDBHelper.COLUMN_RECURRING_DB_ID + " = " + id, null, null, null, null, "1");
 
-            if(cursor.moveToFirst())
-            {
+            if (cursor.moveToFirst()) {
                 return recurringExpenseFromCursor(cursor);
             }
 
             return null;
-        }
-        finally
-        {
-            if( cursor != null )
-            {
+        } finally {
+            if (cursor != null) {
                 cursor.close();
             }
         }
@@ -755,17 +585,16 @@ public final class DB
      * @return
      */
     @NonNull
-    private static Expense ExpenseFromCursor(@NonNull Cursor cursor, @Nullable RecurringExpense recurringExpense)
-    {
+    private static Expense ExpenseFromCursor(@NonNull Cursor cursor, @Nullable RecurringExpense recurringExpense) {
         return new Expense
-        (
-            cursor.getLong(cursor.getColumnIndex(SQLiteDBHelper.COLUMN_EXPENSE_DB_ID)),
-                Category.valueOf(cursor.getString(cursor.getColumnIndex(SQLiteDBHelper.COLUMN_EXPENSE_CATEGORY))),
-            cursor.getString(cursor.getColumnIndex(SQLiteDBHelper.COLUMN_EXPENSE_TITLE)),
-            (double) cursor.getLong(cursor.getColumnIndex(SQLiteDBHelper.COLUMN_EXPENSE_AMOUNT)) / 100.d,
-            new Date(cursor.getLong(cursor.getColumnIndex(SQLiteDBHelper.COLUMN_EXPENSE_DATE))),
-            recurringExpense
-        );
+                (
+                        cursor.getLong(cursor.getColumnIndex(SQLiteDBHelper.COLUMN_EXPENSE_DB_ID)),
+                        Category.valueOf(cursor.getString(cursor.getColumnIndex(SQLiteDBHelper.COLUMN_EXPENSE_CATEGORY))),
+                        cursor.getString(cursor.getColumnIndex(SQLiteDBHelper.COLUMN_EXPENSE_TITLE)),
+                        (double) cursor.getLong(cursor.getColumnIndex(SQLiteDBHelper.COLUMN_EXPENSE_AMOUNT)) / 100.d,
+                        new Date(cursor.getLong(cursor.getColumnIndex(SQLiteDBHelper.COLUMN_EXPENSE_DATE))),
+                        recurringExpense
+                );
     }
 
     /**
@@ -775,20 +604,15 @@ public final class DB
      * @return
      */
     @Nullable
-    private RecurringExpense getRecurringExpenseForExpenseCursor(@NonNull Cursor cursor)
-    {
+    private RecurringExpense getRecurringExpenseForExpenseCursor(@NonNull Cursor cursor) {
         long recurringId = 0;
-        try
-        {
+        try {
             recurringId = cursor.getLong(cursor.getColumnIndex(SQLiteDBHelper.COLUMN_EXPENSE_RECURRING_ID));
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             // Exception can be thrown on null depending on impl.
         }
 
-        if( recurringId > 0 )
-        {
+        if (recurringId > 0) {
             return findRecurringExpenseForId(recurringId);
         }
 
@@ -802,12 +626,10 @@ public final class DB
      * @return
      */
     @NonNull
-    private static ContentValues generateContentValuesForExpense(@NonNull Expense expense)
-    {
+    private static ContentValues generateContentValuesForExpense(@NonNull Expense expense) {
         final ContentValues values = new ContentValues();
 
-        if( expense.getId() != null )
-        {
+        if (expense.getId() != null) {
             values.put(SQLiteDBHelper.COLUMN_EXPENSE_DB_ID, expense.getId());
         }
 
@@ -816,8 +638,7 @@ public final class DB
         values.put(SQLiteDBHelper.COLUMN_EXPENSE_DATE, expense.getDate().getTime());
         values.put(SQLiteDBHelper.COLUMN_EXPENSE_AMOUNT, CurrencyHelper.getDBValueForDouble(expense.getAmount()));
 
-        if( expense.isRecurring() )
-        {
+        if (expense.isRecurring()) {
             assert expense.getAssociatedRecurringExpense() != null;
             values.put(SQLiteDBHelper.COLUMN_EXPENSE_RECURRING_ID, expense.getAssociatedRecurringExpense().getId());
         }
@@ -833,18 +654,17 @@ public final class DB
      * @throws JSONException
      */
     @NonNull
-    private static RecurringExpense recurringExpenseFromCursor(@NonNull Cursor cursor)
-    {
+    private static RecurringExpense recurringExpenseFromCursor(@NonNull Cursor cursor) {
         return new RecurringExpense
-        (
-            cursor.getLong(cursor.getColumnIndex(SQLiteDBHelper.COLUMN_RECURRING_DB_ID)),
-            Category.valueOf(cursor.getString(cursor.getColumnIndex(SQLiteDBHelper.COLUMN_RECURRING_CATEGORY))),
-            cursor.getString(cursor.getColumnIndex(SQLiteDBHelper.COLUMN_RECURRING_TITLE)),
-            (double) cursor.getLong(cursor.getColumnIndex(SQLiteDBHelper.COLUMN_RECURRING_AMOUNT)) / 100.d,
-            new Date(cursor.getInt(cursor.getColumnIndex(SQLiteDBHelper.COLUMN_RECURRING_RECURRING_DATE))),
-            RecurringExpenseType.valueOf(cursor.getString(cursor.getColumnIndex(SQLiteDBHelper.COLUMN_RECURRING_TYPE))),
-            cursor.getInt(cursor.getColumnIndex(SQLiteDBHelper.COLUMN_RECURRING_MODIFIED)) == 1
-        );
+                (
+                        cursor.getLong(cursor.getColumnIndex(SQLiteDBHelper.COLUMN_RECURRING_DB_ID)),
+                        Category.valueOf(cursor.getString(cursor.getColumnIndex(SQLiteDBHelper.COLUMN_RECURRING_CATEGORY))),
+                        cursor.getString(cursor.getColumnIndex(SQLiteDBHelper.COLUMN_RECURRING_TITLE)),
+                        (double) cursor.getLong(cursor.getColumnIndex(SQLiteDBHelper.COLUMN_RECURRING_AMOUNT)) / 100.d,
+                        new Date(cursor.getInt(cursor.getColumnIndex(SQLiteDBHelper.COLUMN_RECURRING_RECURRING_DATE))),
+                        RecurringExpenseType.valueOf(cursor.getString(cursor.getColumnIndex(SQLiteDBHelper.COLUMN_RECURRING_TYPE))),
+                        cursor.getInt(cursor.getColumnIndex(SQLiteDBHelper.COLUMN_RECURRING_MODIFIED)) == 1
+                );
     }
 
     /**
@@ -855,12 +675,10 @@ public final class DB
      * @throws JSONException
      */
     @NonNull
-    private static ContentValues generateContentValuesForRecurringExpense(@NonNull RecurringExpense expense)
-    {
+    private static ContentValues generateContentValuesForRecurringExpense(@NonNull RecurringExpense expense) {
         final ContentValues values = new ContentValues();
 
-        if( expense.getId() != null )
-        {
+        if (expense.getId() != null) {
             values.put(SQLiteDBHelper.COLUMN_RECURRING_DB_ID, expense.getId());
         }
 

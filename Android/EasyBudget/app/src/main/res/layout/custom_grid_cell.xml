@@ -1,11 +1,13 @@
 <!--
-   Copyright 2015 Benoit LETONDOR
+   Copyright (c) 2018 Jordan Judt and Alexis Layne.
+
+   Original project "EasyBudget" Copyright (c) Benoit LETONDOR
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-      http://www.apache.org/licenses/LICENSE-2.0
+         http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,28 +21,28 @@
     android:layout_width="40dp"
     android:layout_height="40dp"
     android:background="@drawable/custom_grid_cell_drawable"
-    android:orientation="vertical"
-    android:gravity="center_horizontal" >
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/grid_cell_tv1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="13dp"
-        android:textStyle="bold"
+        android:layout_marginTop="4dp"
         android:textColor="@color/primary_text"
-        android:layout_marginTop="4dp"/>
+        android:textSize="13dp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/grid_cell_tv2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
         android:singleLine="true"
-        android:textSize="10dp"
-        android:gravity="center_horizontal"
         android:textColor="@color/secondary_text"
+        android:textSize="10dp"
         android:visibility="invisible" />
 
 </LinearLayout>

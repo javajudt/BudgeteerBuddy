@@ -1,17 +1,19 @@
 /*
- *   Copyright 2015 Benoit LETONDOR
- *
- *   Licensed under the Apache License, Version 2.0 (the "License");
- *   you may not use this file except in compliance with the License.
- *   You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *   Unless required by applicable law or agreed to in writing, software
- *   distributed under the License is distributed on an "AS IS" BASIS,
- *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *   See the License for the specific language governing permissions and
- *   limitations under the License.
+   Copyright (c) 2018 Jordan Judt and Alexis Layne.
+
+   Original project "EasyBudget" Copyright (c) Benoit LETONDOR
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+         http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
  */
 
 package com.ajapplications.budgeteerbuddy.view.welcome;
@@ -28,26 +30,21 @@ import com.ajapplications.budgeteerbuddy.R;
  *
  * @author Benoit LETONDOR
  */
-public class Onboarding1Fragment extends OnboardingFragment
-{
+public class Onboarding1Fragment extends OnboardingFragment {
     /**
      * Required empty public constructor
      */
-    public Onboarding1Fragment()
-    {
+    public Onboarding1Fragment() {
 
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_onboarding1, container, false);
 
-        v.findViewById(R.id.onboarding_screen1_next_button).setOnClickListener(new View.OnClickListener()
-        {
+        v.findViewById(R.id.onboarding_screen1_next_button).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 next(v);
             }
         });
@@ -57,8 +54,7 @@ public class Onboarding1Fragment extends OnboardingFragment
 
 
     @Override
-    public int getStatusBarColor()
-    {
+    public int getStatusBarColor() {
         return R.color.primary_dark;
     }
 }

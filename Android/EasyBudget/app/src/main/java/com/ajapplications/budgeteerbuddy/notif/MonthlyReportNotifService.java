@@ -1,17 +1,19 @@
 /*
- *   Copyright 2016 Benoit LETONDOR
- *
- *   Licensed under the Apache License, Version 2.0 (the "License");
- *   you may not use this file except in compliance with the License.
- *   You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *   Unless required by applicable law or agreed to in writing, software
- *   distributed under the License is distributed on an "AS IS" BASIS,
- *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *   See the License for the specific language governing permissions and
- *   limitations under the License.
+   Copyright (c) 2018 Jordan Judt and Alexis Layne.
+
+   Original project "EasyBudget" Copyright (c) Benoit LETONDOR
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+         http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
  */
 
 package com.ajapplications.budgeteerbuddy.notif;
@@ -25,10 +27,10 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.ContextCompat;
 
+import com.ajapplications.budgeteerbuddy.R;
 import com.ajapplications.budgeteerbuddy.helper.Logger;
 import com.ajapplications.budgeteerbuddy.helper.ParameterKeys;
 import com.ajapplications.budgeteerbuddy.helper.Parameters;
-import com.ajapplications.budgeteerbuddy.R;
 import com.ajapplications.budgeteerbuddy.view.MainActivity;
 
 /**
@@ -36,8 +38,7 @@ import com.ajapplications.budgeteerbuddy.view.MainActivity;
  *
  * @author Benoit LETONDOR
  */
-public class MonthlyReportNotifService extends IntentService
-{
+public class MonthlyReportNotifService extends IntentService {
     /**
      * Id of the notification that must be used to display premium notif
      */
@@ -58,26 +59,20 @@ public class MonthlyReportNotifService extends IntentService
 
 // -------------------------------------->
 
-    public MonthlyReportNotifService()
-    {
+    public MonthlyReportNotifService() {
         super("MonthlyReportNotifService");
     }
 
     @Override
-    protected void onHandleIntent(Intent intent)
-    {
-        try
-        {
-            if( INTENT_ACTION_DISCOVER.equals(intent.getAction()) )
-            {
+    protected void onHandleIntent(Intent intent) {
+        try {
+            if (INTENT_ACTION_DISCOVER.equals(intent.getAction())) {
                 Intent notificationIntent = new Intent(this, MainActivity.class);
                 notificationIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
                 startActivity(notificationIntent);
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             Logger.error("Error on non premium monthly report notif intent", e);
         }
 
@@ -89,21 +84,20 @@ public class MonthlyReportNotifService extends IntentService
      *
      * @param context non null context
      */
-    public static void showPremiumNotif(@NonNull Context context)
-    {
+    public static void showPremiumNotif(@NonNull Context context) {
         Intent notificationIntent = new Intent(context, MainActivity.class);
         notificationIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         PendingIntent intent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         NotificationCompat.Builder notifBuilder = new NotificationCompat.Builder(context)
-            .setSmallIcon(R.drawable.ic_push)
-            .setContentTitle(context.getResources().getString(R.string.app_name))
-            .setContentText(context.getResources().getString(R.string.monthly_report_notif_premium_text))
-            .setStyle(new NotificationCompat.BigTextStyle().bigText(context.getResources().getString(R.string.monthly_report_notif_premium_text)))
-            .setContentIntent(intent)
-            .setAutoCancel(true)
-            .setColor(ContextCompat.getColor(context, R.color.accent));
+                .setSmallIcon(R.drawable.ic_push)
+                .setContentTitle(context.getResources().getString(R.string.app_name))
+                .setContentText(context.getResources().getString(R.string.monthly_report_notif_premium_text))
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(context.getResources().getString(R.string.monthly_report_notif_premium_text)))
+                .setContentIntent(intent)
+                .setAutoCancel(true)
+                .setColor(ContextCompat.getColor(context, R.color.accent));
 
         NotificationManagerCompat.from(context).notify(PREMIUM_NOTIFICATION_ID, notifBuilder.build());
 
@@ -115,8 +109,7 @@ public class MonthlyReportNotifService extends IntentService
      *
      * @param context non null context
      */
-    public static void showNotPremiumNotif(@NonNull Context context)
-    {
+    public static void showNotPremiumNotif(@NonNull Context context) {
         Intent notNowIntent = new Intent(context, MonthlyReportNotifService.class);
         notNowIntent.setAction(INTENT_ACTION_NOT_NOW);
         PendingIntent notNowPendingIntent = PendingIntent.getService(context, 0, notNowIntent, PendingIntent.FLAG_CANCEL_CURRENT);
@@ -126,14 +119,14 @@ public class MonthlyReportNotifService extends IntentService
         PendingIntent discoverPendingIntent = PendingIntent.getService(context, 0, discoverIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         NotificationCompat.Builder notifBuilder = new NotificationCompat.Builder(context)
-            .setSmallIcon(R.drawable.ic_push)
-            .setContentTitle(context.getResources().getString(R.string.app_name))
-            .setContentText(context.getResources().getString(R.string.monthly_report_notif_notpremium_text))
-            .setStyle(new NotificationCompat.BigTextStyle().bigText(context.getResources().getString(R.string.monthly_report_notif_notpremium_text)))
-            .setContentIntent(discoverPendingIntent)
-            .addAction(R.drawable.ic_do_not_disturb, context.getResources().getString(R.string.premium_popup_become_not_now), notNowPendingIntent)
-            .addAction(R.drawable.ic_search, context.getResources().getString(R.string.premium_popup_become_cta), discoverPendingIntent)
-            .setColor(ContextCompat.getColor(context, R.color.accent));
+                .setSmallIcon(R.drawable.ic_push)
+                .setContentTitle(context.getResources().getString(R.string.app_name))
+                .setContentText(context.getResources().getString(R.string.monthly_report_notif_notpremium_text))
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(context.getResources().getString(R.string.monthly_report_notif_notpremium_text)))
+                .setContentIntent(discoverPendingIntent)
+                .addAction(R.drawable.ic_do_not_disturb, context.getResources().getString(R.string.premium_popup_become_not_now), notNowPendingIntent)
+                .addAction(R.drawable.ic_search, context.getResources().getString(R.string.premium_popup_become_cta), discoverPendingIntent)
+                .setColor(ContextCompat.getColor(context, R.color.accent));
 
         NotificationManagerCompat.from(context).notify(NOT_PREMIUM_NOTIFICATION_ID, notifBuilder.build());
 
@@ -143,23 +136,11 @@ public class MonthlyReportNotifService extends IntentService
 // -------------------------------------->
 
     /**
-     * Has the user already saw the monthly report notification.
-     *
-     * @param context non null context
-     * @return true if user saw it, false otherwise
-     */
-    public static boolean hasUserSeenMonthlyReportNotif(@NonNull Context context)
-    {
-        return Parameters.getInstance(context).getBoolean(ParameterKeys.MONTHLY_PUSH_NOTIF_SHOWN, false);
-    }
-
-    /**
      * Set that the user saw the monthly report notification.
      *
      * @param context non null context
      */
-    private static void setUserSawMonthlyReportNotif(@NonNull Context context)
-    {
+    private static void setUserSawMonthlyReportNotif(@NonNull Context context) {
         Parameters.getInstance(context).putBoolean(ParameterKeys.MONTHLY_PUSH_NOTIF_SHOWN, true);
     }
 }

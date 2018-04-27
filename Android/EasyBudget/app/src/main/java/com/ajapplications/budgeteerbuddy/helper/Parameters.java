@@ -1,17 +1,19 @@
 /*
- *   Copyright 2015 Benoit LETONDOR
- *
- *   Licensed under the Apache License, Version 2.0 (the "License");
- *   you may not use this file except in compliance with the License.
- *   You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *   Unless required by applicable law or agreed to in writing, software
- *   distributed under the License is distributed on an "AS IS" BASIS,
- *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *   See the License for the specific language governing permissions and
- *   limitations under the License.
+   Copyright (c) 2018 Jordan Judt and Alexis Layne.
+
+   Original project "EasyBudget" Copyright (c) Benoit LETONDOR
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+         http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
  */
 
 package com.ajapplications.budgeteerbuddy.helper;
@@ -26,12 +28,11 @@ import android.support.annotation.Nullable;
  *
  * @author Benoit LETONDOR
  */
-public class Parameters
-{
+public class Parameters {
     /**
      * Name of the shared preferences file
      */
-    private final static String SHARED_PREFERENCES_FILE_NAME = "easybudget_sp";
+    private final static String SHARED_PREFERENCES_FILE_NAME = "budgeteerbuddy_sp";
 
 // --------------------------------------->
 
@@ -41,11 +42,9 @@ public class Parameters
     private final SharedPreferences preferences;
 
     /**
-     *
      * @param context
      */
-    private Parameters(@NonNull Context context)
-    {
+    private Parameters(@NonNull Context context) {
         preferences = context.getApplicationContext().getSharedPreferences(SHARED_PREFERENCES_FILE_NAME, Context.MODE_PRIVATE);
     }
 
@@ -57,8 +56,7 @@ public class Parameters
      * @param key
      * @param value
      */
-    public void putInt(@NonNull String key, int value)
-    {
+    public void putInt(@NonNull String key, int value) {
         preferences.edit().putInt(key, value).apply();
     }
 
@@ -68,8 +66,7 @@ public class Parameters
      * @param key
      * @param value
      */
-    public void putLong(@NonNull String key, long value)
-    {
+    public void putLong(@NonNull String key, long value) {
         preferences.edit().putLong(key, value).apply();
     }
 
@@ -79,8 +76,7 @@ public class Parameters
      * @param key
      * @param value
      */
-    public void putString(@NonNull String key, @NonNull String value)
-    {
+    public void putString(@NonNull String key, @NonNull String value) {
         preferences.edit().putString(key, value).apply();
     }
 
@@ -90,8 +86,7 @@ public class Parameters
      * @param key
      * @param value
      */
-    public void putBoolean(String key, boolean value)
-    {
+    public void putBoolean(String key, boolean value) {
         preferences.edit().putBoolean(key, value).apply();
     }
 
@@ -102,8 +97,7 @@ public class Parameters
      * @param defaultValue
      * @return
      */
-    public int getInt(@NonNull String key, int defaultValue)
-    {
+    public int getInt(@NonNull String key, int defaultValue) {
         return preferences.getInt(key, defaultValue);
     }
 
@@ -114,8 +108,7 @@ public class Parameters
      * @param defaultValue
      * @return
      */
-    public long getLong(@NonNull String key, long defaultValue)
-    {
+    public long getLong(@NonNull String key, long defaultValue) {
         return preferences.getLong(key, defaultValue);
     }
 
@@ -126,8 +119,7 @@ public class Parameters
      * @param defaultValue
      * @return
      */
-    public boolean getBoolean(@NonNull String key, boolean defaultValue)
-    {
+    public boolean getBoolean(@NonNull String key, boolean defaultValue) {
         return preferences.getBoolean(key, defaultValue);
     }
 
@@ -138,8 +130,7 @@ public class Parameters
      * @return
      */
     @Nullable
-    public String getString(String key)
-    {
+    public String getString(String key) {
         return preferences.getString(key, null);
     }
 
@@ -156,10 +147,8 @@ public class Parameters
      * @param context
      * @return
      */
-    public static synchronized Parameters getInstance(Context context)
-    {
-        if (ourInstance == null)
-        {
+    public static synchronized Parameters getInstance(Context context) {
+        if (ourInstance == null) {
             ourInstance = new Parameters(context);
         }
 

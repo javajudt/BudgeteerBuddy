@@ -1,17 +1,19 @@
 /*
- *   Copyright 2015 Benoit LETONDOR
- *
- *   Licensed under the Apache License, Version 2.0 (the "License");
- *   you may not use this file except in compliance with the License.
- *   You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *   Unless required by applicable law or agreed to in writing, software
- *   distributed under the License is distributed on an "AS IS" BASIS,
- *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *   See the License for the specific language governing permissions and
- *   limitations under the License.
+   Copyright (c) 2018 Jordan Judt and Alexis Layne.
+
+   Original project "EasyBudget" Copyright (c) Benoit LETONDOR
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+         http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
  */
 
 package com.ajapplications.budgeteerbuddy;
@@ -33,8 +35,7 @@ import java.util.UUID;
  *
  * @author Benoit LETONDOR
  */
-public class BudgeteerBuddy extends Application
-{
+public class BudgeteerBuddy extends Application {
     /**
      * Default amount use for low money warning (can be changed in settings)
      */
@@ -48,8 +49,7 @@ public class BudgeteerBuddy extends Application
 // ------------------------------------------>
 
     @Override
-    public void onCreate()
-    {
+    public void onCreate() {
         super.onCreate();
 
         // Init actions
@@ -61,8 +61,7 @@ public class BudgeteerBuddy extends Application
      *
      * @param invitationsSent
      */
-    public void trackNumberOfInvitesSent(int invitationsSent)
-    {
+    public void trackNumberOfInvitesSent(int invitationsSent) {
         int inviteSent = Parameters.getInstance(getApplicationContext()).getInt(ParameterKeys.NUMBER_OF_INVITATIONS, 0);
         inviteSent += invitationsSent;
         Parameters.getInstance(getApplicationContext()).putInt(ParameterKeys.NUMBER_OF_INVITATIONS, inviteSent);
@@ -71,14 +70,12 @@ public class BudgeteerBuddy extends Application
     /**
      * Init app const and parameters
      */
-    private void init()
-    {
+    private void init() {
         /*
          * Save first launch date if needed
          */
         long initDate = Parameters.getInstance(getApplicationContext()).getLong(ParameterKeys.INIT_DATE, 0);
-        if( initDate <= 0 )
-        {
+        if (initDate <= 0) {
             Logger.debug("Registering first launch date");
             Parameters.getInstance(getApplicationContext()).putLong(ParameterKeys.INIT_DATE, new Date().getTime());
         }
@@ -87,34 +84,27 @@ public class BudgeteerBuddy extends Application
          * Create local ID if needed
          */
         String localId = Parameters.getInstance(getApplicationContext()).getString(ParameterKeys.LOCAL_ID);
-        if( localId == null )
-        {
+        if (localId == null) {
             localId = UUID.randomUUID().toString();
-            Logger.debug("Generating local id : "+localId);
+            Logger.debug("Generating local id : " + localId);
 
             Parameters.getInstance(getApplicationContext()).putString(ParameterKeys.LOCAL_ID, localId);
-        }
-        else
-        {
+        } else {
             Logger.debug("Local id : " + localId);
         }
 
         // Activity counter for app foreground & background
-        registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks()
-        {
+        registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             private int activityCounter = 0;
 
             @Override
-            public void onActivityCreated(Activity activity, Bundle savedInstanceState)
-            {
+            public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
 
             }
 
             @Override
-            public void onActivityStarted(Activity activity)
-            {
-                if (activityCounter == 0)
-                {
+            public void onActivityStarted(Activity activity) {
+                if (activityCounter == 0) {
                     onAppForeground();
                 }
 
@@ -122,22 +112,18 @@ public class BudgeteerBuddy extends Application
             }
 
             @Override
-            public void onActivityResumed(Activity activity)
-            {
+            public void onActivityResumed(Activity activity) {
 
             }
 
             @Override
-            public void onActivityPaused(Activity activity)
-            {
+            public void onActivityPaused(Activity activity) {
 
             }
 
             @Override
-            public void onActivityStopped(Activity activity)
-            {
-                if (activityCounter == 1)
-                {
+            public void onActivityStopped(Activity activity) {
+                if (activityCounter == 1) {
                     onAppBackground();
                 }
 
@@ -145,14 +131,12 @@ public class BudgeteerBuddy extends Application
             }
 
             @Override
-            public void onActivitySaveInstanceState(Activity activity, Bundle outState)
-            {
+            public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
 
             }
 
             @Override
-            public void onActivityDestroyed(Activity activity)
-            {
+            public void onActivityDestroyed(Activity activity) {
 
             }
         });
@@ -162,10 +146,8 @@ public class BudgeteerBuddy extends Application
 
     /**
      * Called when the app goes foreground
-     *
      */
-    private void onAppForeground()
-    {
+    private void onAppForeground() {
         Logger.debug("onAppForeground");
 
         /*
@@ -179,8 +161,7 @@ public class BudgeteerBuddy extends Application
         boolean shouldIncrementDailyOpen = false;
 
         long lastOpen = Parameters.getInstance(getApplicationContext()).getLong(ParameterKeys.LAST_OPEN_DATE, 0);
-        if( lastOpen > 0 )
-        {
+        if (lastOpen > 0) {
             Calendar cal = Calendar.getInstance();
             cal.setTime(new Date(lastOpen));
 
@@ -189,19 +170,15 @@ public class BudgeteerBuddy extends Application
             cal.setTime(new Date());
             int currentDay = cal.get(Calendar.DAY_OF_YEAR);
 
-            if( lastDay != currentDay )
-            {
+            if (lastDay != currentDay) {
                 shouldIncrementDailyOpen = true;
             }
-        }
-        else
-        {
+        } else {
             shouldIncrementDailyOpen = true;
         }
 
         // Increment daily open
-        if( shouldIncrementDailyOpen )
-        {
+        if (shouldIncrementDailyOpen) {
             Parameters.getInstance(getApplicationContext()).putInt(ParameterKeys.NUMBER_OF_DAILY_OPEN, Parameters.getInstance(getApplicationContext()).getInt(ParameterKeys.NUMBER_OF_DAILY_OPEN, 0) + 1);
         }
 
@@ -214,10 +191,7 @@ public class BudgeteerBuddy extends Application
     /**
      * Called when the app goes background
      */
-    private void onAppBackground()
-    {
+    private void onAppBackground() {
         Logger.debug("onAppBackground");
     }
-
-    //endregion
 }
