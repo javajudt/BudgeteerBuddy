@@ -22,6 +22,10 @@
             android:title="@string/setting_category_limit_set_button_title"
             android:summary="@string/setting_category_limit_set_button_message" />
 
+        <Preference android:key="@string/setting_category_goal_set_button_key"
+            android:title="@string/setting_category_goal_set_button_title"
+            android:summary="@string/setting_category_goal_set_button_message" />
+
         <CheckBoxPreference android:title="@string/setting_category_notifications_daily_title"
             android:summaryOn="@string/setting_category_notifications_daily_message"
             android:summaryOff="@string/setting_category_notifications_daily_message"
@@ -35,7 +39,6 @@
             android:enabled="true"/>
 
     </PreferenceCategory>
-
     <PreferenceCategory
         android:title="@string/setting_category_app_title">
 

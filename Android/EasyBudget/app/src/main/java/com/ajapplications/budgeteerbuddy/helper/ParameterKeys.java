@@ -40,6 +40,10 @@ public class ParameterKeys
      */
     public static final String LOW_MONEY_WARNING_AMOUNT = "low_money_warning_amount";
     /**
+     * Savings goal for account (int)
+     */
+    public static final String SAVINGS_GOAL_AMOUNT = "savings_goal_amount";
+    /**
      * The current onboarding step (int)
      */
     public static final String ONBOARDING_STEP = "onboarding_step";

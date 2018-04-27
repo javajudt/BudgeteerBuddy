@@ -202,6 +202,76 @@ public class PreferencesFragment extends PreferenceFragment {
         setLimitWarningPreferenceTitle(limitWarningPreference);
 
         /*
+         * Savings goal
+         */
+        final Preference savingsGoalPreference = findPreference(getResources().getString(R.string.setting_category_goal_set_button_key));
+        savingsGoalPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                View dialogView = getActivity().getLayoutInflater().inflate(R.layout.dialog_set_savings_goal, null);
+                final EditText goalEditText = (EditText) dialogView.findViewById(R.id.savings_goal);
+                goalEditText.setText(String.valueOf(Parameters.getInstance(getActivity()).getInt(ParameterKeys.SAVINGS_GOAL_AMOUNT, BudgeteerBuddy.DEFAULT_SAVINGS_GOAL_AMOUNT)));
+                goalEditText.setSelection(goalEditText.getText().length()); // Put focus at the end of the text
+
+                final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle(R.string.adjust_savings_goal_title);
+                builder.setMessage(R.string.adjust_savings_goal_message);
+                builder.setView(dialogView);
+                builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(final DialogInterface dialog, int which) {
+                        String goalString = goalEditText.getText().toString();
+                        if (goalString.trim().isEmpty()) {
+                            goalString = "0"; // Set a 0 value if no value is provided (will lead to an error displayed to the user)
+                        }
+
+                        try {
+                            int newGoal = Integer.valueOf(goalString);
+
+                            // Invalid value, alert the user
+                            if (newGoal <= 0) {
+                                throw new IllegalArgumentException("limit should be > 0");
+                            }
+
+                            Parameters.getInstance(getActivity()).putInt(ParameterKeys.SAVINGS_GOAL_AMOUNT, newGoal);
+                            setSavingsGoalPreferenceTitle(savingsGoalPreference);
+                        } catch (Exception e) {
+                            new AlertDialog.Builder(getActivity()).setTitle(R.string.adjust_savings_goal_error_title).setMessage(getResources().getString(R.string.adjust_savings_goal_error_message)).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+
+                            }).show();
+                        }
+                    }
+                });
+
+                final Dialog dialog = builder.show();
+
+                // Directly show keyboard when the dialog pops
+                goalEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                    @Override
+                    public void onFocusChange(View v, boolean hasFocus) {
+                        if (hasFocus && getResources().getConfiguration().keyboard == Configuration.KEYBOARD_NOKEYS) // Check if the device doesn't have a physical keyboard
+                        {
+                            dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                        }
+                    }
+                });
+
+                return false;
+            }
+        });
+        setSavingsGoalPreferenceTitle(savingsGoalPreference);
+
+        /*
          * Notifications
          */
         final CheckBoxPreference updateNotifPref = (CheckBoxPreference) findPreference(getResources().getString(R.string.setting_category_notifications_update_key));
@@ -287,6 +357,15 @@ public class PreferencesFragment extends PreferenceFragment {
      */
     private void setLimitWarningPreferenceTitle(Preference limitWarningPreferenceTitle) {
         limitWarningPreferenceTitle.setTitle(getResources().getString(R.string.setting_category_limit_set_button_title, CurrencyHelper.getFormattedCurrencyString(Parameters.getInstance(getActivity()).getInt(ParameterKeys.LOW_MONEY_WARNING_AMOUNT, BudgeteerBuddy.DEFAULT_LOW_MONEY_WARNING_AMOUNT))));
+    }
+
+    /**
+     * Set the savings goal preference title according to the selected limit
+     *
+     * @param savingsGoalPreferenceTitle
+     */
+    private void setSavingsGoalPreferenceTitle(Preference savingsGoalPreferenceTitle) {
+        savingsGoalPreferenceTitle.setTitle(getResources().getString(R.string.setting_category_goal_set_button_title, CurrencyHelper.getFormattedCurrencyString(Parameters.getInstance(getActivity()).getInt(ParameterKeys.SAVINGS_GOAL_AMOUNT, BudgeteerBuddy.DEFAULT_SAVINGS_GOAL_AMOUNT))));
     }
 
     @Override
