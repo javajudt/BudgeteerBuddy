@@ -198,7 +198,6 @@
     <string name="setting_category_show_welcome_screen_button_title" translatable="false">Show welcome screen</string>
     <string name="setting_category_disable_animation_title" translatable="false">Animations</string>
     <string name="setting_category_disable_animation_message" translatable="false">You can disable animations if you experience any bug or glitch</string>
-    <string name="setting_category_show_premium" translatable="false">Show premium screen</string>
     <string name="setting_category_show_notif_daily_reminder" translatable="false">Show daily reminder opt-in notif</string>
     <string name="setting_category_show_notif_monthly_report_premium" translatable="false">Show monthly report notif (Premium)</string>
     <string name="setting_category_show_notif_monthly_report_notpremium" translatable="false">Show monthly report notif (Non premium)</string>
@@ -282,7 +281,6 @@
     <string name="setting_category_notifications_update_key" translatable="false">update_notifs</string>
     <string name="setting_category_notifications_daily_key" translatable="false">daily_notifs</string>
     <string name="setting_category_notifications_monthly_key" translatable="false">monthly_notifs</string>
-    <string name="setting_category_dev_show_premium_key" translatable="false">show_premium</string>
     <string name="setting_category_show_notif_daily_reminder_key" translatable="false">show_daily_reminder_notif</string>
     <string name="setting_category_show_notif_monthly_notpremium_key" translatable="false">show_montly_notpremium_notif</string>
     <string name="setting_category_show_notif_monthly_premium_key" translatable="false">show_montly_premium_notif</string>
