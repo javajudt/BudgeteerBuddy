@@ -179,7 +179,7 @@
 
     <string name="setting_category_app_title">App</string>
     <string name="setting_category_rate_button_title">Like the app?</string>
-    <string name="setting_category_rate_button_message">Let me know what you think</string>
+    <string name="setting_category_rate_button_message">Let us know what you think</string>
     <string name="setting_category_bug_report_send_button_title">Report a bug</string>
     <string name="bug_report_email" translatable="false">budgeteerbuddy@jordanjudt.com</string>
     <string name="setting_category_bug_report_send_subject" translatable="false">BudgeteerBuddy - Bug report</string>
